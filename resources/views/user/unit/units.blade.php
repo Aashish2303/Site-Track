@@ -1,0 +1,154 @@
+@extends('user.layouts.app')
+@section('title', 'Units - ' . Request()->settings->settings_title)
+@section('contents')
+<div class="content">
+   <div class="d-flex align-items-center justify-content-between gap-2 mb-4 flex-wrap">
+      <div class="breadcrumb-arrow">
+         <h4 class="mb-1">Units</h4>
+         <div class="text-end">
+            <ol class="breadcrumb m-0 py-0">
+               <li class="breadcrumb-item"><a href="{{ route('user.dashboard') }}">Home</a></li>
+               <li class="breadcrumb-item active">Units</li>
+            </ol>
+         </div>
+      </div>
+      <div class="gap-2 d-flex align-items-center flex-wrap">
+         <a href="{{ route('user.units') }}" class="btn btn-icon btn-white" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Refresh" data-bs-original-title="Refresh"><i class="ti ti-refresh"></i></a>
+         @if(Helper::userHasPermission('user.add_unit'))
+         <a href="javascript:void(0)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUnitModal"><i class="ti ti-square-rounded-plus me-1"></i>Add Unit</a>
+         @endif
+      </div>
+   </div>
+   <div class="card mb-0">
+      <div class="card-header d-flex align-items-center flex-wrap gap-2 justify-content-between">
+         <h5 class="d-inline-flex align-items-center mb-0">Manage Units</h5>
+      </div>
+      <div class="card-body">
+         <div class="table-responsive-sm">
+            <table id="unit_table" class="table border mb-0 w-100">
+               <thead class="table-light">
+                  <tr>
+                     <th>#</th>
+                     <th>Unit</th>
+                     <th>Action</th>
+                  </tr>
+               </thead>
+               <tbody>
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+</div>
+<div id="addUnitModal" class="modal fade">
+   <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="text-dark modal-title fw-bold text-truncate">Add Unit</h5>
+               <button type="button" class="btn-close btn-close-modal" data-bs-dismiss="modal" aria-label="Close"><i class="ti ti-circle-x-filled"></i></button>
+            </div>
+            <form id="unit_form" action="{{ route('user.add_unit') }}" method="POST">
+               @csrf
+               <div class="modal-body pb-0">
+                  <div class="row">
+                     <div class="col-lg-12">
+                        <div class="mb-3">
+                           <label class="form-label">Unit</label>
+                           <input type="text" name="unit_name" class="form-control" id="choices-text-remove-button" value="{{ old('unit_name') }}" autocomplete="off">
+                           @if($errors->has('unit_name'))
+                           <div>{{ $errors->first('unit_name') }}</div>
+                           @endif
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="modal-footer d-flex align-items-center gap-1">
+                  <button type="submit" name="submit" class="btn btn-primary" value="submit">Submit</button>
+               </div>
+            </form>
+      </div>
+   </div>
+</div>
+<div id="editUnitModal" class="modal fade">
+   <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="text-dark modal-title fw-bold text-truncate">Edit Unit</h5>
+               <button type="button" class="btn-close btn-close-modal" data-bs-dismiss="modal" aria-label="Close"><i class="ti ti-circle-x-filled"></i></button>
+            </div>
+            <form id="edit_unit_form" action="{{ route('user.edit_unit') }}" method="POST">
+            </form>
+      </div>
+   </div>
+</div>
+@endsection
+@section('custom_script')
+<script>
+var dataTable = $('#unit_table').DataTable({
+    processing: true,
+    serverSide: true,
+    responsive: true,
+    autoWidth: false,
+    dom: "<'row align-items-center mb-3'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+         "t" +
+         "<'row align-items-center mt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+    'ajax': {
+            type : 'POST',
+            url : "{{ route('user.get_units') }}",
+            'data': function(data){
+
+                var token = "{{ csrf_token() }}";
+                data._token = token;
+            }
+    },
+    columns: [
+        {data: 'DT_RowIndex'},
+        {data: 'unit_name'},
+        {data: 'action',orderable: false, searchable: false}
+    ]
+});
+
+function edit_unit(unit_id)
+{
+    var csrf = "{{ csrf_token() }}";
+
+    $.ajax({
+        url: "{{ route('user.get_unit_details') }}",
+        type: "post",
+        data: "unit_id="+unit_id+'&_token='+csrf,
+        success: function (data) {
+
+            $('#editUnitModal').modal('show');
+            $("#edit_unit_form").html(data);
+        }
+    });
+}
+
+function confirm_msg(ev)
+{
+    ev.preventDefault();
+
+    var urlToRedirect = ev.currentTarget.getAttribute('href');
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You want to change status!",
+        type: "warning",
+        showCancelButton: !0,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, change it!",
+        confirmButtonClass: "btn btn-success",
+        cancelButtonClass: "btn btn-danger ml-1",
+        buttonsStyling: !1,
+        icon: "warning",
+    }).then(function (t) {
+
+        if(t.value)
+        {
+            window.location.href = urlToRedirect;
+        }
+    });
+}
+</script>
+@endsection
