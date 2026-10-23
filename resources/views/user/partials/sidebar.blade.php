@@ -1,27 +1,17 @@
 <div class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-        <div>
-            <a href="{{ route('user.dashboard') }}" class="logo logo-normal">
-                <img src="{{ asset(config('constants.admin_path').'uploads/logo/'.Request()->settings->settings_wlogo) }}" style="height: 40px" alt="Logo">
-            </a>
-            <a href="{{ route('user.dashboard') }}" class="logo-small">
-                <img src="{{ asset(config('constants.admin_path').'uploads/logo/'.Request()->settings->settings_favicon) }}" style="height: 40px" alt="Logo">
-            </a>
-            <a href="{{ route('user.dashboard') }}" class="dark-logo">
-                <img src="{{ asset(config('constants.admin_path').'uploads/logo/'.Request()->settings->settings_logo) }}" style="height: 40px" alt="Logo">
-            </a>
-        </div>
-        <button class="sidenav-toggle-btn btn border-0 p-0 active" id="toggle_btn">
+        <a href="{{ route('user.dashboard') }}" class="st-brand">@include('user.partials.brand')</a>
+        <button type="button" class="sidenav-toggle-btn btn border-0 p-0 active" id="toggle_btn" aria-label="Collapse navigation">
         <i class="ti ti-arrow-bar-to-left"></i>
         </button>
-        <button class="sidebar-close">
+        <button type="button" class="sidebar-close" aria-label="Close navigation">
         <i class="ti ti-x align-middle"></i>
         </button>
     </div>
     <div class="sidebar-inner" data-simplebar>
         <div id="sidebar-menu" class="sidebar-menu">
             <ul role="menu" aria-label="Main navigation menu">
-                <li class="menu-title" aria-disabled="true"><span>MAIN</span></li>
+                <li class="menu-title" aria-disabled="true"><span>WORKSPACE</span></li>
                 <li>
                     <a href="{{ route('user.dashboard') }}" @if(isset($set) && $set == 'dashboard')class="active"@endif>
                     <i class="ti ti-layout-board"></i><span>Dashboard</span>

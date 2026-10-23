@@ -206,22 +206,26 @@
 @endsection
 @section('contents')
 <div class="content">
-   <div class="d-flex align-items-center justify-content-between gap-2 mb-4 flex-wrap">
-         <div class="breadcrumb-arrow">
-            <h4 class="mb-1">Welcome, {{ Auth::user()->user_name }}</h4>
-            <p class="mb-0"><i class="ti ti-user"></i> {{ Request()->role->role_name }}</p>
+   <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap st-page-intro">
+         <div>
+            <span class="st-eyebrow">WORKSPACE OVERVIEW</span>
+            <h1>A clear view of your sites.</h1>
+            <p>Welcome back, {{ Auth::user()->user_name }}. Here’s where things stand today.</p>
          </div>
          <div class="gap-2 d-flex align-items-center flex-wrap">
-            <a href="{{ route('user.dashboard') }}" class="btn btn-icon btn-white" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Refresh" data-bs-original-title="Refresh"><i class="ti ti-refresh"></i></a>
+            <a href="{{ route('user.dashboard') }}" class="btn btn-icon btn-white" aria-label="Refresh dashboard"><i class="ti ti-refresh" aria-hidden="true"></i></a>
+            @if(Helper::userHasPermission('user.add_project'))
+            <a href="{{ route('user.add_project') }}" class="btn btn-primary"><i class="ti ti-plus me-1" aria-hidden="true"></i>New project</a>
+            @endif
          </div>
    </div>
-   <div class="row">
+   <div class="row st-metrics">
       <div class="col-xl-2 col-md-6 d-flex">
          <a href="{{ route('user.projects') }}" class="card flex-fill labour-summary-card dashboard-summary-link">
             <div class="card-body">
                <div class="d-flex align-items-center justify-content-between">
                   <div>
-                     <p class="mb-1">Active Sites</p>
+                     <p class="mb-1">Active sites</p>
                      <h6 class="mb-0">{{ $active_projects }}</h6>
                   </div>
                   <span class="avatar rounded-circle badge-soft-primary"><i class="ti ti-building fs-24"></i></span>
@@ -234,7 +238,7 @@
             <div class="card-body">
                <div class="d-flex align-items-center justify-content-between">
                   <div>
-                     <p class="mb-1">Todays Work</p>
+                     <p class="mb-1">Today's work</p>
                      <h6 class="mb-0">{{ $todays_work }}</h6>
                   </div>
                   <span class="avatar rounded-circle badge-soft-pink"><i class="ti ti-calendar fs-24"></i></span>
@@ -247,7 +251,7 @@
             <div class="card-body">
                <div class="d-flex align-items-center justify-content-between">
                   <div>
-                     <p class="mb-1">Workers Today</p>
+                     <p class="mb-1">Today's team</p>
                      <h6 class="mb-0">{{ $today_workers }}</h6>
                   </div>
                   <span class="avatar rounded-circle badge-soft-indigo"><i class="ti ti-users-group fs-24"></i></span>
@@ -260,7 +264,7 @@
             <div class="card-body">
                <div class="d-flex align-items-center justify-content-between">
                   <div>
-                     <p class="mb-1">Pending Approvals</p>
+                     <p class="mb-1">Pending approvals</p>
                      <h6 class="mb-0">{{ $pending_approvals }}</h6>
                   </div>
                   <span class="avatar rounded-circle badge-soft-orange"><i class="ti ti-bell fs-24"></i></span>
@@ -273,7 +277,7 @@
             <div class="card-body">
                <div class="d-flex align-items-center justify-content-between">
                   <div>
-                     <p class="mb-1">Open Issues</p>
+                     <p class="mb-1">Open issues</p>
                      <h6 class="mb-0">{{ $open_issues }}</h6>
                   </div>
                   <span class="avatar rounded-circle badge-soft-orange"><i class="ti ti-alert-triangle fs-24"></i></span>
@@ -286,7 +290,7 @@
             <div class="card-body">
                <div class="d-flex align-items-center justify-content-between">
                   <div>
-                     <p class="mb-1">Todays Order</p>
+                     <p class="mb-1">Today's orders</p>
                      <h6 class="mb-0">{{ $todays_order }}</h6>
                   </div>
                   <span class="avatar rounded-circle badge-soft-orange"><i class="ti ti-package fs-24"></i></span>
@@ -299,12 +303,12 @@
       <div class="col-xl-6 col-md-6 d-flex">
          <div class="card shadow flex-fill w-100">
             <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
-               <h5 class="mb-0">Project Progress</h5>
+               <h5 class="mb-0">Project progress</h5>
                <a href="{{ route('user.projects') }}" class="btn btn-sm btn-white flex-shrink-0">View All</a>
             </div>
             <div class="card-body">
                <div class="overflow-auto">
-                  @foreach($projects as $project)
+                  @forelse($projects as $project)
                   @php 
                   $boqs = App\Models\ProjectBoq::where('pboq_project',$project->project_id)->get();
                   $boq_total = array_sum(array_column($boqs->toArray(),'pboq_amount'));
@@ -338,7 +342,9 @@
                         <span></span>
                      </div>
                   </div>
-                  @endforeach
+                  @empty
+                  <div class="st-empty"><i class="ti ti-building" aria-hidden="true"></i><h6>No active projects yet</h6><p>Your active sites and their progress will appear here.</p></div>
+                  @endforelse
                </div>
             </div>
          </div>
@@ -346,12 +352,12 @@
       <div class="col-xl-6 col-md-6 d-flex">
          <div class="card shadow flex-fill w-100">
             <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
-               <h5 class="mb-0">Pending Actions</h5>
+               <h5 class="mb-0">Needs your attention</h5>
                <a href="{{ route('user.indents') }}" class="btn btn-sm btn-white flex-shrink-0">View All</a>
             </div>
             <div class="card-body">
                <div class="overflow-auto">
-                  @foreach($pending_indents as $pending_indent)
+                  @forelse($pending_indents as $pending_indent)
                   <div class="d-flex justify-content-between align-items-center mb-3">
                      <div class="d-flex align-items-center">
                            <div class="ms-2">
@@ -369,7 +375,9 @@
                         @endif
                      </div>
                   </div>
-                  @endforeach
+                  @empty
+                  <div class="st-empty"><i class="ti ti-circle-check" aria-hidden="true"></i><h6>You’re all caught up</h6><p>New quotations and approvals will appear here.</p></div>
+                  @endforelse
                </div>
             </div>
          </div>

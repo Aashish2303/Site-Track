@@ -1,0 +1,116 @@
+name: SiteTrack UI checks and deployment
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'resources/views/user/**'
+      - 'public/assets/admin/css/**'
+      - 'public/assets/admin/js/**'
+      - 'public/assets/admin/fonts/**'
+      - 'deploy/**'
+      - 'scripts/*-ui.sh'
+      - '.github/workflows/sitetrack-ui.yml'
+  pull_request:
+    paths:
+      - 'resources/views/user/**'
+      - 'public/assets/admin/css/**'
+      - 'public/assets/admin/js/**'
+      - 'public/assets/admin/fonts/**'
+      - 'deploy/**'
+      - 'scripts/*-ui.sh'
+      - '.github/workflows/sitetrack-ui.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sitetrack-ui-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      database:
+        image: mariadb:11.8
+        env:
+          MARIADB_DATABASE: sitetrack_ci
+          MARIADB_ROOT_PASSWORD: ci-only-ephemeral-password
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+    env:
+      APP_ENV: testing
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: sitetrack_ci
+      DB_USERNAME: root
+      DB_PASSWORD: ci-only-ephemeral-password
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+      - uses: shivammathur/setup-php@d52fc211a0436f8839a587b3b5b8efddab4744ea # v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, pdo_mysql, gd, zip, bcmath, curl, xml
+          tools: composer:v2
+          coverage: none
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Install locked PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Prepare isolated CI database
+        env:
+          MYSQL_PWD: ci-only-ephemeral-password
+        run: |
+          cp .env.example .env
+          php artisan key:generate --no-interaction
+          docker exec -i -e MYSQL_PWD="$MYSQL_PWD" '${{ job.services.database.id }}' mariadb --user=root sitetrack_ci < database.sql
+      - name: Test Laravel and build assets
+        run: |
+          php artisan test --cache-directory="$RUNNER_TEMP/phpunit-cache"
+          npm install --package-lock=false --no-audit --no-fund
+          npm run build
+          node --check public/assets/admin/js/sitetrack-core.js
+          bash -n scripts/package-ui.sh scripts/deploy-ui.sh
+          bash scripts/package-ui.sh "$RUNNER_TEMP/sitetrack-ui-check"
+          cd "$RUNNER_TEMP/sitetrack-ui-check"
+          sha256sum --check SHA256SUMS
+
+  deploy:
+    needs: verify
+    # Remove the literal false gate only after the real Hostinger account, paths,
+    # host keys and deployment permission have been reviewed and confirmed.
+    if: ${{ false && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && vars.SITETRACK_DEPLOY_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+      - name: Deploy verified UI to the existing Hostinger site
+        env:
+          HOSTINGER_SSH_HOST: ${{ vars.HOSTINGER_SSH_HOST }}
+          HOSTINGER_SSH_PORT: ${{ vars.HOSTINGER_SSH_PORT }}
+          HOSTINGER_SSH_USER: ${{ vars.HOSTINGER_SSH_USER }}
+          SITETRACK_APP_ROOT: ${{ vars.SITETRACK_APP_ROOT }}
+          SITETRACK_PUBLIC_ROOT: ${{ vars.SITETRACK_PUBLIC_ROOT }}
+          SITETRACK_BACKUP_ROOT: ${{ vars.SITETRACK_BACKUP_ROOT }}
+          SITETRACK_PHP_BINARY: ${{ vars.SITETRACK_PHP_BINARY }}
+          DEPLOY_PRIVATE_KEY: ${{ secrets.HOSTINGER_DEPLOY_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.HOSTINGER_KNOWN_HOSTS }}
+        run: |
+          umask 077
+          export SSH_KEY_FILE="$RUNNER_TEMP/sitetrack-deploy-key"
+          export KNOWN_HOSTS_FILE="$RUNNER_TEMP/sitetrack-known-hosts"
+          trap 'rm -f "$SSH_KEY_FILE" "$KNOWN_HOSTS_FILE"' EXIT
+          printf '%s\n' "$DEPLOY_PRIVATE_KEY" > "$SSH_KEY_FILE"
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > "$KNOWN_HOSTS_FILE"
+          unset DEPLOY_PRIVATE_KEY DEPLOY_KNOWN_HOSTS
+          bash scripts/deploy-ui.sh

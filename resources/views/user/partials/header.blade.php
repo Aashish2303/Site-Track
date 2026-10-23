@@ -1,208 +1,40 @@
 <header class="navbar-header">
     <div class="page-container topbar-menu">
-        <div class="d-flex align-items-center gap-2">
-            <a id="mobile_btn" class="mobile-btn" href="#sidebar">
-            <i class="ti ti-menu-deep fs-24"></i>
-            </a>
-            <a href="{{ route('user.dashboard') }}" class="logo">
-                <span class="logo-light">
-                <span class="logo-lg"><img src="{{ asset(config('constants.admin_path').'uploads/logo/'.Request()->settings->settings_logo) }}" style="height: 29px" alt="logo"></span>
-                </span>
-                <span class="logo-dark">
-                <span class="logo-lg"><img src="{{ asset(config('constants.admin_path').'uploads/logo/'.Request()->settings->settings_logo) }}" style="height: 29px" alt="dark logo"></span>
-                </span>
-                <span class="logo-small">
-                <span class="logo-lg"><img src="{{ asset(config('constants.admin_path').'uploads/logo/'.Request()->settings->settings_logo) }}" style="height: 29px" alt="small logo"></span>
-                </span>
-            </a>
-            <button class="sidenav-toggle-btn btn border-0 p-0 active" id="toggle_btn2">
-                <i class="ti ti-arrow-bar-to-right"></i>
-            </button>
-            <div class="me-auto d-flex align-items-center header-search d-lg-flex d-none">
-                <div class="d-flex align-items-center gap-2 border rounded bg-light px-3 py-2 me-2" style="min-width: 190px;">
-                    <span class="avatar avatar-sm rounded bg-primary text-white d-inline-flex align-items-center justify-content-center">
-                        <i class="ti ti-calendar-event fs-16"></i>
-                    </span>
-                    <div class="lh-sm">
-                        <span class="d-block fs-12 text-muted">Today</span>
-                        <span class="fw-semibold text-dark">{{ date('d M Y') }}</span>
-                    </div>
-                </div>
-            </div>
+        <div class="st-topbar-left">
+            <button type="button" id="mobile_btn" class="mobile-btn" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false"><i class="ti ti-menu-2" aria-hidden="true"></i></button>
+            <div class="st-breadcrumb"><span>Workspace</span><i class="ti ti-chevron-right" aria-hidden="true"></i><strong>{{ \Illuminate\Support\Str::before(trim($__env->yieldContent('title')), ' - ') }}</strong></div>
         </div>
-        <div class="d-flex align-items-center">
-            <div class="me-auto d-flex align-items-center header-search d-lg-none d-sm-flex d-none">
-                <div class="d-flex align-items-center gap-2 border rounded bg-light px-3 py-2 me-2" style="min-width: 190px;">
-                    <span class="avatar avatar-sm rounded bg-primary text-white d-inline-flex align-items-center justify-content-center">
-                        <i class="ti ti-calendar-event fs-16"></i>
-                    </span>
-                    <div class="lh-sm">
-                        <span class="d-block fs-12 text-muted">Today</span>
-                        <span class="fw-semibold text-dark">{{ date('d M Y') }}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="header-item">
-                <div class="dropdown me-2">
-                    <a href="javascript:void(0);" class="btn topbar-link btnFullscreen" aria-label="minimize"><i class="ti ti-minimize"></i></a>
-                </div>
-            </div>
-            {{-- <div class="header-item">
-                <div class="dropdown me-2">
-                    <button class="topbar-link btn topbar-link dropdown-toggle drop-arrow-none" data-bs-toggle="dropdown" data-bs-offset="0,24" type="button" aria-haspopup="false" aria-expanded="false">
-                        <i class="ti ti-bell-check fs-16 animate-ring"></i>
-                        <span class="notification-badge"></span>
-                    </button>
-                    <div class="dropdown-menu p-0 dropdown-menu-end dropdown-menu-lg" style="min-height: 300px;">
-                        <div class="p-2 border-bottom">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h6 class="m-0 fs-16 fw-semibold"> Notifications</h6>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="notification-body position-relative z-2 rounded-0" data-simplebar>
-                            <div class="dropdown-item notification-item py-3 text-wrap border-bottom" id="notification-1">
-                                <div class="d-flex">
-                                    <div class="me-2 position-relative flex-shrink-0">
-                                        <img src="{{ asset(config('constants.admin_path').'img/avatars/avatar-28.jpg') }}" class="avatar-md rounded-circle" alt="patient">
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <p class="mb-0 fw-medium text-dark">John Doe</p>
-                                        <p class="mb-1 text-wrap">
-                                            added new  patient <span class="fw-medium text-dark">appointment booking.</span>
-                                        </p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span class="fs-12"><i class="ti ti-clock me-1"></i>4 min ago</span>
-                                            <div class="notification-action d-flex align-items-center float-end gap-2">
-                                                <a href="javascript:void(0);" class="notification-read rounded-circle bg-danger" data-bs-toggle="tooltip" title="" data-bs-original-title="Make as Read" aria-label="Make as Read"></a>
-                                                <button class="btn rounded-circle p-0" data-dismissible="#notification-1">
-                                                    <i class="ti ti-x"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="dropdown-item notification-item py-3 text-wrap border-bottom" id="notification-2">
-                                <div class="d-flex">
-                                    <div class="me-2 position-relative flex-shrink-0">
-                                        <img src="{{ asset(config('constants.admin_path').'img/avatars/avatar-39.jpg') }}" class="avatar-md rounded-circle" alt="patient">
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <p class="mb-0 fw-medium text-dark">Thomas William</p>
-                                        <p class="mb-1 text-wrap">
-                                            booked a new appointment
-                                        </p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span class="fs-12"><i class="ti ti-clock me-1"></i>8 min ago</span>
-                                            <div class="notification-action d-flex align-items-center float-end gap-2">
-                                                <a href="javascript:void(0);" class="notification-read rounded-circle bg-danger" data-bs-toggle="tooltip" title="" data-bs-original-title="Make as Read" aria-label="Make as Read"></a>
-                                                <button class="btn rounded-circle p-0" data-dismissible="#notification-2">
-                                                    <i class="ti ti-x"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="dropdown-item notification-item py-3 text-wrap border-bottom" id="notification-3">
-                                <div class="d-flex">
-                                    <div class="me-2 position-relative flex-shrink-0">
-                                        <img src="{{ asset(config('constants.admin_path').'img/avatars/avatar-12.jpg') }}" class="avatar-md rounded-circle" alt="patient">
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <p class="mb-0 fw-medium text-dark">Sarah Anderson</p>
-                                        <p class="mb-1 text-wrap">
-                                            has been successfully booked for <span class="fw-medium text-dark">April 5 at 10:00 AM.</span>
-                                        </p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span class="fs-12"><i class="ti ti-clock me-1"></i>15 min ago</span>
-                                            <div class="notification-action d-flex align-items-center float-end gap-2">
-                                                <a href="javascript:void(0);" class="notification-read rounded-circle bg-danger" data-bs-toggle="tooltip" title="" data-bs-original-title="Make as Read" aria-label="Make as Read"></a>
-                                                <button class="btn rounded-circle p-0" data-dismissible="#notification-3">
-                                                    <i class="ti ti-x"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="dropdown-item notification-item py-3 text-wrap" id="notification-4">
-                                <div class="d-flex">
-                                    <div class="me-2 position-relative flex-shrink-0">
-                                        <img src="{{ asset(config('constants.admin_path').'img/avatars/avatar-08.jpg') }}" class="avatar-md rounded-circle" alt="patient">
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <p class="mb-0 fw-medium text-dark">Ann McClure</p>
-                                        <p class="mb-1 text-wrap">
-                                            cancelled her appointment scheduled for <span class="fw-medium text-dark">February 5, 2024</span>
-                                        </p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span class="fs-12"><i class="ti ti-clock me-1"></i>20 min ago</span>
-                                            <div class="notification-action d-flex align-items-center float-end gap-2">
-                                                <a href="javascript:void(0);" class="notification-read rounded-circle bg-danger" data-bs-toggle="tooltip" title="" data-bs-original-title="Make as Read" aria-label="Make as Read"></a>
-                                                <button class="btn rounded-circle p-0" data-dismissible="#notification-4">
-                                                    <i class="ti ti-x"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-2 rounded-bottom border-top text-center">
-                            <a href="javascript:void(0)" class="text-center text-decoration-underline fs-14 mb-0">
-                                View All Notifications
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-            <div class="header-item d-flex me-2">
-                <button class="topbar-link btn topbar-link" id="light-dark-mode" type="button">
-                    <i class="ti ti-moon fs-16"></i>
-                </button>
-            </div>
-            <div class="dropdown profile-dropdown d-flex align-items-center justify-content-center">
-                <a href="javascript:void(0);" class="topbar-link dropdown-toggle drop-arrow-none position-relative" data-bs-toggle="dropdown" data-bs-offset="0,22" aria-haspopup="false" aria-expanded="false">
-                    @if(!empty(Auth::user()->user_image))
-                    <img src="{{ asset(config('constants.admin_path').'uploads/profile/'.Auth::user()->user_image) }}" width="32" class="rounded-2 d-flex" alt="">
-                    @else
-                    <img src="{{ asset(config('constants.admin_path').'img/no_image.png') }}" width="32" class="rounded-2 d-flex" alt="">
-                    @endif
-                    <span class="online text-success"><i class="ti ti-circle-filled d-flex bg-white rounded-circle border border-1 border-white"></i></span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-md p-2">
-                    <div class="d-flex align-items-center bg-light rounded p-2 mb-2">
+        <div class="st-topbar-right">
+            <button type="button" class="btn st-search-trigger" id="st-command-toggle" aria-label="Search workspace navigation" aria-haspopup="dialog" aria-controls="st-command-menu"><i class="ti ti-search" aria-hidden="true"></i><span>Find a page...</span><kbd>⌘ K</kbd></button>
+            <button type="button" class="topbar-link btn header-fullscreen btnFullscreen" aria-label="Toggle fullscreen"><i class="ti ti-maximize" aria-hidden="true"></i></button>
+            <button class="topbar-link btn" id="light-dark-mode" type="button" aria-label="Switch color theme"><i class="ti ti-sun-moon" aria-hidden="true"></i></button>
+            <div class="dropdown profile-dropdown">
+                <button type="button" class="topbar-link st-profile-trigger dropdown-toggle drop-arrow-none" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account menu for {{ Auth::user()->user_name }}">
+                    <span class="st-profile-avatar">
                         @if(!empty(Auth::user()->user_image))
-                        <img src="{{ asset(config('constants.admin_path').'uploads/profile/'.Auth::user()->user_image) }}" class="rounded-circle" width="42" height="42" alt="">
+                        <img src="{{ asset(config('constants.admin_path').'uploads/profile/'.Auth::user()->user_image) }}" alt="">
                         @else
-                        <img src="{{ asset(config('constants.admin_path').'img/no_image.png') }}" class="rounded-circle" width="42" height="42" alt="">
+                        {{ \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr(Auth::user()->user_name, 0, 1)) }}
                         @endif
-                        <div class="ms-2">
-                        <p class="fw-medium text-dark mb-0">{{ Auth::user()->user_name }}</p>
-                        <span class="d-block fs-13">{{ Request()->role->role_name }}</span>
-                        </div>
-                    </div>
-                    <a href="{{ route('user.profile') }}" class="dropdown-item">
-                        <i class="ti ti-user-circle me-1 align-middle"></i>
-                        <span class="align-middle">Profile</span>
-                    </a>
+                    </span>
+                    <span class="st-profile-copy"><strong>{{ Auth::user()->user_name }}</strong><small>{{ Request()->role->role_name }}</small></span>
+                    <i class="ti ti-chevron-down fs-12" aria-hidden="true"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-md p-2">
+                    <div class="px-2 py-2 mb-2 border-bottom"><p class="mb-0 fw-semibold">{{ Auth::user()->user_name }}</p><span class="text-muted fs-12">{{ Request()->role->role_name }}</span></div>
+                    <a href="{{ route('user.profile') }}" class="dropdown-item"><i class="ti ti-user-circle me-2" aria-hidden="true"></i>My profile</a>
                     @if(Helper::userHasPermission('user.settings'))
-                    <a href="{{ route('user.settings') }}" class="dropdown-item">
-                        <i class="ti ti-settings me-1 align-middle"></i>
-                        <span class="align-middle">Settings</span>
-                    </a>
+                    <a href="{{ route('user.settings') }}" class="dropdown-item"><i class="ti ti-settings me-2" aria-hidden="true"></i>Settings</a>
                     @endif
-                    <div class="pt-2 mt-2 border-top">
-                        <a href="{{ route('user.logout') }}" class="dropdown-item text-danger">
-                        <i class="ti ti-logout me-1 fs-17 align-middle"></i>
-                        <span class="align-middle">Sign Out</span>
-                        </a>
-                    </div>
+                    <div class="pt-2 mt-2 border-top"><a href="{{ route('user.logout') }}" class="dropdown-item text-danger"><i class="ti ti-logout me-2" aria-hidden="true"></i>Sign out</a></div>
                 </div>
             </div>
         </div>
     </div>
 </header>
+<dialog id="st-command-menu" class="st-command" aria-labelledby="st-command-title">
+    <h2 id="st-command-title" class="visually-hidden">Search workspace navigation</h2>
+    <div class="st-command-head"><i class="ti ti-search" aria-hidden="true"></i><label class="visually-hidden" for="st-command-input">Find a page</label><input id="st-command-input" type="search" placeholder="Where would you like to go?" autocomplete="off"><button type="button" data-st-close aria-label="Close navigation search">Esc</button></div>
+    <nav class="st-command-list" id="st-command-results" aria-label="Matching pages"></nav>
+    <div class="st-command-foot"><span>↑ ↓ to move &nbsp; · &nbsp; Enter to open</span><span>Workspace navigation</span></div>
+</dialog>

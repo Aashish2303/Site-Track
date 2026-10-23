@@ -1,0 +1,14 @@
+public/assets/admin/css/style.css
+public/assets/admin/css/sitetrack-core.css
+public/assets/admin/js/sitetrack-core.js
+public/assets/admin/fonts/inter/inter-latin-variable.woff2
+public/assets/admin/fonts/inter/OFL.txt
+resources/views/user/layouts/app.blade.php
+resources/views/user/login/login.blade.php
+resources/views/user/login/forgot_password.blade.php
+resources/views/user/dashboard/dashboard.blade.php
+resources/views/user/partials/header.blade.php
+resources/views/user/partials/sidebar.blade.php
+resources/views/user/partials/auth-story.blade.php
+resources/views/user/partials/brand.blade.php
+resources/views/user/partials/core-style.blade.php

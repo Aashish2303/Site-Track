@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -8,8 +8,9 @@
 <title>@yield('title')</title>
 @include('user.partials.style')
 @yield('custom_style')
+@include('user.partials.core-style')
 </head>
-<body>
+<body class="st-app">
 <div class="main-wrapper">
    @include('user.partials.header')
    @include('user.partials.sidebar')
@@ -20,5 +21,6 @@
 </div>
 @include('user.partials.script')
 @yield('custom_script')
+<script src="{{ asset(config('constants.admin_path').'js/sitetrack-core.js') }}?v={{ filemtime(public_path(config('constants.admin_path').'js/sitetrack-core.js')) }}"></script>
 </body>
 </html>
