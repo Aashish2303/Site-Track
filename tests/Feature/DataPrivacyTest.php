@@ -284,4 +284,31 @@ class DataPrivacyTest extends TestCase
         }
         $this->assertTrue($found);
     }
+
+    public function test_account_erasure_removes_its_encrypted_file_sessions_and_preserves_other_peoples_sessions(): void
+    {
+        $root = sys_get_temp_dir().'/privacy-revoke-'.Str::random(12);
+        File::ensureDirectoryExists($root.'/framework/sessions');
+        $old = app()->storagePath();
+        $files = [];
+        foreach ([$this->staff, $this->admin] as $person) {
+            $store = new EncryptedStore('privacy',
+                new FileSessionHandler(new Filesystem, $root.'/framework/sessions', 120), app('encrypter'), Str::random(40));
+            $store->start();
+            $store->put(Auth::guard()->getName(), $person->user_id);
+            $store->put('old_email', $person->user_email);
+            $store->save();
+            $files[$person->user_id] = $root.'/framework/sessions/'.$store->getId();
+        }
+        app()->useStoragePath($root);
+        try {
+            $this->actingAs($this->staff)->post('/user/account/delete', ['current_password' => $this->password, 'confirmation' => 'DELETE'])->assertRedirect(route('user.login'));
+            $this->assertFileDoesNotExist($files[$this->staff->user_id]);
+            $this->assertFileExists($files[$this->admin->user_id]);
+            $this->assertStringNotContainsString($this->admin->user_email, file_get_contents($files[$this->admin->user_id]));
+        } finally {
+            app()->useStoragePath($old);
+            File::deleteDirectory($root);
+        }
+    }
 }

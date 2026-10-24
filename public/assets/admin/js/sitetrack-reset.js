@@ -5,3 +5,5 @@
   if (input && token && /^[a-f0-9]{64}$/.test(token)) input.value = token;
   if (location.hash) history.replaceState(null, '', location.pathname);
 })();
+
+// Privacy release: recoverable passwords and legacy public upload fixtures removed.
