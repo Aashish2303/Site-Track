@@ -127,6 +127,7 @@ class OrderController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action','pay_status','delivery_status'])
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }
@@ -240,13 +241,13 @@ class OrderController extends Controller
                 $upd['order_updated_on'] = date('Y-m-d H:i:s');
                 $upd['order_updated_by'] = Auth::user()->user_id;
 
-                Order::where('order_id',$request->segment(3))->update($upd);
+                Order::where('order_id',$request->route('id'))->update($upd);
 
                 return redirect()->back()->with('success','Order Updated Successfully');
             }
         }
 
-        $data['order'] = Order::where('order_id',$request->segment(3))->first();
+        $data['order'] = Order::where('order_id',$request->route('id'))->first();
 
         if(!isset($data['order']))
         {
@@ -265,7 +266,7 @@ class OrderController extends Controller
 
     public function order_delivery(Request $request)
     {
-        $data['order'] = Order::where('order_id',$request->segment(3))->first();
+        $data['order'] = Order::where('order_id',$request->route('id'))->first();
 
         if(!isset($data['order']))
         {
@@ -300,7 +301,7 @@ class OrderController extends Controller
             }
             else
             {
-                $ins['odelivery_order']      = $request->segment(3);
+                $ins['odelivery_order']      = $request->route('id');
                 $ins['odelivery_date']       = $request->odelivery_date;
                 $ins['odelivery_qty']        = $request->odelivery_qty;
                 $ins['odelivery_dc']         = $request->odelivery_dc;

@@ -16,9 +16,10 @@ use App\Models\VendorLedger;
 
 class VendorLedgerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $ledger_summaries = VendorLedger::with('vendor')->get()->groupBy('vledger_vendor');
+        $request->validate(['project' => 'nullable|integer|exists:projects,project_id']);
+        $ledger_summaries = VendorLedger::when($request->filled('project'), fn ($q) => $q->where('vledger_project', $request->project))->with('vendor')->get()->groupBy('vledger_vendor');
 
         $data['ledger_summaries'] = $ledger_summaries->map(function($ledgers) {
 
@@ -48,7 +49,8 @@ class VendorLedgerController extends Controller
     {
         if($request->ajax())
         {
-            $data = VendorLedger::orderby('vledger_id','desc')->get();
+            $request->validate(['project' => 'nullable|integer|exists:projects,project_id']);
+            $data = VendorLedger::when($request->filled('project'), fn ($q) => $q->where('vledger_project', $request->project))->orderby('vledger_id','desc')->get();
 
             return DataTables::of($data)
                     ->addIndexColumn()
@@ -101,15 +103,17 @@ class VendorLedgerController extends Controller
 
                         return $balance;
                     })
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }
 
     public function vendor_ledger_download_excel(Request $request)
     {
+        $request->validate(['project' => 'nullable|integer|exists:projects,project_id']);
         $filename = 'vendor_ledger_'.date('Y_m_d_H_i_s').'.xlsx';
 
-        return Excel::download(new VendorLedgerExport,$filename);
+        return Excel::download(new VendorLedgerExport($request->filled('project') ? (int) $request->project : null),$filename);
     }
 
     public function add_vendor_ledger(Request $request)

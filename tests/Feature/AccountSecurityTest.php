@@ -6,7 +6,6 @@ use App\Mail\ResetAccountPassword;
 use App\Models\Project;
 use App\Models\Role;
 use App\Models\User;
-use App\Services\PasswordVault;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
@@ -59,7 +58,7 @@ class AccountSecurityTest extends TestCase
         $user->user_lname = 'test-'.Str::random(12);
         $user->user_email = $user->user_lname.'@example.test';
         $user->user_password = Hash::make($this->password);
-        $user->user_vpassword = app(PasswordVault::class)->encrypt($this->password);
+        $user->user_vpassword = '';
         $user->user_status = 1;
         $user->save();
 
@@ -124,7 +123,7 @@ class AccountSecurityTest extends TestCase
     public function test_every_protected_nonpersonal_endpoint_denies_an_unprivileged_role(): void
     {
         $this->actingAs($this->staff);
-        $personal = ['user.dashboard', 'user.profile', 'user.change_password', 'user.check_current_password', 'user.logout', 'user.leave_project'];
+        $personal = ['user.dashboard', 'user.profile', 'user.change_password', 'user.check_current_password', 'user.logout', 'user.leave_project', 'user.private_file', 'user.delete_account'];
         foreach (Route::getRoutes() as $route) {
             if (! in_array('checkpermission', $route->middleware(), true) || in_array($route->getName(), $personal, true)) {
                 continue;
@@ -151,25 +150,17 @@ class AccountSecurityTest extends TestCase
         $this->postJson('/user/get_users')->assertForbidden();
     }
 
-    public function test_admin_display_is_preserved_and_legacy_passwords_become_authenticated_ciphertext(): void
+    public function test_recoverable_passwords_are_erased_and_cannot_be_revealed(): void
     {
         DB::table('users')->where('user_id', $this->staff->user_id)->update(['user_vpassword' => base64_encode($this->password)]);
         $hash = $this->staff->user_password;
-        $this->actingAs($this->admin)->get('/user/edit_user/'.$this->staff->user_id)->assertOk()->assertHeader('Cache-Control', 'no-store, private')
-            ->assertSee('value="'.$this->password.'"', false)->assertSee('type="password"', false);
-        $copy = $this->staff->fresh()->getRawOriginal('user_vpassword');
-        $this->assertStringStartsWith(PasswordVault::PREFIX, $copy);
+        $this->actingAs($this->admin)->get('/user/edit_user/'.$this->staff->user_id)->assertOk()
+            ->assertHeader('Cache-Control', 'no-store, private')->assertDontSee($this->password);
+        $this->assertSame('', $this->staff->fresh()->getRawOriginal('user_vpassword'));
         $this->assertSame($hash, $this->staff->fresh()->user_password);
-        $this->assertSame($this->password, app(PasswordVault::class)->decrypt($copy));
-        $vault = app(PasswordVault::class);
-        $this->assertNotSame($vault->encrypt($this->password), $vault->encrypt($this->password));
-        $this->assertLessThanOrEqual(255, strlen($vault->encrypt(str_repeat('a', 71).'1')));
-        $this->assertSame('', $vault->decrypt($copy.'tamper'));
-        config(['app.key' => 'base64:'.base64_encode(random_bytes(32))]);
-        $this->assertSame('', $vault->decrypt($copy));
     }
 
-    public function test_new_users_have_hashes_and_ciphertext_and_invalid_input_cannot_create_an_account(): void
+    public function test_new_users_have_hashes_only_and_invalid_input_cannot_create_an_account(): void
     {
         $this->actingAs($this->admin);
         $payload = ['user_role' => $this->staff->user_role, 'user_name' => 'New account', 'user_lname' => 'new-'.Str::random(8),
@@ -181,7 +172,7 @@ class AccountSecurityTest extends TestCase
         $this->post('/user/add_user', $payload)->assertRedirect();
         $created = User::where('user_lname', $payload['user_lname'])->firstOrFail();
         $this->assertTrue(Hash::check($this->password, $created->user_password));
-        $this->assertSame($this->password, app(PasswordVault::class)->decrypt($created->getRawOriginal('user_vpassword')));
+        $this->assertSame('', $created->getRawOriginal('user_vpassword'));
         $this->post('/user/edit_user/'.$created->user_id, array_replace($payload, ['user_password' => '']))->assertRedirect();
         $this->assertSame($created->user_password, $created->fresh()->user_password);
     }
@@ -189,7 +180,6 @@ class AccountSecurityTest extends TestCase
     public function test_current_password_uses_the_hash_and_password_changes_validate_and_preserve_current_session(): void
     {
         $this->post('/', ['user_lname' => $this->staff->user_lname, 'user_password' => $this->password])->assertRedirect(route('user.projects'));
-        $this->postJson('/user/check_current_password', ['current_password' => $this->password])->assertOk()->assertContent('true');
         $this->withHeader('Accept', 'text/html')->post('/user/change_password', ['current_password' => $this->password, 'new_password' => 'short', 'confirm_password' => 'different'])->assertSessionHasErrors(['new_password', 'confirm_password']);
         $this->assertArrayNotHasKey('new_password', session('_old_input', []));
         $new = 'A-new-test-password-2026';
@@ -197,7 +187,7 @@ class AccountSecurityTest extends TestCase
         $this->assertTrue(Hash::check($this->password, $this->staff->fresh()->user_password));
         $this->post('/user/change_password', ['current_password' => $this->password, 'new_password' => $new, 'confirm_password' => $new])->assertSessionHas('success');
         $this->assertTrue(Hash::check($new, $this->staff->fresh()->user_password));
-        $this->assertSame($new, app(PasswordVault::class)->decrypt($this->staff->fresh()->user_vpassword));
+        $this->assertSame('', $this->staff->fresh()->user_vpassword);
         Auth::forgetGuards();
         $this->get('/user/profile')->assertOk();
     }
@@ -213,10 +203,12 @@ class AccountSecurityTest extends TestCase
         $this->post('/forgot_password', ['user_email' => 'missing@example.test'])->assertSessionHas('success', $generic);
         $this->post('/forgot_password', ['user_email' => $this->staff->user_email])->assertSessionHas('success', $generic);
         Mail::assertSentCount(1);
-        parse_str(parse_url($mail->resetUrl, PHP_URL_QUERY), $query);
-        $token = basename(parse_url($mail->resetUrl, PHP_URL_PATH));
+        parse_str(parse_url($mail->resetUrl, PHP_URL_FRAGMENT), $query);
+        $token = $query['token'];
+        $this->assertNull(parse_url($mail->resetUrl, PHP_URL_QUERY));
+        $this->assertStringNotContainsString($this->staff->user_email, $mail->resetUrl);
         $this->assertTrue(Password::tokenExists($this->staff, $token));
-        $this->get('/reset-password/'.$token.'?'.http_build_query($query))->assertOk()->assertHeader('Referrer-Policy', 'no-referrer');
+        $this->get('/reset-password')->assertOk()->assertHeader('Referrer-Policy', 'no-referrer');
         $data = ['user_email' => $this->staff->user_email, 'token' => $token, 'password' => 'Reset-test-password-2026', 'password_confirmation' => 'Reset-test-password-2026'];
         $this->post('/reset-password', $data)->assertRedirect(route('user.login'))->assertSessionHas('success');
         $this->assertTrue(Hash::check($data['password'], $this->staff->fresh()->user_password));

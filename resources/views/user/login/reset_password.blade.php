@@ -18,7 +18,7 @@
         <a class="st-brand st-auth-mobile-brand" href="{{ route('user.login') }}">@include('user.partials.brand')</a>
         <form action="{{ route('user.reset_password.submit') }}" method="post" class="st-auth-form">
             @csrf
-            <input type="hidden" name="token" value="{{ $token }}">
+            <input type="hidden" id="reset_token" name="token" value="{{ $token }}">
             <span class="st-eyebrow">Account recovery</span><h2>Choose a new password.</h2>
             <p class="st-auth-form-intro">Use at least 12 characters, including a letter and a number.</p>
             <div class="st-auth-field"><label class="form-label" for="user_email">Email address</label><input id="user_email" type="email" name="user_email" value="{{ $email }}" class="form-control" autocomplete="email" required></div>
@@ -59,5 +59,6 @@ Swal.fire({
 });
 @endif
 </script>
+<script src="{{ asset(config('constants.admin_path').'js/sitetrack-reset.js') }}"></script>
 </body>
 </html>

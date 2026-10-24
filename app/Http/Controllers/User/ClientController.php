@@ -50,6 +50,7 @@ class ClientController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action'])
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }
@@ -130,7 +131,7 @@ class ClientController extends Controller
             }
             else
             {
-                $check_client = Client::where('client_email',$request->client_email)->where('client_id','!=',$request->segment(3))->count();
+                $check_client = Client::where('client_email',$request->client_email)->where('client_id','!=',$request->route('id'))->count();
 
                 if($check_client > 0)
                 {
@@ -144,13 +145,13 @@ class ClientController extends Controller
                 $upd['client_updated_on'] = date('Y-m-d H:i:s');
                 $upd['client_updated_by'] = Auth::user()->user_id;
 
-                Client::where('client_id',$request->segment(3))->update($upd);
+                Client::where('client_id',$request->route('id'))->update($upd);
 
                 return redirect()->back()->with('success','Client Updated Successfully');
             }
         }
 
-        $data['client'] = Client::where('client_id',$request->segment(3))->first();
+        $data['client'] = Client::where('client_id',$request->route('id'))->first();
 
         if(!isset($data['client']))
         {
@@ -163,8 +164,8 @@ class ClientController extends Controller
 
     public function client_status(Request $request)
     {
-        $id = $request->segment(3);
-        $status = $request->segment(4);
+        $id = $request->route('id');
+        $status = $request->route('status');
 
         if($status == 1)
         {

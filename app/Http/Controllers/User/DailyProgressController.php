@@ -159,6 +159,7 @@ class DailyProgressController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action','progress','carry_forward','status'])
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }
@@ -262,7 +263,7 @@ class DailyProgressController extends Controller
     public function edit_daily_progress(Request $request)
     {
         if ($request->has('submit') && app(\App\Services\WorkflowSchema::class)->ready()) {
-            $entry = app(\App\Services\ProgressWorkflow::class)->save($request, (int) $request->segment(3));
+            $entry = app(\App\Services\ProgressWorkflow::class)->save($request, (int) $request->route('id'));
             return redirect()->route('user.progress_review', $entry->dprogress_id)->with('success', 'Correction recorded. The new revision needs approval.');
         }
         if($request->has('submit'))
@@ -310,13 +311,13 @@ class DailyProgressController extends Controller
                 $upd['dprogress_updated_on']    = date('Y-m-d H:i:s');
                 $upd['dprogress_updated_by']    = Auth::user()->user_id;
 
-                DailyProgress::where('dprogress_id',$request->segment(3))->update($upd);
+                DailyProgress::where('dprogress_id',$request->route('id'))->update($upd);
 
                 return redirect()->back()->with('success','Daily Progress Updated Successfully');
             }
         }
 
-        $data['daily_progress'] = DailyProgress::where('dprogress_id',$request->segment(3))->first();
+        $data['daily_progress'] = DailyProgress::where('dprogress_id',$request->route('id'))->first();
 
         if(!isset($data['daily_progress']))
         {

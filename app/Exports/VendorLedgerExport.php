@@ -14,13 +14,15 @@ use Auth;
 use DB;
 use App\Models\VendorLedger;
 
-class VendorLedgerExport implements FromView, ShouldAutoSize, WithEvents
+class VendorLedgerExport extends PrivacyValueBinder implements FromView, ShouldAutoSize, WithEvents, \Maatwebsite\Excel\Concerns\WithCustomValueBinder
 {
     use Exportable;
 
+    public function __construct(private ?int $project = null) {}
+
     public function view(): View
     {
-        $data['all_ledger'] = VendorLedger::orderby('vledger_id','desc')->get();
+        $data['all_ledger'] = VendorLedger::when($this->project, fn ($q) => $q->where('vledger_project', $this->project))->orderby('vledger_id','desc')->get();
 
         return view('user.vendor_ledger.vendor_ledger_download_excel',$data);
     }

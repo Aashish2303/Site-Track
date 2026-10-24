@@ -14,7 +14,7 @@ use Auth;
 use DB;
 use App\Models\DailyProgress;
 
-class DailyProgressExport implements FromView, ShouldAutoSize, WithEvents
+class DailyProgressExport extends PrivacyValueBinder implements FromView, ShouldAutoSize, WithEvents, \Maatwebsite\Excel\Concerns\WithCustomValueBinder
 {
     use Exportable;
 

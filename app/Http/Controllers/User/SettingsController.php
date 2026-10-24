@@ -88,7 +88,7 @@ class SettingsController extends Controller
                       'settings_host' => 'required',
                       'settings_port' => 'required',
                       'settings_uname' => 'required',
-                      'settings_pwd' => 'required',
+                      'settings_pwd' => 'nullable|string|max:1024',
                       'settings_encryption' => 'required',
                       'settings_faddress' => 'required',
                       'settings_fname' => 'required'];
@@ -114,7 +114,8 @@ class SettingsController extends Controller
                 $upd['settings_host']       = $request->settings_host;
                 $upd['settings_port']       = $request->settings_port;
                 $upd['settings_uname']      = $request->settings_uname;
-                $upd['settings_pwd']        = $request->settings_pwd;
+                if ($request->filled('settings_pwd')) { app(\App\Services\ServiceSecrets::class)->storeSmtp($request->settings_pwd); }
+                $upd['settings_pwd'] = '';
                 $upd['settings_encryption'] = $request->settings_encryption;
                 $upd['settings_faddress']   = $request->settings_faddress;
                 $upd['settings_fname']      = $request->settings_fname;

@@ -60,9 +60,10 @@ class ProgressWorkflow
                     'reviewer_id' => null, 'reviewed_at' => null, 'note' => null,
                 ]);
                 foreach ($request->file('photos', []) as $photo) {
-                    $path = $photo->store('progress-evidence', 'evidence'); $stored[] = $path;
+                    $path = 'progress-evidence/'.\Illuminate\Support\Str::random(40).'.jpg';
+                    Storage::disk('evidence')->put($path, app(PrivateUploads::class)->imageBytes($photo->getRealPath())); $stored[] = $path;
                     DB::table('progress_photos')->insert(['progress_id' => $entry->dprogress_id,
-                        'path' => $path, 'mime' => $photo->getMimeType(), 'uploaded_by' => Auth::id(), 'uploaded_at' => now()]);
+                        'path' => $path, 'mime' => 'image/jpeg', 'uploaded_by' => Auth::id(), 'uploaded_at' => now()]);
                 }
                 $this->event($entry->dprogress_id, $id ? 'corrected' : 'submitted', $revision,
                     $before ? ['entry' => $before, 'review' => $review] : null,
@@ -130,4 +131,13 @@ class ProgressWorkflow
             'before_data' => $before ? json_encode($before, JSON_THROW_ON_ERROR) : null,
             'after_data' => json_encode($after, JSON_THROW_ON_ERROR), 'note' => $note, 'created_at' => now()]);
     }
+    public static function publicSnapshot(mixed $snapshot): mixed
+    {
+        if (!is_array($snapshot)) { return $snapshot; }
+        $allowed = ['entry','review','state','revision','approved_qty','note','dprogress_date','dprogress_description','dprogress_qty','dprogress_location','dprogress_remarks','dprogress_cforward','dprogress_status'];
+        $out = [];
+        foreach ($snapshot as $key => $value) { if (in_array($key, $allowed, true)) { $out[$key] = is_array($value) ? self::publicSnapshot($value) : $value; } }
+        return $out;
+    }
+
 }

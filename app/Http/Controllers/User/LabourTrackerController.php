@@ -184,6 +184,7 @@ class LabourTrackerController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action','status','categories'])
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }
@@ -295,7 +296,7 @@ class LabourTrackerController extends Controller
     public function edit_labour_tracker(Request $request)
     {
         if ($request->has('submit') && app(\App\Services\WorkflowSchema::class)->ready()) {
-            app(\App\Services\LabourAttendanceService::class)->save($request, (int) $request->segment(3));
+            app(\App\Services\LabourAttendanceService::class)->save($request, (int) $request->route('id'));
             return redirect()->route('user.labour_trackers')->with('success', 'Attendance corrected. The payment balance has been recalculated.');
         }
         if($request->has('submit'))
@@ -339,9 +340,9 @@ class LabourTrackerController extends Controller
                 $upd['ltracker_updated_on']    = date('Y-m-d H:i:s');
                 $upd['ltracker_updated_by']    = Auth::user()->user_id;
 
-                LabourTracker::where('ltracker_id',$request->segment(3))->update($upd);
+                LabourTracker::where('ltracker_id',$request->route('id'))->update($upd);
 
-                LabourWorker::where('lworker_tracker',$request->segment(3))->delete();
+                LabourWorker::where('lworker_tracker',$request->route('id'))->delete();
 
                 if($request->has('workers') && !empty($request->workers))
                 {
@@ -349,7 +350,7 @@ class LabourTrackerController extends Controller
 
                     foreach($workers['CATEGORY'] as $key => $worker)
                     {
-                        $ins_worker['lworker_tracker']    = $request->segment(3);
+                        $ins_worker['lworker_tracker']    = $request->route('id');
                         $ins_worker['lworker_category']   = $workers['CATEGORY'][$key];
                         $ins_worker['lworker_skill']      = $workers['SKILL'][$key];
                         $ins_worker['lworker_male']       = $workers['MALE'][$key];
@@ -370,14 +371,14 @@ class LabourTrackerController extends Controller
             }
         }
 
-        $data['labour_tracker'] = LabourTracker::where('ltracker_id',$request->segment(3))->first();
+        $data['labour_tracker'] = LabourTracker::where('ltracker_id',$request->route('id'))->first();
 
         if(!isset($data['labour_tracker']))
         {
             return redirect()->route('user.labour_trackers');
         }
 
-        $data['workers'] = LabourWorker::where('lworker_tracker',$request->segment(3))->get();
+        $data['workers'] = LabourWorker::where('lworker_tracker',$request->route('id'))->get();
 
         $data['projects'] = Project::where('project_status',1)->orderby('project_name','asc')->get();
 

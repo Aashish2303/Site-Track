@@ -30,6 +30,8 @@ return [
 
     'disks' => [
 
+        'personal' => ['driver' => 'local', 'root' => storage_path('app/private/personal'), 'visibility' => 'private', 'throw' => true],
+
         'evidence' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),

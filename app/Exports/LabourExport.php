@@ -14,7 +14,7 @@ use Auth;
 use DB;
 use App\Models\LabourWorker;
 
-class LabourExport implements FromView, ShouldAutoSize, WithEvents
+class LabourExport extends PrivacyValueBinder implements FromView, ShouldAutoSize, WithEvents, \Maatwebsite\Excel\Concerns\WithCustomValueBinder
 {
     use Exportable;
 

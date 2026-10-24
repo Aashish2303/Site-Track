@@ -195,7 +195,7 @@ return [
         'settings_host' => 'required|string|max:255',
         'settings_port' => 'required|integer|between:1,65535',
         'settings_uname' => 'required|string|max:255',
-        'settings_pwd' => 'required|string|max:255',
+        'settings_pwd' => 'nullable|string|max:1024',
         'settings_encryption' => 'required|in:tls,ssl',
         'settings_faddress' => 'required|string|email|max:255',
         'settings_fname' => 'required|string|max:255',

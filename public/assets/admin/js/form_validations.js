@@ -103,16 +103,7 @@ $(document).ready(function () {
         rules: {
             current_password: {
                 required: true,
-                remote:{
-                  type:'post',
-                  url: '/user/check_current_password',
-                  data:{
-                    current_password : function(){
-                      return $("#current_password").val();
-                    },
-                    _token: $("input[name='_token']").val()
-                  }
-                }
+
             },
             new_password: {
                 required: true,
@@ -126,7 +117,6 @@ $(document).ready(function () {
         messages :{
             current_password : {
                 required : '<small style="color:red">Please Enter Current Password</small>',
-                remote : '<small style="color:red">Current Password Does Not Match</small>',
             },
             new_password : {
                 required : '<small style="color:red">Please Enter New Password</small>',

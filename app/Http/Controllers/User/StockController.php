@@ -43,6 +43,7 @@ class StockController extends Controller
 
                         return $unit_name;
                     })
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }

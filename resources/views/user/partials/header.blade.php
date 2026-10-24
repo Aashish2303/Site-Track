@@ -12,7 +12,7 @@
                 <button type="button" class="topbar-link st-profile-trigger dropdown-toggle drop-arrow-none" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account menu for {{ Auth::user()->user_name }}">
                     <span class="st-profile-avatar">
                         @if(!empty(Auth::user()->user_image))
-                        <img src="{{ asset(config('constants.admin_path').'uploads/profile/'.Auth::user()->user_image) }}" alt="">
+                        <img src="{{ route('user.private_file', ['kind' => 'profile', 'reference' => app(\App\Services\PublicReference::class)->encode('users', Auth::id())]) }}" alt="">
                         @else
                         {{ \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr(Auth::user()->user_name, 0, 1)) }}
                         @endif

@@ -14,7 +14,7 @@ use Auth;
 use DB;
 use App\Models\Vendor;
 
-class VendorExport implements FromView, ShouldAutoSize, WithEvents
+class VendorExport extends PrivacyValueBinder implements FromView, ShouldAutoSize, WithEvents, \Maatwebsite\Excel\Concerns\WithCustomValueBinder
 {
     use Exportable;
 
@@ -27,6 +27,7 @@ class VendorExport implements FromView, ShouldAutoSize, WithEvents
     public function view(): View
     {
         $where['vendor_trash'] = 1;
+        if (!empty($this->category)) { $where['vendor_category'] = $this->category; }
         $data['vendors'] = Vendor::where($where)->orderby('vendor_id','desc')->get();
 
         return view('user.vendor.vendors_download_excel',$data);

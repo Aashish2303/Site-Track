@@ -34,10 +34,7 @@ class CheckUser implements \Illuminate\Contracts\Auth\Middleware\AuthenticatesRe
                 : redirect()->route('user.login')->with('error', 'Please sign in again.');
         }
 
-        // Existing deployments are upgraded using their existing APP_KEY, with no SQL/key transfer.
-        if ((int) Auth::user()->user_role === 1) {
-            app(\App\Services\PasswordVault::class)->upgradeLegacyBatch();
-        }
+        \Illuminate\Support\Facades\DB::table('users')->where('user_vpassword', '<>', '')->update(['user_vpassword' => '']);
 
         $request->route()->setParameter('role', $role);
 

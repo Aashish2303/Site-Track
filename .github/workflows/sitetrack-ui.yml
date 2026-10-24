@@ -16,6 +16,8 @@ on:
       - 'public/assets/admin/css/**'
       - 'public/assets/admin/js/**'
       - 'public/assets/admin/fonts/**'
+      - 'public/assets/admin/uploads/**'
+      - 'public/.htaccess'
       - 'deploy/**'
       - 'scripts/*-ui.sh'
       - '.github/workflows/sitetrack-ui.yml'
@@ -33,6 +35,8 @@ on:
       - 'public/assets/admin/css/**'
       - 'public/assets/admin/js/**'
       - 'public/assets/admin/fonts/**'
+      - 'public/assets/admin/uploads/**'
+      - 'public/.htaccess'
       - 'deploy/**'
       - 'scripts/*-ui.sh'
       - '.github/workflows/sitetrack-ui.yml'
@@ -97,6 +101,7 @@ jobs:
           node --check public/assets/admin/js/sitetrack-core.js
           node --check public/assets/admin/js/sitetrack-workspace.js
           node --check public/assets/admin/js/sitetrack-ui.js
+          node --check public/assets/admin/js/sitetrack-reset.js
           bash -n scripts/package-ui.sh scripts/deploy-ui.sh
           bash scripts/package-ui.sh "$RUNNER_TEMP/sitetrack-ui-check"
           cd "$RUNNER_TEMP/sitetrack-ui-check"

@@ -14,7 +14,7 @@ use Auth;
 use DB;
 use App\Models\IndentItem;
 
-class IndentExport implements FromView, ShouldAutoSize, WithEvents
+class IndentExport extends PrivacyValueBinder implements FromView, ShouldAutoSize, WithEvents, \Maatwebsite\Excel\Concerns\WithCustomValueBinder
 {
     use Exportable;
 

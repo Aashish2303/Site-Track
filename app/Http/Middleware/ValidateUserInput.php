@@ -37,6 +37,7 @@ class ValidateUserInput
             foreach (['user_image', 'issue_image', 'settings_logo', 'settings_wlogo', 'settings_favicon'] as $image) {
                 $rules[$image] = 'nullable|file|image|mimes:jpg,jpeg,png,webp,ico|max:2048';
             }
+            $rules['vendor_card'] = 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240';
             $rules['iquote_quotation'] = 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240';
             $rules['boq_file'] = ($action === 'add_project' ? 'required' : 'nullable').'|file|mimes:xls,xlsx|max:10240';
             if (in_array($action, ['add_user', 'edit_user'], true)) {

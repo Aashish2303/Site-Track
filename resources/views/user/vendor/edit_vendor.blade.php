@@ -113,7 +113,7 @@
                                  <div class="d-flex align-items-center justify-content-between gap-2">
                                     <label class="form-label">Visiting Card</label>
                                     @if(!empty($vendor->vendor_card))
-                                    <a href="{{ asset(config('constants.admin_path').'uploads/vendor/'.$vendor->vendor_card) }}" target="_blank">Click Here to View Document</a>
+                                    <a href="{{ route('user.private_file', ['kind' => 'vendor', 'reference' => app(\App\Services\PublicReference::class)->encode('vendors', $vendor->vendor_id)]) }}" target="_blank">Click Here to View Document</a>
                                     @endif
                                  </div>
                                  <input type="file" name="vendor_card" class="form-control">

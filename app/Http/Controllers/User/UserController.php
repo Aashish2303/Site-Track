@@ -23,15 +23,19 @@ class UserController extends Controller
     {
         if($request->ajax())
         {
-            $data = User::orderby('user_id','desc')->get();
+            $query = User::where('user_lname', '<>', '__privacy_deleted__');
+            if (!Helper::userHasPermission('user.edit_user') && !Helper::userHasPermission('user.add_user') && !Helper::userHasPermission('user.user_status')) {
+                $query->where('user_id', Auth::id());
+            }
+            $data = $query->orderby('user_id','desc')->get();
 
             return DataTables::of($data)
                     ->addIndexColumn()
                     ->addColumn('user_name', function($row){
 
-                        if(!empty($row->user_image))
+                        if(!empty($row->user_image) && ((int) $row->user_id === (int) Auth::id() || Helper::userHasPermission('user.edit_user')))
                         {
-                            $user_image = asset(config('constants.admin_path').'uploads/profile/'.$row->user_image);
+                            $user_image = route('user.private_file', ['kind' => 'profile', 'reference' => app(\App\Services\PublicReference::class)->encode('users', $row->user_id)]);
                         }
                         else
                         {
@@ -80,6 +84,7 @@ class UserController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action','user_name'])
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }
@@ -131,7 +136,7 @@ class UserController extends Controller
                 $ins['user_email']      = $request->user_email;
                 $ins['user_phone']      = $request->user_phone;
                 $ins['user_password']   = bcrypt($request->user_password);
-                $ins['user_vpassword']  = app(\App\Services\PasswordVault::class)->encrypt($request->user_password);
+                $ins['user_vpassword']  = '';
                 $ins['user_added_on']   = date('Y-m-d H:i:s');
                 $ins['user_added_by']   = Auth::user()->user_id;
                 $ins['user_updated_on'] = date('Y-m-d H:i:s');
@@ -140,7 +145,7 @@ class UserController extends Controller
 
                 if($request->hasFile('user_image'))
                 {
-                    $user_image = $request->user_image->store('assets/admin/uploads/profile');
+                    $user_image = app(\App\Services\PrivateUploads::class)->store($request->user_image, 'profile');
 
                     $user_image = explode('/',$user_image);
                     $user_image = end($user_image);
@@ -189,14 +194,14 @@ class UserController extends Controller
             }
             else
             {
-                $check_username = User::where('user_lname',$request->user_lname)->where('user_id','!=',$request->segment(3))->count();
+                $check_username = User::where('user_lname',$request->user_lname)->where('user_id','!=',$request->route('id'))->count();
 
                 if($check_username > 0)
                 {
                     return redirect()->back()->with('error','Username Already Added');
                 }
 
-                $check_user = User::where('user_email',$request->user_email)->where('user_id','!=',$request->segment(3))->count();
+                $check_user = User::where('user_email',$request->user_email)->where('user_id','!=',$request->route('id'))->count();
 
                 if($check_user > 0)
                 {
@@ -210,22 +215,22 @@ class UserController extends Controller
                 $upd['user_phone']      = $request->user_phone;
                 if ($request->filled('user_password')) {
                     $upd['user_password'] = bcrypt($request->user_password);
-                    $upd['user_vpassword'] = app(\App\Services\PasswordVault::class)->encrypt($request->user_password);
+                    $upd['user_vpassword'] = '';
                 }
                 $upd['user_updated_on'] = date('Y-m-d H:i:s');
                 $upd['user_updated_by'] = Auth::user()->user_id;
 
                 if($request->hasFile('user_image'))
                 {
-                    $user_image = $request->user_image->store('assets/admin/uploads/profile');
+                    $user_image = app(\App\Services\PrivateUploads::class)->store($request->user_image, 'profile');
 
                     $user_image = explode('/',$user_image);
                     $user_image = end($user_image);
                     $upd['user_image'] = $user_image;
                 }
 
-                User::where('user_id',$request->segment(3))->update($upd);
-                if ((int) $request->segment(3) === (int) Auth::id()) {
+                User::where('user_id',$request->route('id'))->update($upd);
+                if ((int) $request->route('id') === (int) Auth::id()) {
                     Auth::user()->forceFill($upd);
                     if (isset($upd['user_password'])) {
                         $request->session()->put('password_hash_web', $upd['user_password']);
@@ -237,7 +242,7 @@ class UserController extends Controller
             }
         }
 
-        $data['user'] = User::where('user_id',$request->segment(3))->first();
+        $data['user'] = User::where('user_id',$request->route('id'))->first();
 
         if(!isset($data['user']))
         {
@@ -252,8 +257,8 @@ class UserController extends Controller
 
     public function user_status(Request $request)
     {
-        $id = $request->segment(3);
-        $status = $request->segment(4);
+        $id = $request->route('id');
+        $status = $request->route('status');
 
         if($status == 1)
         {

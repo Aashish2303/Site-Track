@@ -58,7 +58,7 @@ class ProfileController extends Controller
 
                 if($request->hasFile('user_image'))
                 {
-                    $user_image = $request->user_image->store('assets/admin/uploads/profile');
+                    $user_image = app(\App\Services\PrivateUploads::class)->store($request->user_image, 'profile');
 
                     $user_image = explode('/',$user_image);
                     $user_image = end($user_image);
@@ -100,7 +100,7 @@ class ProfileController extends Controller
                 if($check > 0)
                 {
                     $upd['user_password']   = bcrypt($request->confirm_password);
-                    $upd['user_vpassword']  = app(\App\Services\PasswordVault::class)->encrypt($request->confirm_password);
+                    $upd['user_vpassword']  = '';
                     $upd['user_updated_on'] = date('Y-m-d H:i:s');
                     $upd['user_updated_by'] = Auth::user()->user_id;
 
@@ -122,9 +122,4 @@ class ProfileController extends Controller
         return view('user.profile.change_password',$data);
     }
 
-    public function check_current_password(Request $request)
-    {
-        $request->validate(['current_password' => 'required|string|max:1024']);
-        return response()->json(\Illuminate\Support\Facades\Hash::check($request->current_password, Auth::user()->getAuthPassword()));
-    }
 }

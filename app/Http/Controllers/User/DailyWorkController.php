@@ -126,6 +126,7 @@ class DailyWorkController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action','carry_forward','status'])
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }
@@ -250,13 +251,13 @@ class DailyWorkController extends Controller
                 $upd['dwork_updated_on']    = date('Y-m-d H:i:s');
                 $upd['dwork_updated_by']    = Auth::user()->user_id;
 
-                DailyWork::where('dwork_id',$request->segment(3))->update($upd);
+                DailyWork::where('dwork_id',$request->route('id'))->update($upd);
 
                 return redirect()->back()->with('success','Daily Work Updated Successfully');
             }
         }
 
-        $data['daily_work'] = DailyWork::where('dwork_id',$request->segment(3))->first();
+        $data['daily_work'] = DailyWork::where('dwork_id',$request->route('id'))->first();
 
         if(!isset($data['daily_work']))
         {

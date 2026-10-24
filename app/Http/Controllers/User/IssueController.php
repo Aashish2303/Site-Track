@@ -125,6 +125,7 @@ class IssueController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action','priority','status'])
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }
@@ -180,7 +181,7 @@ class IssueController extends Controller
 
                 if($request->hasFile('issue_image'))
                 {
-                    $issue_image = $request->issue_image->store('assets/admin/uploads/issue');
+                    $issue_image = app(\App\Services\PrivateUploads::class)->store($request->issue_image, 'issue');
 
                     $issue_image = explode('/',$issue_image);
                     $issue_image = end($issue_image);
@@ -249,20 +250,20 @@ class IssueController extends Controller
 
                 if($request->hasFile('issue_image'))
                 {
-                    $issue_image = $request->issue_image->store('assets/admin/uploads/issue');
+                    $issue_image = app(\App\Services\PrivateUploads::class)->store($request->issue_image, 'issue');
 
                     $issue_image = explode('/',$issue_image);
                     $issue_image = end($issue_image);
                     $upd['issue_image'] = $issue_image;
                 }
 
-                Issue::where('issue_id',$request->segment(3))->update($upd);
+                Issue::where('issue_id',$request->route('id'))->update($upd);
 
                 return redirect()->back()->with('success','Issue Updated Successfully');
             }
         }
 
-        $data['issue'] = Issue::where('issue_id',$request->segment(3))->first();
+        $data['issue'] = Issue::where('issue_id',$request->route('id'))->first();
 
         if(!isset($data['issue']))
         {

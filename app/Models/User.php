@@ -12,7 +12,7 @@ class User extends Authenticatable
 
     public $timestamps = false;
 
-    protected $fillable = ['user_role','user_name','user_lname','user_email','user_phone','user_password','user_vpassword','user_image','user_added_on','user_added_by','user_updated_on','user_updated_by','user_status'];
+    protected $fillable = ['user_role','user_name','user_lname','user_email','user_phone','user_password','user_image','user_added_on','user_added_by','user_updated_on','user_updated_by','user_status'];
 
     protected $hidden = ['user_password', 'user_vpassword', 'remember_token'];
 
@@ -26,12 +26,6 @@ class User extends Authenticatable
     public function getEmailForPasswordReset()
     {
         return $this->user_email;
-    }
-
-    public function adminPassword(): string
-    {
-        abort_unless(app(\App\Services\RoleAccess::class)->allows('user.edit_user'), 403);
-        return app(\App\Services\PasswordVault::class)->decrypt($this->user_vpassword ?? '');
     }
 
     public function role()

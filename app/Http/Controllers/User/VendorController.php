@@ -72,6 +72,7 @@ class VendorController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action'])
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }
@@ -133,7 +134,7 @@ class VendorController extends Controller
 
                 if($request->hasFile('vendor_card'))
                 {
-                    $vendor_card = $request->vendor_card->store('assets/admin/uploads/vendor');
+                    $vendor_card = app(\App\Services\PrivateUploads::class)->store($request->vendor_card, 'vendor');
 
                     $vendor_card = explode('/',$vendor_card);
                     $vendor_card = end($vendor_card);
@@ -181,7 +182,7 @@ class VendorController extends Controller
             }
             else
             {
-                $check_vendor = Vendor::where('vendor_name',$request->vendor_name)->where('vendor_id','!=',$request->segment(3))->count();
+                $check_vendor = Vendor::where('vendor_name',$request->vendor_name)->where('vendor_id','!=',$request->route('id'))->count();
 
                 if($check_vendor > 0)
                 {
@@ -201,20 +202,20 @@ class VendorController extends Controller
 
                 if($request->hasFile('vendor_card'))
                 {
-                    $vendor_card = $request->vendor_card->store('assets/admin/uploads/vendor');
+                    $vendor_card = app(\App\Services\PrivateUploads::class)->store($request->vendor_card, 'vendor');
 
                     $vendor_card = explode('/',$vendor_card);
                     $vendor_card = end($vendor_card);
                     $upd['vendor_card'] = $vendor_card;
                 }
 
-                Vendor::where('vendor_id',$request->segment(3))->update($upd);
+                Vendor::where('vendor_id',$request->route('id'))->update($upd);
 
                 return redirect()->back()->with('success','Vendor Updated Successfully');
             }
         }
 
-        $data['vendor'] = Vendor::where('vendor_id',$request->segment(3))->first();
+        $data['vendor'] = Vendor::where('vendor_id',$request->route('id'))->first();
 
         if(!isset($data['vendor']))
         {
@@ -229,8 +230,8 @@ class VendorController extends Controller
 
     public function vendor_status(Request $request)
     {
-        $id = $request->segment(3);
-        $status = $request->segment(4);
+        $id = $request->route('id');
+        $status = $request->route('status');
 
         if($status == 1)
         {

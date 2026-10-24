@@ -125,6 +125,7 @@ class IndentController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action','urgency','status'])
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }
@@ -133,7 +134,7 @@ class IndentController extends Controller
     {
         $filename = 'indent_'.date('Y_m_d_H_i_s').'.xlsx';
 
-        return Excel::download(new IndentExport($request->segment(3)),$filename);
+        return Excel::download(new IndentExport($request->route('id')),$filename);
     }
 
     public function add_indent(Request $request)
@@ -256,20 +257,20 @@ class IndentController extends Controller
                 $upd['indent_updated_on'] = date('Y-m-d H:i:s');
                 $upd['indent_updated_by'] = Auth::user()->user_id;
 
-                Indent::where('indent_id',$request->segment(3))->update($upd);
+                Indent::where('indent_id',$request->route('id'))->update($upd);
 
                 return redirect()->back()->with('success','Material Indent Updated Successfully');
             }
         }
 
-        $data['indent'] = Indent::where('indent_id',$request->segment(3))->first();
+        $data['indent'] = Indent::where('indent_id',$request->route('id'))->first();
 
         if(!isset($data['indent']))
         {
             return redirect()->route('user.indents');
         }
 
-        $data['items'] = IndentItem::where('iitem_indent',$request->segment(3))->get();
+        $data['items'] = IndentItem::where('iitem_indent',$request->route('id'))->get();
 
         $data['projects'] = Project::where('project_status',1)->orderby('project_name','asc')->get();
 
@@ -289,14 +290,14 @@ class IndentController extends Controller
 
     public function indent_items(Request $request)
     {
-        $data['indent'] = Indent::where('indent_id',$request->segment(3))->first();
+        $data['indent'] = Indent::where('indent_id',$request->route('id'))->first();
 
         if(!isset($data['indent']))
         {
             return redirect()->route('user.indents');
         }
 
-        $data['items'] = IndentItem::where('iitem_indent',$request->segment(3))->get();
+        $data['items'] = IndentItem::where('iitem_indent',$request->route('id'))->get();
 
         $data['set'] = 'indents';
         return view('user.indent.indent_items',$data);
@@ -339,7 +340,7 @@ class IndentController extends Controller
 
     public function indent_quotations(Request $request)
     {
-        $data['indent'] = Indent::where('indent_id',$request->segment(3))->first();
+        $data['indent'] = Indent::where('indent_id',$request->route('id'))->first();
 
         if(!isset($data['indent']))
         {
@@ -376,15 +377,15 @@ class IndentController extends Controller
             }
             else
             {
-                $total_quotations = IndentQuotation::where('iquote_indent',$request->segment(3))->count();
+                $total_quotations = IndentQuotation::where('iquote_indent',$request->route('id'))->count();
 
                 if($total_quotations >= 1)
                 {
                     $upd_status['indent_status'] = 2;
-                    Indent::where('indent_id',$request->segment(3))->update($upd_status);
+                    Indent::where('indent_id',$request->route('id'))->update($upd_status);
                 }
 
-                $ins['iquote_indent']     = $request->segment(3);
+                $ins['iquote_indent']     = $request->route('id');
                 $ins['iquote_vendor']     = $request->iquote_vendor;
                 $ins['iquote_rate']       = $request->iquote_rate;
                 $ins['iquote_total']      = $request->iquote_total;
@@ -398,7 +399,7 @@ class IndentController extends Controller
 
                 if($request->hasFile('iquote_quotation'))
                 {
-                    $iquote_quotation = $request->iquote_quotation->store('assets/admin/uploads/quotation');
+                    $iquote_quotation = app(\App\Services\PrivateUploads::class)->store($request->iquote_quotation, 'quotation');
 
                     $iquote_quotation = explode('/',$iquote_quotation);
                     $iquote_quotation = end($iquote_quotation);
@@ -418,7 +419,7 @@ class IndentController extends Controller
     public function reject_quotations(Request $request)
     {
         $upd['indent_status'] = 4;
-        $update = Indent::where('indent_id',$request->segment(3))->update($upd);
+        $update = Indent::where('indent_id',$request->route('id'))->update($upd);
 
         if($update)
         {
@@ -428,12 +429,12 @@ class IndentController extends Controller
 
     public function status_quotation(Request $request)
     {
-        $upd['iquote_status'] = $request->segment(4);
-        $update = IndentQuotation::where('iquote_id',$request->segment(3))->update($upd);
+        $upd['iquote_status'] = $request->route('status');
+        $update = IndentQuotation::where('iquote_id',$request->route('id'))->update($upd);
 
         if($update)
         {
-            $quotation = IndentQuotation::where('iquote_id',$request->segment(3))->first();
+            $quotation = IndentQuotation::where('iquote_id',$request->route('id'))->first();
 
             $upd_status['indent_status'] = 3;
             Indent::where('indent_id',$quotation->iquote_indent)->update($upd_status);

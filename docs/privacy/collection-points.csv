@@ -1,0 +1,68 @@
+view,form,method,route,fields
+resources/views/user/assign_material/add_assign_material.blade.php,1,POST,user.add_assign_material,amaterial_date; amaterial_project; amaterial_category; amaterial_material; amaterial_unit_name; amaterial_unit; available_qty; amaterial_qty
+resources/views/user/boq_tracker/edit_boq_item.blade.php,partial,parent form,included modal/partial,pboq_id; pboq_item; pboq_unit; pboq_qty; pboq_rate; pboq_remarks
+resources/views/user/boq_tracker/edit_boq_project.blade.php,partial,parent form,included modal/partial,project_id; pboq_item; pboq_unit; pboq_qty; pboq_rate; pboq_remarks
+resources/views/user/category/category.blade.php,1,POST,user.add_category,category_name
+resources/views/user/category/edit_category.blade.php,partial,parent form,included modal/partial,category_id; category_name
+resources/views/user/client/add_client.blade.php,1,POST,user.add_client,client_name; client_email; client_phone; client_address
+resources/views/user/client/edit_client.blade.php,1,POST,user.edit_client,client_name; client_email; client_phone; client_address
+resources/views/user/daily_progress/add_daily_progress.blade.php,1,POST,user.add_daily_progress,dprogress_date; dprogress_project; dprogress_category; dprogress_description; dprogress_boq; dprogress_qty; dprogress_location; dprogress_subcontractor; dprogress_incharge; dprogress_remarks; dprogress_cforward; dprogress_pdone
+resources/views/user/daily_progress/daily_progress_status.blade.php,partial,parent form,included modal/partial,dprogress_id; status
+resources/views/user/daily_progress/edit_daily_progress.blade.php,1,POST,user.edit_daily_progress,dprogress_date; dprogress_project; dprogress_category; dprogress_description; dprogress_boq; dprogress_qty; dprogress_location; dprogress_subcontractor; dprogress_incharge; dprogress_remarks; dprogress_cforward; dprogress_pdone
+resources/views/user/daily_work/add_daily_work.blade.php,1,POST,user.add_daily_work,dwork_date; dwork_project; dwork_category; dwork_description; dwork_location; dwork_qty; dwork_subcontractor; dwork_incharge; dwork_remarks; dwork_cforward
+resources/views/user/daily_work/daily_work_status.blade.php,partial,parent form,included modal/partial,dwork_id; status
+resources/views/user/daily_work/edit_daily_work.blade.php,1,POST,user.edit_daily_work,dwork_date; dwork_project; dwork_category; dwork_description; dwork_location; dwork_qty; dwork_subcontractor; dwork_incharge; dwork_remarks; dwork_cforward
+resources/views/user/indent/add_indent.blade.php,1,POST,user.add_indent,indent_date; indent_project; indent_urgency; indent_engineer; indent_notes; indent_napproval; materials[NAME][1]; materials[CATEGORY][1]; materials[SIZE][1]; materials[QTY][1]; materials[UNIT][1]
+resources/views/user/indent/edit_indent.blade.php,1,POST,user.edit_indent,indent_date; indent_project; indent_urgency; indent_engineer; indent_notes; indent_napproval
+resources/views/user/indent/indent_item_status.blade.php,partial,parent form,included modal/partial,item_id; status
+resources/views/user/indent/indent_quotations.blade.php,1,POST,user.add_quotation,iquote_vendor; iquote_rate; iquote_total; iquote_delivery; iquote_notes; iquote_quotation
+resources/views/user/issue/add_issue.blade.php,1,POST,user.add_issue,issue_date; issue_project; issue_title; issue_description; issue_category; issue_priority; issue_assign; issue_remarks; issue_image
+resources/views/user/issue/edit_issue.blade.php,1,POST,user.edit_issue,issue_date; issue_project; issue_title; issue_description; issue_category; issue_priority; issue_assign; issue_remarks; issue_image
+resources/views/user/issue/issue_status.blade.php,partial,parent form,included modal/partial,issue_id; status; issue_sremarks
+resources/views/user/issue_category/edit_issue_category.blade.php,partial,parent form,included modal/partial,icategory_id; icategory_name
+resources/views/user/issue_category/issue_category.blade.php,1,POST,user.add_issue_category,icategory_name
+resources/views/user/labour_tracker/attendance-form.blade.php,1,POST,"user.edit_labour_tracker,user.add_labour_tracker",ltracker_project; ltracker_date; ltracker_subcontractor; ltracker_incharge; ltracker_shift; ltracker_in; ltracker_out; ltracker_thours; ltracker_remarks; workers[CATEGORY][{{ $index }}]; workers[SKILL][{{ $index }}]; workers[{{ $field }}][{{ $index }}]; workers[TOTAL][{{ $index }}]; grand_total
+resources/views/user/labour_tracker/labour_trackers.blade.php,partial,parent form,included modal/partial,date; project
+resources/views/user/labour_tracker/payments.blade.php,1,GET,user.labour_payments,week; subcontractor; trade
+resources/views/user/labour_tracker/payments.blade.php,2,POST,user.record_labour_payment,submission_key; subcontractor_id; category_id; paid_on; type; amount; reference; notes
+resources/views/user/layouts/app.blade.php,partial,parent form,included modal/partial,csrf-token
+resources/views/user/login/forgot_password.blade.php,1,POST,user.forgot_password,user_email
+resources/views/user/login/login.blade.php,1,POST,user.login,user_lname; user_password
+resources/views/user/login/reset_password.blade.php,1,POST,user.reset_password.submit,token; user_email; password; password_confirmation
+resources/views/user/material/add_material.blade.php,1,POST,user.add_material,material_category; material_name; material_unit; material_hsn
+resources/views/user/material/edit_material.blade.php,1,POST,user.edit_material,material_category; material_name; material_unit; material_hsn
+resources/views/user/material/site.blade.php,1,POST,user.record_material_usage,submission_key; material_id; used_on; quantity; unit_rate; notes
+resources/views/user/material_category/edit_material_category.blade.php,partial,parent form,included modal/partial,mcategory_id; mcategory_name
+resources/views/user/material_category/material_category.blade.php,1,POST,user.add_material_category,mcategory_name
+resources/views/user/order/add_order.blade.php,1,POST,user.add_order,order_date; order_po_no; order_vendor; order_material; order_unit_name; order_unit; order_qty; order_rate
+resources/views/user/order/edit_order.blade.php,1,POST,user.edit_order,order_date; order_po_no; order_vendor; order_material; order_unit_name; order_unit; order_qty; order_rate
+resources/views/user/order/order_delivery.blade.php,1,POST,user.add_order_delivery,material_id; odelivery_date; odelivery_qty; odelivery_dc
+resources/views/user/order/order_pay_status.blade.php,partial,parent form,included modal/partial,order_id; status
+resources/views/user/profile/change_password.blade.php,1,POST,user.change_password,current_password; new_password; confirm_password
+resources/views/user/profile/profile.blade.php,1,POST,user.profile,user_image; user_name; user_lname; user_email; user_phone
+resources/views/user/profile/profile.blade.php,2,POST,user.delete_account,current_password; confirmation
+resources/views/user/progress/evidence-fields.blade.php,partial,parent form,included modal/partial,photos[]; revision; correction_note
+resources/views/user/progress/review.blade.php,1,POST,user.review_progress,revision; decision; approved_qty; note
+resources/views/user/project/add_project.blade.php,1,POST,user.add_project,project_name; project_location; project_client; project_engineer; project_start; project_end; project_budget; boq_file
+resources/views/user/project/edit_project.blade.php,1,POST,user.edit_project,project_name; project_location; project_client; project_engineer; project_start; project_end; project_budget
+resources/views/user/project/project_status.blade.php,partial,parent form,included modal/partial,project_id; status
+resources/views/user/project/projects.blade.php,1,GET,user.projects,search
+resources/views/user/project/projects.blade.php,2,POST,user.select_project,project_id
+resources/views/user/qms/qms.blade.php,partial,parent form,included modal/partial,project
+resources/views/user/reports/index.blade.php,1,GET,user.reports,project; period; date; start; end; category; material; trade; format
+resources/views/user/return_material/add_return_material.blade.php,1,POST,user.add_return_material,rmaterial_date; rmaterial_project; rmaterial_category; rmaterial_material; rmaterial_unit_name; rmaterial_unit; rmaterial_qty
+resources/views/user/role/add_role.blade.php,1,POST,user.add_role,role_name; permissions[]
+resources/views/user/role/edit_role.blade.php,1,POST,user.edit_role,role_name; permissions[]
+resources/views/user/settings/email_config_settings.blade.php,1,POST,user.email_config_settings,settings_mailer; settings_host; settings_port; settings_uname; settings_pwd; settings_encryption; settings_faddress; settings_fname
+resources/views/user/settings/settings.blade.php,1,POST,user.settings,settings_title; settings_company; settings_email; settings_phone; settings_address; settings_logo; settings_wlogo; settings_favicon
+resources/views/user/subcontractor/add_subcontractor.blade.php,1,POST,user.add_subcontractor,subcontractor_name; subcontractor_email; subcontractor_phone; subcontractor_address
+resources/views/user/subcontractor/edit_subcontractor.blade.php,1,POST,user.edit_subcontractor,subcontractor_name; subcontractor_email; subcontractor_phone; subcontractor_address
+resources/views/user/subcontractor_ledger/add_subcontractor_ledger.blade.php,1,POST,user.add_subcontractor_ledger,sledger_date; sledger_subcontractor; sledger_project; sledger_type; sledger_wpno; sledger_description; sledger_total; sledger_invoice; sledger_paid; sledger_remarks
+resources/views/user/unit/edit_unit.blade.php,partial,parent form,included modal/partial,unit_id; unit_name
+resources/views/user/unit/units.blade.php,1,POST,user.add_unit,unit_name
+resources/views/user/user/add_user.blade.php,1,POST,user.add_user,user_image; user_name; user_role; user_lname; user_email; user_password; user_phone
+resources/views/user/user/edit_user.blade.php,1,POST,user.edit_user,user_image; user_name; user_role; user_lname; user_email; user_password; user_phone
+resources/views/user/vendor/add_vendor.blade.php,1,POST,user.add_vendor,vendor_category; vendor_name; vendor_company; vendor_mobile; vendor_altno; vendor_location; vendor_type; vendor_remarks; vendor_card
+resources/views/user/vendor/edit_vendor.blade.php,1,POST,user.edit_vendor,vendor_category; vendor_name; vendor_company; vendor_mobile; vendor_altno; vendor_location; vendor_type; vendor_remarks; vendor_card
+resources/views/user/vendor/vendors.blade.php,partial,parent form,included modal/partial,category
+resources/views/user/vendor_ledger/add_vendor_ledger.blade.php,1,POST,user.add_vendor_ledger,vledger_date; vledger_vendor; vledger_project; vledger_type; vledger_pono; vledger_description; vledger_po_total; vledger_invoice; vledger_paid; vledger_remarks

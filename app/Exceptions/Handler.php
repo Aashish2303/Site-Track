@@ -44,6 +44,27 @@ class Handler extends ExceptionHandler
     /**
      * Register the exception handling callbacks for the application.
      */
+    public function render($request, Throwable $e)
+    {
+        $response = parent::render($request, $e);
+        if ($response->getStatusCode() >= 500) {
+            return $request->expectsJson()
+                ? response()->json(['message' => 'Unable to complete this request. Please try again.'], $response->getStatusCode())
+                : response()->view('errors.500', [], $response->getStatusCode());
+        }
+        return $response;
+    }
+
+    public function report(Throwable $e)
+    {
+        if ($this->shouldntReport($e)) { return; }
+        // No exception object, SQL, bindings, request, headers, user or stack arguments.
+        logger()->error('app.error', [
+            'event' => 'app.error', 'exception_class' => get_class($e),
+            'correlation_id' => (string) \Illuminate\Support\Str::uuid(),
+        ]);
+    }
+
     protected function unauthenticated($request, \Illuminate\Auth\AuthenticationException $exception)
     {
         return $request->expectsJson()

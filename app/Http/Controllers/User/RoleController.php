@@ -54,6 +54,7 @@ class RoleController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action'])
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }
@@ -153,7 +154,7 @@ class RoleController extends Controller
             }
             else
             {
-                $check_role = Role::where('role_name',$request->role_name)->where('role_id','!=',$request->segment(3))->count();
+                $check_role = Role::where('role_name',$request->role_name)->where('role_id','!=',$request->route('id'))->count();
 
                 if($check_role > 0)
                 {
@@ -164,15 +165,15 @@ class RoleController extends Controller
                 $upd['role_updated_on'] = date('Y-m-d H:i:s');
                 $upd['role_updated_by'] = Auth::user()->user_id;
 
-                Role::where('role_id',$request->segment(3))->update($upd);
+                Role::where('role_id',$request->route('id'))->update($upd);
 
-                RolePermission::where('rpermission_role',$request->segment(3))->delete();
+                RolePermission::where('rpermission_role',$request->route('id'))->delete();
 
                 if($request->has('permissions'))
                 {
                     foreach($request->permissions as $rpermission)
                     {
-                        $ins_permission['rpermission_role']       = $request->segment(3);
+                        $ins_permission['rpermission_role']       = $request->route('id');
                         $ins_permission['rpermission_permission'] = $rpermission;
                         $ins_permission['rpermission_added_on']   = date('Y-m-d H:i:s');
                         $ins_permission['rpermission_added_by']   = Auth::user()->user_id;
@@ -188,7 +189,7 @@ class RoleController extends Controller
             }
         }
 
-        $data['role'] = Role::where('role_id',$request->segment(3))->first();
+        $data['role'] = Role::where('role_id',$request->route('id'))->first();
 
         if(!isset($data['role']))
         {
@@ -215,7 +216,7 @@ class RoleController extends Controller
 
         $data['permissions'] = $permissions;
 
-        $where_permission['rpermission_role'] = $request->segment(3);
+        $where_permission['rpermission_role'] = $request->route('id');
         $get_rpermissions = RolePermission::where($where_permission)->get();
 
         if($get_rpermissions->count() > 0)
@@ -231,8 +232,8 @@ class RoleController extends Controller
 
     public function role_status(Request $request)
     {
-        $id = $request->segment(3);
-        $status = $request->segment(4);
+        $id = $request->route('id');
+        $status = $request->route('status');
 
         if($status == 1)
         {

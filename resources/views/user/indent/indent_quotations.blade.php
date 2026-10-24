@@ -181,7 +181,7 @@
                         </td>
                         <td>
                            @if(!empty($quotation->iquote_quotation))
-                           <a href="{{ asset(config('constants.admin_path').'uploads/quotation/'.$quotation->iquote_quotation) }}" class="btn btn-icon btn-light me-1" download><i class="ti ti-download"></i></a>
+                           <a href="{{ route('user.private_file', ['kind' => 'quotation', 'reference' => app(\App\Services\PublicReference::class)->encode('indent_quotations', $quotation->iquote_id)]) }}" class="btn btn-icon btn-light me-1" download><i class="ti ti-download"></i></a>
                            @else
                            -
                            @endif

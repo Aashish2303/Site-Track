@@ -37,7 +37,7 @@
                   <div class="flex-shrink-0">
                      <div class="position-relative d-flex align-items-center border rounded">
                         @if(!empty(Auth::user()->user_image))
-                        <img src="{{ asset(config('constants.admin_path').'uploads/profile/'.Auth::user()->user_image) }}" id="user_image_src" class="avatar avatar-xxl" alt="">
+                        <img src="{{ route('user.private_file', ['kind' => 'profile', 'reference' => app(\App\Services\PublicReference::class)->encode('users', Auth::id())]) }}" id="user_image_src" class="avatar avatar-xxl" alt="">
                         @else
                         <img src="{{ asset(config('constants.admin_path').'img/no_image.png') }}" id="user_image_src" class="avatar avatar-xxl" alt="">
                         @endif
@@ -101,6 +101,12 @@
       </div>
    </form>
 </div>
+<div class="content pt-0"><div class="card"><div class="card-header"><h5>Delete my account</h5></div><div class="card-body"><p>Your profile, contact details, login credentials and profile/progress photos will be removed. Construction records are retained with anonymous attribution. Copies previously exported or held in hosting backups require separate removal.</p>
+<form method="POST" action="{{ route('user.delete_account') }}">@csrf
+<div class="mb-3"><label class="form-label" for="delete-password">Current password</label><input id="delete-password" name="current_password" type="password" autocomplete="current-password" class="form-control" required></div>
+<div class="mb-3"><label class="form-label" for="delete-confirmation">Type DELETE to permanently delete your account</label><input id="delete-confirmation" name="confirmation" class="form-control" autocomplete="off" pattern="DELETE" required></div>
+@error('confirmation')<p class="text-danger">{{ $message }}</p>@enderror @error('current_password')<p class="text-danger">{{ $message }}</p>@enderror
+<button class="btn btn-danger" type="submit">Permanently delete my account</button></form></div></div></div>
 @endsection
 @section('custom_script')
 <script>

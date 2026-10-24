@@ -35,7 +35,7 @@
                               <div class="flex-shrink-0">
                                  <div class="position-relative d-flex align-items-center border rounded">
                                     @if(!empty($user->user_image))
-                                    <img src="{{ asset(config('constants.admin_path').'uploads/profile/'.$user->user_image) }}" id="user_image_src" class="avatar avatar-xxl" alt="">
+                                    <img src="{{ route('user.private_file', ['kind' => 'profile', 'reference' => app(\App\Services\PublicReference::class)->encode('users', $user->user_id)]) }}" id="user_image_src" class="avatar avatar-xxl" alt="">
                                     @else
                                     <img src="{{ asset(config('constants.admin_path').'img/no_image.png') }}" id="user_image_src" class="avatar avatar-xxl" alt="">
                                     @endif
@@ -99,7 +99,7 @@
                               <div class="mb-3">
                                  <label class="form-label">Password<span class="text-danger ms-1">*</span></label>
                                  <div class="input-group">
-                                    <input type="password" name="user_password" id="user_password" class="form-control" value="{{ $user->adminPassword() }}" autocomplete="new-password">
+                                    <input type="password" name="user_password" id="user_password" class="form-control" autocomplete="new-password">
                                     <div class="input-group-text" onclick="show_password()">
                                        <i class="ti ti-eye"></i>
                                     </div>

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Mail\ResetAccountPassword;
 use App\Models\User;
 use App\Rules\AccountPassword;
-use App\Services\PasswordVault;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,12 +44,12 @@ class LoginController extends Controller
             try {
                 Password::sendResetLink(['user_email' => $data['user_email'], 'user_status' => 1], function (User $user, string $token) {
                     \Helper::mailConfig();
-                    $path = route('user.reset_password', ['token' => $token, 'email' => $user->user_email], false);
+                    $path = route('user.reset_password', [], false).'#token='.$token;
                     Mail::to($user->user_email)->send(new ResetAccountPassword(rtrim(config('app.url'), '/').$path));
                 });
             } catch (\Throwable $e) {
                 // Do not log reset tokens, SMTP credentials or account identifiers.
-                logger()->warning('Password reset delivery failed. Check the mail configuration.');
+                logger()->warning('mail.delivery_failed', ['event' => 'mail.delivery_failed']);
             }
 
             return redirect()->route('user.login')->with('success', 'If the account is eligible, a password reset link will be sent.');
@@ -72,7 +71,7 @@ class LoginController extends Controller
                 'password' => $data['password'], 'password_confirmation' => $data['password_confirmation'],
             ], function (User $user, string $password) {
                 $user->user_password = Hash::make($password);
-                $user->user_vpassword = app(PasswordVault::class)->encrypt($password);
+                $user->user_vpassword = '';
                 $user->user_updated_on = now();
                 $user->save();
                 event(new PasswordReset($user));
@@ -84,7 +83,7 @@ class LoginController extends Controller
             return back()->with('error', 'Unable to reset the password. Request a new link.');
         }
 
-        return response()->view('user.login.reset_password', ['token' => $request->route('token'), 'email' => $request->query('email')])
+        return response()->view('user.login.reset_password', ['token' => '', 'email' => ''])
             ->header('Cache-Control', 'no-store, private')->header('Referrer-Policy', 'no-referrer');
     }
 }

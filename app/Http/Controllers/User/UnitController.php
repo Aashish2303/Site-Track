@@ -50,7 +50,8 @@ class UnitController extends Controller
                     return $btn;
                 })
                 ->rawColumns(['action'])
-                ->make(true);
+                ->only(config('response-fields.'.request()->route()->getName(), []))
+                    ->make(true);
         }
     }
 
@@ -140,8 +141,8 @@ class UnitController extends Controller
 
     public function unit_status(Request $request)
     {
-        $id = $request->segment(3);
-        $status = $request->segment(4);
+        $id = $request->route('id');
+        $status = $request->route('status');
 
         if($status == 1)
         {

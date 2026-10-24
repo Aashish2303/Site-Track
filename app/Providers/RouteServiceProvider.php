@@ -53,18 +53,18 @@ class RouteServiceProvider extends ServiceProvider
         };
         RateLimiter::for('login', function (Request $request) use ($response) {
             $name = $request->input('user_lname', '');
-            $account = hash('sha256', mb_strtolower(is_string($name) ? mb_substr($name, 0, 255) : 'invalid'));
+            $account = hash_hmac('sha256', mb_strtolower(is_string($name) ? mb_substr($name, 0, 255) : 'invalid'), config('app.key'));
             return [
-                Limit::perMinutes(15, 5)->by('login-pair:'.$account.':'.$request->ip())->response($response),
-                Limit::perMinute(20)->by('login-ip:'.$request->ip())->response($response),
+                Limit::perMinutes(15, 5)->by('login-pair:'.$account.':'.hash_hmac('sha256', (string) $request->ip(), config('app.key')))->response($response),
+                Limit::perMinute(20)->by('login-ip:'.hash_hmac('sha256', (string) $request->ip(), config('app.key')))->response($response),
                 Limit::perMinutes(15, 25)->by('login-account:'.$account)->response($response),
             ];
         });
         RateLimiter::for('recovery', function (Request $request) use ($response) {
             $email = $request->input('user_email', '');
-            $account = hash('sha256', mb_strtolower(is_string($email) ? mb_substr($email, 0, 255) : 'invalid'));
+            $account = hash_hmac('sha256', mb_strtolower(is_string($email) ? mb_substr($email, 0, 255) : 'invalid'), config('app.key'));
             return [
-                Limit::perMinute(5)->by('recovery-ip:'.$request->ip())->response($response),
+                Limit::perMinute(5)->by('recovery-ip:'.hash_hmac('sha256', (string) $request->ip(), config('app.key')))->response($response),
                 Limit::perHour(5)->by('recovery-account:'.$account)->response($response),
             ];
         });
@@ -73,7 +73,7 @@ class RouteServiceProvider extends ServiceProvider
             : Limit::none());
         RateLimiter::for('password-check', fn (Request $request) => Limit::perMinute(5)->by('password-check:'.$request->user()->user_id)->response($response));
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+            return Limit::perMinute(60)->by($request->user()?->id ?: hash_hmac('sha256', (string) $request->ip(), config('app.key')));
         });
     }
 }

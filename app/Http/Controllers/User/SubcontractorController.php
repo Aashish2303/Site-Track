@@ -50,6 +50,7 @@ class SubcontractorController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action'])
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }
@@ -130,7 +131,7 @@ class SubcontractorController extends Controller
             }
             else
             {
-                $check_subcontractor = Subcontractor::where('subcontractor_email',$request->subcontractor_email)->where('subcontractor_id','!=',$request->segment(3))->count();
+                $check_subcontractor = Subcontractor::where('subcontractor_email',$request->subcontractor_email)->where('subcontractor_id','!=',$request->route('id'))->count();
 
                 if($check_subcontractor > 0)
                 {
@@ -144,13 +145,13 @@ class SubcontractorController extends Controller
                 $upd['subcontractor_updated_on'] = date('Y-m-d H:i:s');
                 $upd['subcontractor_updated_by'] = Auth::user()->user_id;
 
-                Subcontractor::where('subcontractor_id',$request->segment(3))->update($upd);
+                Subcontractor::where('subcontractor_id',$request->route('id'))->update($upd);
 
                 return redirect()->back()->with('success','Subcontractor Updated Successfully');
             }
         }
 
-        $data['subcontractor'] = Subcontractor::where('subcontractor_id',$request->segment(3))->first();
+        $data['subcontractor'] = Subcontractor::where('subcontractor_id',$request->route('id'))->first();
 
         if(!isset($data['subcontractor']))
         {
@@ -163,8 +164,8 @@ class SubcontractorController extends Controller
 
     public function subcontractor_status(Request $request)
     {
-        $id = $request->segment(3);
-        $status = $request->segment(4);
+        $id = $request->route('id');
+        $status = $request->route('status');
 
         if($status == 1)
         {

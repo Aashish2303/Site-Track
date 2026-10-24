@@ -154,6 +154,7 @@ class ProjectController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action','progress','status'])
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }
@@ -263,7 +264,7 @@ class ProjectController extends Controller
             }
             else
             {
-                $check_project = Project::where('project_name',$request->project_name)->where('project_id','!=',$request->segment(3))->count();
+                $check_project = Project::where('project_name',$request->project_name)->where('project_id','!=',$request->route('id'))->count();
 
                 if($check_project > 0)
                 {
@@ -280,13 +281,13 @@ class ProjectController extends Controller
                 $upd['project_updated_on'] = date('Y-m-d H:i:s');
                 $upd['project_updated_by'] = Auth::user()->user_id;
 
-                Project::where('project_id',$request->segment(3))->update($upd);
+                Project::where('project_id',$request->route('id'))->update($upd);
 
                 return redirect()->back()->with('success','Project Updated Successfully');
             }
         }
 
-        $data['project'] = Project::where('project_id',$request->segment(3))->first();
+        $data['project'] = Project::where('project_id',$request->route('id'))->first();
 
         if(!isset($data['project']))
         {
@@ -305,7 +306,7 @@ class ProjectController extends Controller
 
     public function view_project(Request $request)
     {
-        $project = Project::where('project_trash', 1)->findOrFail($request->segment(3));
+        $project = Project::where('project_trash', 1)->findOrFail($request->route('id'));
         $request->session()->put('workspace_project_id', $project->project_id);
         return redirect()->route('user.project_workspace');
     }

@@ -64,6 +64,7 @@ class MaterialController extends Controller
                         return $btn;
                     })
                     ->rawColumns(['action'])
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }
@@ -141,7 +142,7 @@ class MaterialController extends Controller
             }
             else
             {
-                $check_material = Material::where('material_name',$request->material_name)->where('material_id','!=',$request->segment(3))->count();
+                $check_material = Material::where('material_name',$request->material_name)->where('material_id','!=',$request->route('id'))->count();
 
                 if($check_material > 0)
                 {
@@ -155,13 +156,13 @@ class MaterialController extends Controller
                 $upd['material_updated_on'] = date('Y-m-d H:i:s');
                 $upd['material_updated_by'] = Auth::user()->user_id;
 
-                Material::where('material_id',$request->segment(3))->update($upd);
+                Material::where('material_id',$request->route('id'))->update($upd);
 
                 return redirect()->back()->with('success','Material Updated Successfully');
             }
         }
 
-        $data['material'] = Material::where('material_id',$request->segment(3))->first();
+        $data['material'] = Material::where('material_id',$request->route('id'))->first();
 
         if(!isset($data['material']))
         {
@@ -177,8 +178,8 @@ class MaterialController extends Controller
 
     public function material_status(Request $request)
     {
-        $id = $request->segment(3);
-        $status = $request->segment(4);
+        $id = $request->route('id');
+        $status = $request->route('status');
 
         if($status == 1)
         {

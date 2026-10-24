@@ -14,7 +14,7 @@ use Auth;
 use DB;
 use App\Models\Issue;
 
-class IssueExport implements FromView, ShouldAutoSize, WithEvents
+class IssueExport extends PrivacyValueBinder implements FromView, ShouldAutoSize, WithEvents, \Maatwebsite\Excel\Concerns\WithCustomValueBinder
 {
     use Exportable;
 

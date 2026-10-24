@@ -16,9 +16,10 @@ use App\Models\SubcontractorLedger;
 
 class SubcontractorLedgerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $ledger_summaries = SubcontractorLedger::with('subcontractor')->get()->groupBy('sledger_subcontractor');
+        $request->validate(['project' => 'nullable|integer|exists:projects,project_id']);
+        $ledger_summaries = SubcontractorLedger::when($request->filled('project'), fn ($q) => $q->where('sledger_project', $request->project))->with('subcontractor')->get()->groupBy('sledger_subcontractor');
 
         $data['ledger_summaries'] = $ledger_summaries->map(function($ledgers) {
 
@@ -48,7 +49,8 @@ class SubcontractorLedgerController extends Controller
     {
         if($request->ajax())
         {
-            $data = SubcontractorLedger::orderby('sledger_id','desc')->get();
+            $request->validate(['project' => 'nullable|integer|exists:projects,project_id']);
+            $data = SubcontractorLedger::when($request->filled('project'), fn ($q) => $q->where('sledger_project', $request->project))->orderby('sledger_id','desc')->get();
 
             return DataTables::of($data)
                     ->addIndexColumn()
@@ -118,15 +120,17 @@ class SubcontractorLedgerController extends Controller
 
                         return $balance;
                     })
+                    ->only(config('response-fields.'.request()->route()->getName(), []))
                     ->make(true);
         }
     }
 
     public function subcontractor_ledger_download_excel(Request $request)
     {
+        $request->validate(['project' => 'nullable|integer|exists:projects,project_id']);
         $filename = 'subcontractor_ledger_'.date('Y_m_d_H_i_s').'.xlsx';
 
-        return Excel::download(new SubcontractorLedgerExport,$filename);
+        return Excel::download(new SubcontractorLedgerExport($request->filled('project') ? (int) $request->project : null),$filename);
     }
 
     public function add_subcontractor_ledger(Request $request)

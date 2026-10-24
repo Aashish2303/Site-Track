@@ -1,3 +1,4 @@
+-- Schema and synthetic development fixtures only. No live personal data or usable login credentials.
 -- phpMyAdmin SQL Dump
 -- version 5.2.2
 -- https://www.phpmyadmin.net/
@@ -18,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `u414500830_sitetrack`
+-- Database: synthetic_development
 --
 
 -- --------------------------------------------------------
@@ -47,7 +48,7 @@ CREATE TABLE `assign_materials` (
 --
 
 INSERT INTO `assign_materials` (`amaterial_id`, `amaterial_date`, `amaterial_project`, `amaterial_category`, `amaterial_material`, `amaterial_unit`, `amaterial_qty`, `amaterial_added_on`, `amaterial_added_by`, `amaterial_updated_on`, `amaterial_updated_by`, `amaterial_status`) VALUES
-(1, '2026-08-02', 1, 7, 8, 8, '3', '2026-08-02 17:55:12', 1, '2026-08-02 17:55:12', 1, 1);
+(1, '2020-01-01', 1, 7, 8, 8, '10', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -133,11 +134,11 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`client_id`, `client_name`, `client_email`, `client_phone`, `client_address`, `client_added_on`, `client_added_by`, `client_updated_on`, `client_updated_by`, `client_status`) VALUES
-(1, 'Rama Developers', 'ramadevelopers@gmail.com', '7848564820', 'Hyderabad, India', '2026-07-12 11:56:06', 1, '2026-07-12 11:57:23', 1, 1),
-(2, 'Metro Builders', 'metrobuilders@gmail.com', '9845152302', 'Bengaluru, India', '2026-07-12 11:56:39', 1, '2026-07-12 11:56:39', 1, 1),
-(3, 'VP Infrastructure', 'vpinfrastructure@gmail.com', '7564153250', 'Vijayawada, India', '2026-07-12 11:57:10', 1, '2026-07-12 11:57:10', 1, 1),
-(4, 'MR. RAMANJANEYULU', 'planning@aashishinfra.com', '9999666633', 'Hyderabad', '2026-08-07 09:58:11', 13, '2026-08-07 09:58:11', 13, 1),
-(5, 'QURESHI', 'planning@aashishinfragroup.com', '8374722942', 'Hyderabad', '2026-08-11 18:24:50', 13, '2026-08-11 18:26:03', 13, 1);
+(1, 'Sample clients 1', 'sample-clients-1@example.invalid', '0000000000', 'Sample clients 1', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(2, 'Sample clients 2', 'sample-clients-2@example.invalid', '0000000000', 'Sample clients 2', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(3, 'Sample clients 3', 'sample-clients-3@example.invalid', '0000000000', 'Sample clients 3', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(4, 'Sample clients 4', 'sample-clients-4@example.invalid', '0000000000', 'Sample clients 4', '2020-01-01 00:00:00', 13, '2020-01-01 00:00:00', 13, 1),
+(5, 'Sample clients 5', 'sample-clients-5@example.invalid', '0000000000', 'Sample clients 5', '2020-01-01 00:00:00', 13, '2020-01-01 00:00:00', 13, 1);
 
 -- --------------------------------------------------------
 
@@ -172,9 +173,9 @@ CREATE TABLE `daily_progress` (
 --
 
 INSERT INTO `daily_progress` (`dprogress_id`, `dprogress_date`, `dprogress_project`, `dprogress_category`, `dprogress_description`, `dprogress_boq`, `dprogress_qty`, `dprogress_pdone`, `dprogress_location`, `dprogress_subcontractor`, `dprogress_incharge`, `dprogress_remarks`, `dprogress_cforward`, `dprogress_added_on`, `dprogress_added_by`, `dprogress_updated_on`, `dprogress_updated_by`, `dprogress_status`, `dprogress_trash`) VALUES
-(1, '2026-07-12', 1, 3, 'RCC Slab 2nd Floor', 9, '28', '75', '3rd Floor', 1, 8, 'Pump breakdown 1.5hrs', 1, '2026-07-12 13:44:04', 1, '2026-07-12 13:55:46', 1, 2, 1),
-(2, '2026-07-13', 2, 1, 'Brickwork South Wing', 11, '45', '100', '2nd Floor', 3, 7, NULL, 2, '2026-07-12 13:46:34', 1, '2026-07-12 13:51:16', 1, 1, 1),
-(3, '2026-08-06', 1, 3, 'Centring & Shuttering for footings', 8, '0.4', '57', 'Hafeezpet', 4, 14, 'Due to material Shortage', 1, '2026-08-06 11:08:29', 13, '2026-08-07 12:42:01', 14, 1, 1);
+(1, '2020-01-01', 1, 3, 'Sample daily progress 1', 9, '10', '75', 'Sample daily progress 1', 1, 8, 'Sample daily progress 1', 1, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 2, 1),
+(2, '2020-01-01', 2, 1, 'Sample daily progress 2', 11, '10', '100', 'Sample daily progress 2', 3, 7, NULL, 2, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1, 1),
+(3, '2020-01-01', 1, 3, 'Sample daily progress 3', 8, '10', '57', 'Sample daily progress 3', 4, 14, 'Sample daily progress 3', 1, '2020-01-01 00:00:00', 13, '2020-01-01 00:00:00', 14, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -207,11 +208,11 @@ CREATE TABLE `daily_works` (
 --
 
 INSERT INTO `daily_works` (`dwork_id`, `dwork_date`, `dwork_project`, `dwork_description`, `dwork_location`, `dwork_qty`, `dwork_category`, `dwork_subcontractor`, `dwork_incharge`, `dwork_remarks`, `dwork_cforward`, `dwork_added_on`, `dwork_added_by`, `dwork_updated_on`, `dwork_updated_by`, `dwork_status`, `dwork_trash`) VALUES
-(1, '2026-07-12', 1, 'Bar bending for columns', '3rd Floor', '4.2 MT', 1, 1, 8, 'Fe500 grade', 2, '2026-07-12 12:58:15', 1, '2026-07-12 12:58:15', 1, 1, 1),
-(2, '2026-07-13', 2, 'Brickwork South Wing 2nd floor', '2nd Floor', '95 Sqm', 1, 3, 7, 'CM 1:6', 1, '2026-07-12 12:59:11', 1, '2026-07-12 13:05:40', 1, 2, 1),
-(3, '2026-07-11', 1, 'RCC Column Casting Grid C1-C5', '3rd Floor', '38 Cum', 11, 4, 8, 'M30 grade', 1, '2026-07-12 13:00:13', 1, '2026-08-05 22:26:11', 14, 1, 1),
-(4, '2026-08-07', 1, 'retaining wall shuttering work', 'dhone u. kothapalli', '180 cft', 3, 1, 14, 'Not found', 1, '2026-08-06 11:04:32', 13, '2026-08-07 12:11:19', 14, 5, 1),
-(5, '2026-08-11', 4, 'BRICK WORK DPC WORK IS IN PROGRESS', '1st floor', '100', 12, 5, 12, 'INPROGRESS', 1, '2026-08-11 18:35:04', 13, '2026-08-11 18:35:04', 13, 5, 1);
+(1, '2020-01-01', 1, 'Sample daily works 1', 'Sample daily works 1', '10', 1, 1, 8, 'Sample daily works 1', 2, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1, 1),
+(2, '2020-01-01', 2, 'Sample daily works 2', 'Sample daily works 2', '10', 1, 3, 7, 'Sample daily works 2', 1, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 2, 1),
+(3, '2020-01-01', 1, 'Sample daily works 3', 'Sample daily works 3', '10', 11, 4, 8, 'Sample daily works 3', 1, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 14, 1, 1),
+(4, '2020-01-01', 1, 'Sample daily works 4', 'Sample daily works 4', '10', 3, 1, 14, 'Sample daily works 4', 1, '2020-01-01 00:00:00', 13, '2020-01-01 00:00:00', 14, 5, 1),
+(5, '2020-01-01', 4, 'Sample daily works 5', 'Sample daily works 5', '10', 12, 5, 12, 'Sample daily works 5', 1, '2020-01-01 00:00:00', 13, '2020-01-01 00:00:00', 13, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -255,10 +256,10 @@ CREATE TABLE `indents` (
 --
 
 INSERT INTO `indents` (`indent_id`, `indent_date`, `indent_project`, `indent_urgency`, `indent_engineer`, `indent_notes`, `indent_napproval`, `indent_added_on`, `indent_added_by`, `indent_updated_on`, `indent_updated_by`, `indent_status`) VALUES
-(1, '2026-07-12', 1, 3, 9, 'Road layer 2 urgent', 'Critical path road blocked without this', '2026-07-12 18:05:22', 1, '2026-07-29 15:42:47', 1, 3),
-(2, '2026-07-12', 2, 1, 3, 'Internal walls 2nd floor', 'Painting scheduled 20th — please approve', '2026-07-12 18:07:11', 1, '2026-07-26 22:18:41', 1, 1),
-(3, '2026-07-12', 2, 2, 9, 'Slab work blocked', 'Required urgently for slab pour', '2026-07-12 18:09:33', 1, '2026-07-26 22:18:11', 1, 1),
-(4, '2026-08-06', 1, 2, 9, 'Please approve sir', '200000', '2026-08-06 11:12:46', 13, '2026-08-06 11:12:46', 13, 1);
+(1, '2020-01-01', 1, 3, 9, 'Sample indents 1', 'Sample indents 1', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 3),
+(2, '2020-01-01', 2, 1, 3, 'Sample indents 2', 'Sample indents 2', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(3, '2020-01-01', 2, 2, 9, 'Sample indents 3', 'Sample indents 3', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(4, '2020-01-01', 1, 2, 9, 'Sample indents 4', 'Sample indents 4', '2020-01-01 00:00:00', 13, '2020-01-01 00:00:00', 13, 1);
 
 -- --------------------------------------------------------
 
@@ -286,11 +287,11 @@ CREATE TABLE `indent_items` (
 --
 
 INSERT INTO `indent_items` (`iitem_id`, `iitem_indent`, `iitem_item`, `iitem_category`, `iitem_size`, `iitem_qty`, `iitem_unit`, `iitem_added_on`, `iitem_added_by`, `iitem_updated_on`, `iitem_updated_by`, `iitem_status`) VALUES
-(8, 3, 1, 1, '1.5mm', '400', 5, '2026-07-26 22:18:11', 1, '2026-07-26 22:18:11', 1, 1),
-(9, 3, 3, 3, '1mm', '20', 1, '2026-07-26 22:18:11', 1, '2026-07-29 16:13:06', 1, 2),
-(10, 2, 8, 2, '1ltr', '80', 8, '2026-07-26 22:18:41', 1, '2026-07-26 22:18:41', 1, 1),
-(11, 1, 4, 13, '1m', '150', 4, '2026-07-26 22:19:26', 1, '2026-07-26 22:19:26', 1, 1),
-(12, 4, 5, 12, '9\"X6\"X12\"', '700', 6, '2026-08-06 11:12:46', 13, '2026-08-06 11:12:46', 13, 1);
+(8, 3, 'Sample indent items 1', 1, '1.5mm', '10', 5, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(9, 3, 'Sample indent items 2', 3, '1mm', '10', 1, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 2),
+(10, 2, 'Sample indent items 3', 2, '1ltr', '10', 8, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(11, 1, 'Sample indent items 4', 13, '1m', '10', 4, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(12, 4, 'Sample indent items 5', 12, '9\"X6\"X12\"', '10', 6, '2020-01-01 00:00:00', 13, '2020-01-01 00:00:00', 13, 1);
 
 -- --------------------------------------------------------
 
@@ -319,10 +320,10 @@ CREATE TABLE `indent_quotations` (
 --
 
 INSERT INTO `indent_quotations` (`iquote_id`, `iquote_indent`, `iquote_vendor`, `iquote_rate`, `iquote_total`, `iquote_delivery`, `iquote_notes`, `iquote_quotation`, `iquote_added_on`, `iquote_added_by`, `iquote_updated_on`, `iquote_updated_by`, `iquote_status`) VALUES
-(1, 1, 2, '5000', '126000', '1 Day', 'Tomorrow Received', 'zVMZclI3EwbS1FymgmqdGwQbVy83Q255kf4aZC0g.pdf', '2026-07-12 18:46:16', 1, '2026-07-12 18:46:16', 1, 2),
-(2, 1, 1, '5500', '132000', '2 Days', NULL, NULL, '2026-07-12 18:52:37', 1, '2026-07-12 18:52:37', 1, 1),
-(3, 1, 3, '5750', '134500', '2 Days', NULL, NULL, '2026-07-12 18:53:48', 1, '2026-07-12 18:53:48', 1, 1),
-(4, 4, 3, '30', '21000', '2 DAYS', 'It will be arrived by 08-08-26', NULL, '2026-08-06 11:39:30', 11, '2026-08-06 11:39:30', 11, 1);
+(1, 1, 2, '100', '1000', '1 Day', 'Sample indent quotations 1', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 2),
+(2, 1, 1, '100', '1000', '2 Days', NULL, NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(3, 1, 3, '100', '1000', '2 Days', NULL, NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(4, 4, 3, '100', '1000', '2 DAYS', 'Sample indent quotations 4', NULL, '2020-01-01 00:00:00', 11, '2020-01-01 00:00:00', 11, 1);
 
 -- --------------------------------------------------------
 
@@ -354,10 +355,10 @@ CREATE TABLE `issues` (
 --
 
 INSERT INTO `issues` (`issue_id`, `issue_date`, `issue_project`, `issue_title`, `issue_description`, `issue_category`, `issue_priority`, `issue_assign`, `issue_remarks`, `issue_image`, `issue_sremarks`, `issue_added_on`, `issue_added_by`, `issue_updated_on`, `issue_updated_by`, `issue_status`) VALUES
-(1, '2026-07-12', 1, 'Labour shortage', 'Only 5 bar benders attended vs 12 required.', 4, 2, 3, NULL, NULL, 'Test Remarks', '2026-07-12 23:34:37', 1, '2026-07-29 17:21:28', 1, 2),
-(2, '2026-07-12', 1, 'Brick quality issue', '2000 nos bricks rejected - high water absorption.', 2, 3, 9, NULL, NULL, NULL, '2026-07-12 23:35:23', 1, '2026-07-12 23:35:23', 1, 1),
-(3, '2026-07-29', 3, 'Labour shortage', 'Only 4 bar benders attended vs 10 required.', 4, 4, 10, 'Very Urgent', 'AsEOMv1Sa9luK8wV5LwKmxZYScrRd9RPBMQlhsGe.jpg', NULL, '2026-07-29 17:09:44', 1, '2026-07-29 17:12:28', 1, 1),
-(4, '2026-08-06', 4, 'Labour shortage', 'Due to labour shortage brickwork & Plastering & Painting delayed', 4, 3, 3, 'Please rectify immediately', NULL, NULL, '2026-08-06 11:17:37', 13, '2026-08-06 11:17:37', 13, 1);
+(1, '2020-01-01', 1, 'Sample issues 1', 'Sample issues 1', 4, 2, 3, NULL, NULL, 'Sample issues 1', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 2),
+(2, '2020-01-01', 1, 'Sample issues 2', 'Sample issues 2', 2, 3, 9, NULL, NULL, NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(3, '2020-01-01', 3, 'Sample issues 3', 'Sample issues 3', 4, 4, 10, 'Sample issues 3', NULL, NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(4, '2020-01-01', 4, 'Sample issues 4', 'Sample issues 4', 4, 3, 3, 'Sample issues 4', NULL, NULL, '2020-01-01 00:00:00', 13, '2020-01-01 00:00:00', 13, 1);
 
 -- --------------------------------------------------------
 
@@ -419,9 +420,9 @@ CREATE TABLE `labour_trackers` (
 --
 
 INSERT INTO `labour_trackers` (`ltracker_id`, `ltracker_date`, `ltracker_project`, `ltracker_subcontractor`, `ltracker_incharge`, `ltracker_shift`, `ltracker_remarks`, `ltracker_in`, `ltracker_out`, `ltracker_thours`, `ltracker_total`, `ltracker_added_on`, `ltracker_added_by`, `ltracker_updated_on`, `ltracker_updated_by`, `ltracker_status`, `ltracker_trash`) VALUES
-(1, '2026-07-13', 1, 1, 8, 1, 'Test Remarks', '08:00:00', '17:00:00', '9.00', '11500', '2026-07-12 21:49:07', 1, '2026-07-13 08:58:27', 1, 1, 1),
-(2, '2026-07-13', 2, 3, 8, 1, NULL, '09:00:00', '16:00:00', '7.00', '2600', '2026-07-12 23:21:42', 1, '2026-07-13 09:04:14', 1, 1, 1),
-(3, '2026-08-06', 4, 4, 14, 1, NULL, '08:00:00', '17:00:00', '9.00', '3500', '2026-08-06 11:14:55', 13, '2026-08-06 11:14:55', 13, 1, 1);
+(1, '2020-01-01', 1, 1, 8, 1, 'Sample labour trackers 1', '08:00:00', '17:00:00', '9.00', '1000', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1, 1),
+(2, '2020-01-01', 2, 3, 8, 1, NULL, '09:00:00', '16:00:00', '7.00', '1000', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1, 1),
+(3, '2020-01-01', 4, 4, 14, 1, NULL, '08:00:00', '17:00:00', '9.00', '1000', '2020-01-01 00:00:00', 13, '2020-01-01 00:00:00', 13, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -450,12 +451,12 @@ CREATE TABLE `labour_workers` (
 --
 
 INSERT INTO `labour_workers` (`lworker_id`, `lworker_tracker`, `lworker_category`, `lworker_skill`, `lworker_male`, `lworker_female`, `lworker_wage`, `lworker_total`, `lworker_added_on`, `lworker_added_by`, `lworker_updated_on`, `lworker_updated_by`, `lworker_status`) VALUES
-(10, 1, 6, 1, '5', '3', '1000', '8000', '2026-07-13 08:58:28', 1, '2026-07-13 08:58:28', 1, 1),
-(11, 1, 3, 2, '2', '2', '500', '2000', '2026-07-13 08:58:28', 1, '2026-07-13 08:58:28', 1, 1),
-(12, 1, 5, 3, '1', '2', '500', '1500', '2026-07-13 08:58:28', 1, '2026-07-13 08:58:28', 1, 1),
-(13, 2, 5, 1, '2', '3', '500', '2500', '2026-07-13 09:04:14', 1, '2026-07-13 09:04:14', 1, 1),
-(14, 2, 13, 1, '1', '0', '100', '100', '2026-07-13 09:04:14', 1, '2026-07-13 09:04:14', 1, 1),
-(15, 3, 12, 1, '3', '2', '700', '3500', '2026-08-06 11:14:55', 13, '2026-08-06 11:14:55', 13, 1);
+(10, 1, 6, 1, '5', '3', '100', '1000', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(11, 1, 3, 2, '2', '2', '100', '1000', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(12, 1, 5, 3, '1', '2', '100', '1000', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(13, 2, 5, 1, '2', '3', '100', '1000', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(14, 2, 13, 1, '1', '0', '100', '1000', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(15, 3, 12, 1, '3', '2', '100', '1000', '2020-01-01 00:00:00', 13, '2020-01-01 00:00:00', 13, 1);
 
 -- --------------------------------------------------------
 
@@ -788,9 +789,9 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `order_date`, `order_po_no`, `order_vendor`, `order_material`, `order_unit`, `order_qty`, `order_rate`, `order_pay_status`, `order_added_on`, `order_added_by`, `order_updated_on`, `order_updated_by`, `order_status`) VALUES
-(1, '2026-08-02', 'DS435', 3, 8, 8, '50', '10000', 1, '2026-08-02 14:55:19', 1, '2026-08-02 14:57:53', 1, 1),
-(2, '2026-08-02', 'VE4342', 1, 1, 5, '100', '20000', 1, '2026-08-02 16:31:18', 1, '2026-08-02 16:31:18', 1, 1),
-(3, '2026-08-06', 'AIP/PO/2026-27/01', 3, 8, 8, '25', '230', 1, '2026-08-06 11:31:27', 11, '2026-08-06 11:31:27', 11, 1);
+(1, '2020-01-01', 'Sample orders 1', 3, 8, 8, '10', '100', 1, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(2, '2020-01-01', 'Sample orders 2', 1, 1, 5, '10', '100', 1, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(3, '2020-01-01', 'Sample orders 3', 3, 8, 8, '10', '100', 1, '2020-01-01 00:00:00', 11, '2020-01-01 00:00:00', 11, 1);
 
 -- --------------------------------------------------------
 
@@ -879,10 +880,10 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`project_id`, `project_name`, `project_location`, `project_client`, `project_engineer`, `project_start`, `project_end`, `project_budget`, `project_added_on`, `project_added_by`, `project_updated_on`, `project_updated_by`, `project_status`, `project_trash`) VALUES
-(1, 'Block A - Residential Tower', 'Hyderabad', 1, 9, '2026-07-12', '2026-12-15', '45000000', '2026-07-12 12:02:47', 1, '2026-07-12 12:06:30', 1, 1, 1),
-(2, 'Block B - Commercial Complex', 'Bengaluru', 2, 9, '2026-07-20', '2026-12-20', '72000000', '2026-07-12 12:04:05', 1, '2026-07-12 12:04:05', 1, 1, 1),
-(3, 'Site C - Township', 'Vijayawada', 3, 3, '2026-07-29', '2027-01-10', '120000000', '2026-07-12 12:04:59', 1, '2026-07-13 08:47:57', 1, 1, 1),
-(4, 'Residential Building', 'Hafeezpet', 3, 9, '2026-01-01', '2026-12-31', '24076815', '2026-08-06 10:55:10', 13, '2026-08-06 10:55:10', 13, 1, 1);
+(1, 'Sample projects 1', 'Sample projects 1', 1, 9, '2020-01-01', '2020-01-01', '1000', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1, 1),
+(2, 'Sample projects 2', 'Sample projects 2', 2, 9, '2020-01-01', '2020-01-01', '1000', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1, 1),
+(3, 'Sample projects 3', 'Sample projects 3', 3, 3, '2020-01-01', '2020-01-01', '1000', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1, 1),
+(4, 'Sample projects 4', 'Sample projects 4', 3, 9, '2020-01-01', '2020-01-01', '1000', '2020-01-01 00:00:00', 13, '2020-01-01 00:00:00', 13, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -912,14 +913,14 @@ CREATE TABLE `project_boqs` (
 --
 
 INSERT INTO `project_boqs` (`pboq_id`, `pboq_project`, `pboq_item`, `pboq_unit`, `pboq_qty`, `pboq_rate`, `pboq_amount`, `pboq_remarks`, `pboq_extra`, `pboq_added_on`, `pboq_added_by`, `pboq_updated_on`, `pboq_updated_by`, `pboq_status`) VALUES
-(8, 1, 'Earthwork Excavation', 'Cum', '500', '280', '140000', 'Test Remarks', 0, '2026-07-12 12:02:48', 1, '2026-07-12 16:07:44', 1, 1),
-(9, 1, 'RCC Slab', 'Cum', '85', '7800', '663000', NULL, 0, '2026-07-12 12:02:48', 1, '2026-07-12 16:07:10', 1, 1),
-(10, 1, 'Brickwork', 'Sqm', '800', '850', '680000', NULL, 0, '2026-07-12 12:02:48', 1, '2026-07-12 12:02:48', 1, 1),
-(11, 2, 'Earthwork Excavation', 'Cum', '500', '280', '140000', 'Test Remarks', 0, '2026-07-12 12:04:05', 1, '2026-07-12 12:04:05', 1, 1),
-(12, 2, 'RCC Slab', 'Cum', '85', '7800', '663000', NULL, 0, '2026-07-12 12:04:05', 1, '2026-07-12 12:04:05', 1, 1),
-(13, 3, 'RCC Slab', 'Cum', '85', '7800', '663000', NULL, 0, '2026-07-12 12:04:59', 1, '2026-07-12 12:04:59', 1, 1),
-(14, 3, 'Brickwork', 'Sqm', '800', '850', '680000', NULL, 0, '2026-07-12 12:04:59', 1, '2026-07-12 16:06:34', 1, 1),
-(15, 1, 'Cement', 'Bag', '10', '500', '5000', 'Cement Remarks', 1, '2026-07-12 16:38:44', 1, '2026-07-12 16:39:11', 1, 1);
+(8, 1, 'Sample project boqs 1', 'Cum', '10', '100', '1000', 'Sample project boqs 1', 0, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(9, 1, 'Sample project boqs 2', 'Cum', '10', '100', '1000', NULL, 0, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(10, 1, 'Sample project boqs 3', 'Sqm', '10', '100', '1000', NULL, 0, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(11, 2, 'Sample project boqs 4', 'Cum', '10', '100', '1000', 'Sample project boqs 4', 0, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(12, 2, 'Sample project boqs 5', 'Cum', '10', '100', '1000', NULL, 0, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(13, 3, 'Sample project boqs 6', 'Cum', '10', '100', '1000', NULL, 0, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(14, 3, 'Sample project boqs 7', 'Sqm', '10', '100', '1000', NULL, 0, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(15, 1, 'Sample project boqs 8', 'Bag', '10', '100', '1000', 'Sample project boqs 8', 1, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -947,7 +948,7 @@ CREATE TABLE `return_materials` (
 --
 
 INSERT INTO `return_materials` (`rmaterial_id`, `rmaterial_date`, `rmaterial_project`, `rmaterial_category`, `rmaterial_material`, `rmaterial_unit`, `rmaterial_qty`, `rmaterial_added_on`, `rmaterial_added_by`, `rmaterial_updated_on`, `rmaterial_updated_by`, `rmaterial_status`) VALUES
-(1, '2026-08-03', 1, 7, 8, 8, '1', '2026-08-03 19:50:48', 1, '2026-08-03 19:50:48', 1, 1);
+(1, '2020-01-01', 1, 7, 8, 8, '10', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1706,15 +1707,7 @@ CREATE TABLE `sessions` (
 -- Dumping data for table `sessions`
 --
 
-INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('3fK4fRzkboLqzOMuBrYqJ12DNt2orNoOkiYy54O3', 1, '2406:b400:3a:5261:c52b:cbb5:4864:f926', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiNzNVcW1xd2xtQmRRenJlY1RKMVBYRm1MUHhrQ2JnV0FsYXEyOGFjUiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDk6Imh0dHBzOi8vc2l0ZXRyYWNrLmNvZGV0cmlja3ouY29tL3VzZXIvZGFpbHlfd29ya3MiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1787051853),
-('83QYwkUNdWY0ZI03nMwJCKsI00znYRrbd5DzZHX7', 1, '103.158.43.43', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiTVNRS1I3RHdGY1pFdTZYT3gzZTJadExrdjROYVNKQVRGalFyd1JaeCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDc6Imh0dHBzOi8vc2l0ZXRyYWNrLmNvZGV0cmlja3ouY29tL3VzZXIvZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1787052678),
-('8edbGr1ZoqXq4Jj4h6OglpgekyvK2nUWDnbeAqsk', 1, '2406:b400:3a:5261:c52b:cbb5:4864:f926', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiNjBZZnlDbGlTSzRLN2NaOFp3OEttcWsyUzJCbFQ4MWN4NjNEZnp5aCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDc6Imh0dHBzOi8vc2l0ZXRyYWNrLmNvZGV0cmlja3ouY29tL3VzZXIvZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1787026616),
-('96kde44txObtS6H8ERjsiY3Tz5Ndf7Y874dGj6iT', 1, '2406:b400:3a:5261:b12e:34f5:945a:c439', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQmxXTFJwSGZDTGRBZk56OFlvVExDWWFIY2dWWFJGME5ua3pQZlhjNSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDU6Imh0dHBzOi8vc2l0ZXRyYWNrLmNvZGV0cmlja3ouY29tL3VzZXIvdmVuZG9ycyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1786953445),
-('IPgivlIsJwHuVS7RSY6SeWq78WTedILvMWaEGtiI', NULL, '34.48.86.77', 'Mozilla/5.0 (compatible; CMS-Checker/1.0; +https://example.com)', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoidW5SUnRnbWc4NXA4U2FHQ2IyR1JFc2lBRFAyZnBzTW1ZTFdXa1NrcCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHBzOi8vc2l0ZXRyYWNrLmNvZGV0cmlja3ouY29tIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1786988452),
-('LeahubG6QfjSxgc8tlQ2KX02TcTsvkVG9hG3BTCL', 1, '2406:b400:3a:5261:b12e:34f5:945a:c439', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiM0kxTDdUQzBGY2QzS0dkWkttcUtOU29WcGJqWTM1NXVBZ2R0V1dDWiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDk6Imh0dHBzOi8vc2l0ZXRyYWNrLmNvZGV0cmlja3ouY29tL3VzZXIvZGFpbHlfd29ya3MiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1786966882),
-('mYhx5KyQ7YzdAQdJe7FLWi0oSLj8xYBCdKGpZDA8', NULL, '136.66.80.4', 'Mozilla/5.0 (compatible; CMS-Checker/1.0; +https://example.com)', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiR3ZsOEtVTEhSREJlWjg2Wk1LM3EzRXFjZFB5Vk1zN0hkRXd3U3BZOCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHBzOi8vc2l0ZXRyYWNrLmNvZGV0cmlja3ouY29tIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1787002765),
-('vNSZyqGMzPNyqsb6rsq0EAWAJuxJF57uY3Vrgi5V', NULL, '54.73.170.99', 'Mozilla/5.0 (compatible; NetcraftSurveyAgent/1.0; +info@netcraft.com)', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoicndwcnVjamRxN21NMDltdUlYZ1R3QkFYRUt3R3p2V0NoZENUY2pUaiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHBzOi8vc2l0ZXRyYWNrLmNvZGV0cmlja3ouY29tIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1786966525);
+-- Private operational seed rows omitted.
 
 -- --------------------------------------------------------
 
@@ -1752,7 +1745,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`settings_id`, `settings_title`, `settings_company`, `settings_email`, `settings_phone`, `settings_address`, `settings_logo`, `settings_wlogo`, `settings_favicon`, `settings_mailer`, `settings_host`, `settings_port`, `settings_uname`, `settings_pwd`, `settings_encryption`, `settings_faddress`, `settings_fname`, `settings_added_on`, `settings_added_by`, `settings_updated_on`, `settings_updated_by`, `settings_status`) VALUES
-(1, 'SiteTrack Pro', 'SiteTrack Pro', 'codetrickz22@gmail.com', '9876543210', '2880 Broadway, \r\nNew York', 'ZqYPr1sor1MbdDkC4mvbyyLsDRWOFbBuge55IzQb.png', 'IlEZnSIQYtqdS8y5oh2oZz9mUxvGwenHYO8DWq5X.png', 'SZeEyOpVkzkovyyOpq02INoETlvY1J9exIFKc7kw.png', 'smtp', 'smtp.hostinger.com', '587', 'support@codetrickz.com', 'j]5k]/R8x?E', 'tls', 'support@codetrickz.com', 'SiteTrack Pro', '2026-06-30 16:41:18', 1, '2026-06-30 21:12:05', 1, 1);
+(1, 'SiteTrack Pro', 'Sample settings 1', 'sample-settings-1@example.invalid', '0000000000', 'Sample settings 1', '', '', '', 'smtp', 'smtp.example.invalid', '587', '', '', 'tls', 'sample-settings-1@example.invalid', 'SiteTrack Pro', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1803,12 +1796,12 @@ CREATE TABLE `subcontractors` (
 --
 
 INSERT INTO `subcontractors` (`subcontractor_id`, `subcontractor_name`, `subcontractor_email`, `subcontractor_phone`, `subcontractor_address`, `subcontractor_added_on`, `subcontractor_added_by`, `subcontractor_updated_on`, `subcontractor_updated_by`, `subcontractor_status`) VALUES
-(1, 'M/s Patel Works', 'patelworks@gmail.com', '7845120030', 'Delhi, India', '2026-07-12 10:58:47', 1, '2026-07-12 11:01:01', 1, 1),
-(2, 'M/s Singh Constructions', 'singhconstructions@gmail.com', '9645152310', 'Mumbai, India', '2026-07-12 10:59:29', 1, '2026-07-12 10:59:29', 1, 1),
-(3, 'M/s Kumar & Co', 'kumar.co@gmail.com', '6845102545', 'Delhi, India', '2026-07-12 11:00:07', 1, '2026-07-12 11:00:07', 1, 1),
-(4, 'M/s Reddy Infra', 'reddyinfra@gmail.com', '9845201256', 'Hydrabad, India', '2026-07-12 11:00:39', 1, '2026-07-12 11:00:39', 1, 1),
-(5, 'V.Ramanjaneyulu', 'Ramanjaneyelu@gmail.com', '9912376662', 'Hyderabad', '2026-08-06 10:59:04', 1, '2026-08-06 11:06:54', 1, 1),
-(6, 'MOHAMMED RIAZUDDIN QUADRI BHATI', 'riyazuddin@gmail.com', '9849933614', 'HYDERABAD', '2026-08-06 15:54:54', 1, '2026-08-06 15:54:54', 1, 1);
+(1, 'Sample subcontractors 1', 'sample-subcontractors-1@example.invalid', '0000000000', 'Sample subcontractors 1', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(2, 'Sample subcontractors 2', 'sample-subcontractors-2@example.invalid', '0000000000', 'Sample subcontractors 2', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(3, 'Sample subcontractors 3', 'sample-subcontractors-3@example.invalid', '0000000000', 'Sample subcontractors 3', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(4, 'Sample subcontractors 4', 'sample-subcontractors-4@example.invalid', '0000000000', 'Sample subcontractors 4', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(5, 'Sample subcontractors 5', 'sample-subcontractors-5@example.invalid', '0000000000', 'Sample subcontractors 5', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(6, 'Sample subcontractors 6', 'sample-subcontractors-6@example.invalid', '0000000000', 'Sample subcontractors 6', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1840,12 +1833,12 @@ CREATE TABLE `subcontractor_ledger` (
 --
 
 INSERT INTO `subcontractor_ledger` (`sledger_id`, `sledger_subcontractor`, `sledger_project`, `sledger_date`, `sledger_type`, `sledger_wpno`, `sledger_description`, `sledger_total`, `sledger_invoice`, `sledger_paid`, `sledger_remarks`, `sledger_added_on`, `sledger_added_by`, `sledger_updated_on`, `sledger_updated_by`, `sledger_status`) VALUES
-(1, 1, 1, '2026-07-12', 4, 'ADV-2025-001', 'Mobilization advance - shuttering', '50000', '50000', '50000', 'Against WO-2025-004', '2026-07-12 23:58:49', 1, '2026-07-12 23:58:49', 1, 1),
-(2, 4, 3, '2026-07-12', 1, 'WO-2025-003', 'Road formation Sector 4', '420000', '420000', '150000', 'Running bill pending', '2026-07-12 23:59:40', 1, '2026-07-12 23:59:40', 1, 1),
-(3, 2, 2, '2026-07-12', 1, 'WO-2025-002', 'Brickwork South Wing', '180000', '180000', '180000', 'Fully paid', '2026-07-13 00:00:34', 1, '2026-07-13 00:00:34', 1, 1),
-(4, 1, 1, '2026-07-13', 1, 'WO-2025-001', 'RCC works Block A - May', '320000', '320000', '200000', 'Balance due 25 May', '2026-07-13 00:01:29', 1, '2026-07-13 00:01:29', 1, 1),
-(5, 4, 2, '2026-08-06', 2, 'AIP/WO/2026-27/01', 'RMC', '700000', '710000', '400000', 'PLEASE APPROVE BALANCE PAYMENT', '2026-08-06 11:20:36', 13, '2026-08-06 11:20:36', 13, 1),
-(6, 5, 3, '2026-08-06', 4, '140', 'Waterproofing', '200000', '0', '50000', 'ADVANCE', '2026-08-06 15:48:36', 1, '2026-08-06 15:48:36', 1, 1);
+(1, 1, 1, '2020-01-01', 4, 'Sample subcontractor ledger 1', 'Sample subcontractor ledger 1', '1000', '1000', '0', 'Sample subcontractor ledger 1', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(2, 4, 3, '2020-01-01', 1, 'Sample subcontractor ledger 2', 'Sample subcontractor ledger 2', '1000', '1000', '0', 'Sample subcontractor ledger 2', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(3, 2, 2, '2020-01-01', 1, 'Sample subcontractor ledger 3', 'Sample subcontractor ledger 3', '1000', '1000', '0', 'Sample subcontractor ledger 3', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(4, 1, 1, '2020-01-01', 1, 'Sample subcontractor ledger 4', 'Sample subcontractor ledger 4', '1000', '1000', '0', 'Sample subcontractor ledger 4', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(5, 4, 2, '2020-01-01', 2, 'Sample subcontractor ledger 5', 'Sample subcontractor ledger 5', '1000', '1000', '0', 'Sample subcontractor ledger 5', '2020-01-01 00:00:00', 13, '2020-01-01 00:00:00', 13, 1),
+(6, 5, 3, '2020-01-01', 4, 'Sample subcontractor ledger 6', 'Sample subcontractor ledger 6', '1000', '1000', '0', 'Sample subcontractor ledger 6', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1911,20 +1904,20 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `user_role`, `user_name`, `user_lname`, `user_email`, `user_phone`, `user_password`, `user_vpassword`, `user_image`, `user_added_on`, `user_added_by`, `user_updated_on`, `user_updated_by`, `user_status`) VALUES
-(1, 1, 'Admin', 'admin', 'codetrickz22@gmail.com', '9876543210', '$2y$10$IoKjHq5F1GXbpbYhh0DO0.UzVXT8j0ND/7krWBCFQv53reTqKzp2O', '', 'k5tfKVjWQbdHhsS4lUKHEJvcOYzl4251XI9vlsbp.jpg', '2026-06-30 18:11:06', 1, '2026-07-26 21:01:41', 1, 1),
-(2, 2, 'Rajesh Kumar', 'rajesh', 'rajesh@gmail.com', '8565451520', '$2y$10$ZM2oQk/BzKukOgoHhz1FGuJI1bhBZzLZwVRM9v5mYL5xobtiH.8Ni', '', 'bvg1RsuX1TfpUoHMXDYnkxXnXSQnD09zbBhdcGCB.jpg', '2026-06-30 21:47:44', 1, '2026-07-26 20:52:11', 1, 1),
-(3, 3, 'Ravi Kumar', 'ravi', 'ravi@gmail.com', '7545152350', '$2y$10$2F5zJ5qyzpnzbGXtgj2eTeERBKO7ynRGUfChNwRmeMTTNSmpF5l1G', '', 'dtELYhJMVycUk7xAhhZvpujV4u0MYAc0ET6mnyH1.jpg', '2026-07-07 18:38:26', 1, '2026-07-26 20:51:55', 1, 1),
-(4, 4, 'Mohan Reddy', 'mohan', 'mohan@gmail.com', '8565154520', '$2y$10$dHW2ZydlE0Q6jGd1gWzMf.vVHi5V3cZuQpHZDcZVJxy1SXRviSryu', '', 'gZ03C1bVtbSt2bBIBZ3S1NtUKQ2JHlCHetNgyPKn.jpg', '2026-07-07 18:39:04', 1, '2026-07-26 20:51:44', 1, 1),
-(5, 5, 'Priya Mehta', 'priya', 'priyamehta@gmail.com', '9601203256', '$2y$10$zF0ryATXf9U0pnFi99A4Ku/SIKGWR7A/5RyGo4i6Xbm8XmAKmdeWS', '', '2GxDYSaV9028OPoq09JMA7NS4svKiF675tXEva2Z.jpg', '2026-07-07 18:39:56', 1, '2026-07-26 20:51:33', 1, 1),
-(6, 6, 'John', 'john', 'john@gmail.com', '7563001569', '$2y$10$65Yt1o6NdQA9rV64vx5sTu40sZ6kSANNI/MzvY3FUarvmKQSQYB8.', '', '65QnqGsyxhQgrtKWfxU7QA4EiZ1aWylQAsAQeXoB.jpg', '2026-07-07 18:40:46', 1, '2026-07-26 20:51:17', 1, 1),
-(7, 7, 'Thilak', 'thilak', 'thilak@gmail.com', '9655001563', '$2y$10$52juhwGKpwzkkLY6hJeQ2uli2c6k4YW8GtZeAfs4kJm1MVKfan/v2', '', 'lvjdqqFZLDCDX26DmNDlUWvsyQBMhNxk6Rkh1xVH.jpg', '2026-07-07 18:41:39', 1, '2026-07-26 20:51:08', 1, 1),
-(8, 7, 'Shiva', 'shiva', 'shiva@gmail.com', '9645102352', '$2y$10$.2PelEMt/qRyjKETdE4gzecwWwtCKyEmkNhtaC793KzKNjurPAHIe', '', 'itmUPH4CGDwMtJq4bqOEVInk1hjhf0cs68yb31HO.jpg', '2026-07-07 18:42:14', 1, '2026-07-26 20:50:57', 1, 1),
-(9, 3, 'Anil Sharma', 'anil', 'anil@gmail.com', '9601452315', '$2y$10$s9N98S.y5vDQSCj6lJBDPegPaK0AUh56qfm/zE5KRd0mAQDcDuvIm', '', 'p2rFYcCiEUrrC9z0UlLorqrdssam8tRIdH1VoH8O.png', '2026-07-07 18:43:06', 1, '2026-07-26 20:50:48', 1, 1),
-(10, 3, 'Yash', 'yash.1234', 'yash@gmail.com', '9645001536', '$2y$10$4Sw1wavxXLDsLAS.06LQ4.TvMvbo5cNqp8va45X/lyLlVdkLbPs7e', '', NULL, '2026-07-26 20:48:00', 1, '2026-07-26 20:53:13', 1, 1),
-(11, 4, 'Bhavani', 'bhavani', 'Bhavani@gmail.com', '0000000000', '$2y$10$DeHQw0HdopE7lUUPLMY51efQ1NTLCqYdxVixyS8HhjvNEy/9vjUIu', '', NULL, '2026-08-05 10:32:26', 1, '2026-08-05 10:32:26', 1, 1),
-(12, 7, 'Raju', 'Raju', 'Raju@gmail.com', '0000000000', '$2y$10$6DaEbtpY1pLDdRcni.5w2O/x3t7pA0VKv25TYnnDLuYsF0kqMWTTy', '', NULL, '2026-08-05 10:32:49', 1, '2026-08-05 10:32:49', 1, 1),
-(13, 5, 'Amrutha', 'Amrutha', 'Amrutha@gmail.com', '00000000000', '$2y$10$VU4hBY1YF2rOQ9sGKPg.jeP.4Mc5pa6Wx9CF1XIxbr6yixZvGXZJy', '', NULL, '2026-08-05 10:33:36', 1, '2026-08-05 10:33:36', 1, 1),
-(14, 7, 'Surendra', 'surendra', 'Surendra@gmail.com', '0000000000', '$2y$10$Rt2.ZOUbgK00MlfrqZD5UO.c/KfMKD7qHsWUlaRvGk/v1s/vHxq2a', '', NULL, '2026-08-05 10:34:09', 1, '2026-08-05 10:37:34', 1, 1);
+(1, 1, 'Sample users 1', 'sample-user-1', 'sample-users-1@example.invalid', '0000000000', '$2y$12$fZJb1PiLwpXtMC3RiGEr3OuM8v8SGw.CJTJYUsS6HhQYsyczsSQHu', '', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(2, 2, 'Sample users 2', 'sample-user-2', 'sample-users-2@example.invalid', '0000000000', '$2y$12$fZJb1PiLwpXtMC3RiGEr3OuM8v8SGw.CJTJYUsS6HhQYsyczsSQHu', '', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(3, 3, 'Sample users 3', 'sample-user-3', 'sample-users-3@example.invalid', '0000000000', '$2y$12$fZJb1PiLwpXtMC3RiGEr3OuM8v8SGw.CJTJYUsS6HhQYsyczsSQHu', '', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(4, 4, 'Sample users 4', 'sample-user-4', 'sample-users-4@example.invalid', '0000000000', '$2y$12$fZJb1PiLwpXtMC3RiGEr3OuM8v8SGw.CJTJYUsS6HhQYsyczsSQHu', '', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(5, 5, 'Sample users 5', 'sample-user-5', 'sample-users-5@example.invalid', '0000000000', '$2y$12$fZJb1PiLwpXtMC3RiGEr3OuM8v8SGw.CJTJYUsS6HhQYsyczsSQHu', '', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(6, 6, 'Sample users 6', 'sample-user-6', 'sample-users-6@example.invalid', '0000000000', '$2y$12$fZJb1PiLwpXtMC3RiGEr3OuM8v8SGw.CJTJYUsS6HhQYsyczsSQHu', '', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(7, 7, 'Sample users 7', 'sample-user-7', 'sample-users-7@example.invalid', '0000000000', '$2y$12$fZJb1PiLwpXtMC3RiGEr3OuM8v8SGw.CJTJYUsS6HhQYsyczsSQHu', '', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(8, 7, 'Sample users 8', 'sample-user-8', 'sample-users-8@example.invalid', '0000000000', '$2y$12$fZJb1PiLwpXtMC3RiGEr3OuM8v8SGw.CJTJYUsS6HhQYsyczsSQHu', '', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(9, 3, 'Sample users 9', 'sample-user-9', 'sample-users-9@example.invalid', '0000000000', '$2y$12$fZJb1PiLwpXtMC3RiGEr3OuM8v8SGw.CJTJYUsS6HhQYsyczsSQHu', '', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(10, 3, 'Sample users 10', 'sample-user-10', 'sample-users-10@example.invalid', '0000000000', '$2y$12$fZJb1PiLwpXtMC3RiGEr3OuM8v8SGw.CJTJYUsS6HhQYsyczsSQHu', '', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(11, 4, 'Sample users 11', 'sample-user-11', 'sample-users-11@example.invalid', '0000000000', '$2y$12$fZJb1PiLwpXtMC3RiGEr3OuM8v8SGw.CJTJYUsS6HhQYsyczsSQHu', '', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(12, 7, 'Sample users 12', 'sample-user-12', 'sample-users-12@example.invalid', '0000000000', '$2y$12$fZJb1PiLwpXtMC3RiGEr3OuM8v8SGw.CJTJYUsS6HhQYsyczsSQHu', '', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(13, 5, 'Sample users 13', 'sample-user-13', 'sample-users-13@example.invalid', '0000000000', '$2y$12$fZJb1PiLwpXtMC3RiGEr3OuM8v8SGw.CJTJYUsS6HhQYsyczsSQHu', '', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(14, 7, 'Sample users 14', 'sample-user-14', 'sample-users-14@example.invalid', '0000000000', '$2y$12$fZJb1PiLwpXtMC3RiGEr3OuM8v8SGw.CJTJYUsS6HhQYsyczsSQHu', '', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1956,12 +1949,12 @@ CREATE TABLE `vendors` (
 --
 
 INSERT INTO `vendors` (`vendor_id`, `vendor_category`, `vendor_name`, `vendor_company`, `vendor_mobile`, `vendor_altno`, `vendor_location`, `vendor_type`, `vendor_remarks`, `vendor_card`, `vendor_added_on`, `vendor_added_by`, `vendor_updated_on`, `vendor_updated_by`, `vendor_status`, `vendor_trash`) VALUES
-(1, 1, 'Rajesh Gupta', 'ACC Cements Distributor', '9876543210', '040-23456789', 'Hyderabad', 'OPC/PPC Cement all grades', NULL, 'imOxFXXmGXJ0ZSCgkvaXnwIp8U4RAW7eHziNHcm3.pdf', '2026-07-12 11:20:05', 1, '2026-07-12 11:31:38', 1, 1, 1),
-(2, 2, 'Suresh Patel', 'SAIL Authorized Dealer', '9988776655', '9876543211', 'Bengaluru', 'TMT Fe500/Fe550 all dia', 'Test Remarks', NULL, '2026-07-12 11:21:28', 1, '2026-07-12 11:21:28', 1, 1, 1),
-(3, 7, 'Mahesh Kumar', 'Asian Paints Retailer', '9123456780', NULL, 'Hyderabad', 'Interior/Exterior paints', NULL, NULL, '2026-07-12 11:23:17', 1, '2026-07-12 11:31:45', 1, 1, 1),
-(4, 1, 'NAGARJUNA', 'NAGARJUNA', '9999999999', NULL, 'HYD', 'CEMENT', NULL, NULL, '2026-08-06 11:50:10', 1, '2026-08-06 11:50:10', 1, 1, 1),
-(5, 11, 'SS GLASS', 'M/s. SA GLASS', '07893482534', NULL, 'GACHIBOWLI', 'GLASS', NULL, NULL, '2026-08-06 12:01:28', 1, '2026-08-06 12:01:28', 1, 1, 1),
-(6, 10, 'Kalam', 'Kalam', '99999944', NULL, 'hyd', 'wood', NULL, NULL, '2026-08-06 12:03:07', 11, '2026-08-06 12:03:07', 11, 1, 1);
+(1, 1, 'Sample vendors 1', 'Sample vendors 1', '0000000000', '0000000000', 'Sample vendors 1', 'Sample vendors 1', NULL, NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1, 1),
+(2, 2, 'Sample vendors 2', 'Sample vendors 2', '0000000000', '0000000000', 'Sample vendors 2', 'Sample vendors 2', 'Sample vendors 2', NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1, 1),
+(3, 7, 'Sample vendors 3', 'Sample vendors 3', '0000000000', '0000000000', 'Sample vendors 3', 'Sample vendors 3', NULL, NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1, 1),
+(4, 1, 'Sample vendors 4', 'Sample vendors 4', '0000000000', '0000000000', 'Sample vendors 4', 'Sample vendors 4', NULL, NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1, 1),
+(5, 11, 'Sample vendors 5', 'Sample vendors 5', '0000000000', '0000000000', 'Sample vendors 5', 'Sample vendors 5', NULL, NULL, '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1, 1),
+(6, 10, 'Sample vendors 6', 'Sample vendors 6', '0000000000', '0000000000', 'Sample vendors 6', 'Sample vendors 6', NULL, NULL, '2020-01-01 00:00:00', 11, '2020-01-01 00:00:00', 11, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1993,9 +1986,9 @@ CREATE TABLE `vendor_ledger` (
 --
 
 INSERT INTO `vendor_ledger` (`vledger_id`, `vledger_vendor`, `vledger_project`, `vledger_date`, `vledger_type`, `vledger_pono`, `vledger_description`, `vledger_po_total`, `vledger_invoice`, `vledger_paid`, `vledger_remarks`, `vledger_added_on`, `vledger_added_by`, `vledger_updated_on`, `vledger_updated_by`, `vledger_status`) VALUES
-(1, 2, 2, '2026-07-13', 1, 'PO-MAT-002', 'TMT Fe500 - 8 MT', '464000', '468000', '300000', 'Balance pending', '2026-07-13 07:42:34', 1, '2026-07-13 07:42:34', 1, 1),
-(2, 1, 1, '2026-07-13', 1, 'PO-MAT-001', 'Cement OPC 53 - 300 bags', '114000', '114000', '114000', 'Paid via NEFT', '2026-07-13 07:43:32', 1, '2026-07-13 07:43:32', 1, 1),
-(3, 3, 1, '2026-07-13', 1, 'PO-MAT-003', 'Green Paint - 3 Litre', '48000', '48000', '0', 'Payment due', '2026-07-13 07:44:39', 1, '2026-07-13 07:44:39', 1, 1);
+(1, 2, 2, '2020-01-01', 1, 'Sample vendor ledger 1', 'Sample vendor ledger 1', '1000', '1000', '0', 'Sample vendor ledger 1', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(2, 1, 1, '2020-01-01', 1, 'Sample vendor ledger 2', 'Sample vendor ledger 2', '1000', '1000', '0', 'Sample vendor ledger 2', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1),
+(3, 3, 1, '2020-01-01', 1, 'Sample vendor ledger 3', 'Sample vendor ledger 3', '1000', '1000', '0', 'Sample vendor ledger 3', '2020-01-01 00:00:00', 1, '2020-01-01 00:00:00', 1, 1);
 
 --
 -- Indexes for dumped tables

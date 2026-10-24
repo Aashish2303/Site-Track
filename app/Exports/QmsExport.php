@@ -14,7 +14,7 @@ use Auth;
 use DB;
 use App\Models\Project;
 
-class QmsExport implements FromView, ShouldAutoSize, WithEvents
+class QmsExport extends PrivacyValueBinder implements FromView, ShouldAutoSize, WithEvents, \Maatwebsite\Excel\Concerns\WithCustomValueBinder
 {
     use Exportable;
 

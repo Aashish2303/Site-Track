@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 /** One permission policy for pages, AJAX endpoints, writes, exports and navigation. */
 class RoleAccess
 {
-    private const PERSONAL = ['user.dashboard', 'user.profile', 'user.change_password', 'user.check_current_password', 'user.logout', 'user.leave_project'];
+    private const PERSONAL = ['user.dashboard', 'user.profile', 'user.change_password', 'user.logout', 'user.leave_project', 'user.private_file', 'user.delete_account'];
 
     private const ALIASES = [
         'user.select_project' => ['user.projects'],

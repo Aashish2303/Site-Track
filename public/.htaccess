@@ -5,6 +5,9 @@
 
     RewriteEngine On
 
+    # Personal files are available only through authenticated PHP file routes.
+    RewriteRule ^assets/admin/uploads/(profile|vendor|issue|quotation)(/|$) - [F,L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

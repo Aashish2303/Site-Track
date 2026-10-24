@@ -72,7 +72,7 @@
                   <div class="col-xl-6 col-md-6">
                      <div class="mb-3">
                         <label class="form-label d-block">Password</label>
-                        <input type="text" name="settings_pwd" id="settings_pwd" class="form-control w-100" value="{{ Request()->settings->settings_pwd }}" autocomplete="off">
+                        <input type="password" name="settings_pwd" autocomplete="new-password" id="settings_pwd" class="form-control w-100">
                         @if($errors->has('settings_pwd'))
                         <div>{{ $errors->first('settings_pwd') }}</div>
                         @endif

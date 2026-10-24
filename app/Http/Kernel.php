@@ -32,6 +32,7 @@ class Kernel extends HttpKernel
         'web' => [
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \App\Http\Middleware\PrivacyStartup::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
@@ -67,6 +68,7 @@ class Kernel extends HttpKernel
         'checkuser' => \App\Http\Middleware\CheckUser::class,
         'checkuserlogin' => \App\Http\Middleware\CheckUserLogin::class,
         'checkpermission' => \App\Http\Middleware\CheckPermission::class,
+        'privacyboundary' => \App\Http\Middleware\PrivacyBoundary::class,
         'validateinput' => \App\Http\Middleware\ValidateUserInput::class,
         'selectedproject' => \App\Http\Middleware\SelectedProject::class,
     ];

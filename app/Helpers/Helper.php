@@ -22,7 +22,7 @@ class Helper
             Config::set('mail.mailers.smtp', [
                 'transport' => 'smtp', 'host' => $settings->settings_host,
                 'port' => $settings->settings_port, 'encryption' => $settings->settings_encryption,
-                'username' => $settings->settings_uname, 'password' => $settings->settings_pwd,
+                'username' => $settings->settings_uname, 'password' => app(\App\Services\ServiceSecrets::class)->smtp($settings),
                 'timeout' => 10,
             ]);
             Config::set('mail.from', ['address' => $settings->settings_faddress, 'name' => $settings->settings_fname]);

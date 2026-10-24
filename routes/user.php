@@ -51,12 +51,13 @@ Route::middleware(['common'])->group(function () {
         Route::post('/', [LoginController::class, 'index'])->middleware('throttle:login')->name('login.submit');
         Route::get('forgot_password', [LoginController::class, 'forgot_password'])->name('forgot_password');
         Route::post('forgot_password', [LoginController::class, 'forgot_password'])->middleware('throttle:recovery')->name('forgot_password.submit');
-        Route::get('reset-password/{token}', [LoginController::class, 'reset_password'])->name('reset_password');
+        Route::get('reset-password', [LoginController::class, 'reset_password'])->name('reset_password');
+        Route::get('reset-password/{token}', fn (string $token) => redirect()->to(route('user.reset_password').'#token='.rawurlencode($token)))->where('token', '[a-f0-9]{64}');
         Route::post('reset-password', [LoginController::class, 'reset_password'])->middleware('throttle:recovery')->name('reset_password.submit');
 
     });
 
-    Route::middleware(['checkuser','auth.session','checkpermission','selectedproject','validateinput'])->group(function () {
+    Route::middleware(['checkuser','auth.session','checkpermission','privacyboundary','selectedproject','validateinput'])->group(function () {
 
         Route::prefix('user')->group(function () {
 
@@ -68,9 +69,9 @@ Route::middleware(['common'])->group(function () {
             Route::post('site-materials/usage', [\App\Http\Controllers\User\SiteMaterialController::class, 'store'])->name('record_material_usage');
             Route::get('labour-payments', [\App\Http\Controllers\User\LabourPaymentController::class, 'index'])->name('labour_payments');
             Route::post('labour-payments', [\App\Http\Controllers\User\LabourPaymentController::class, 'store'])->name('record_labour_payment');
-            Route::get('progress/{id}/review', [\App\Http\Controllers\User\ProgressReviewController::class, 'show'])->whereNumber('id')->name('progress_review');
-            Route::post('progress/{id}/review', [\App\Http\Controllers\User\ProgressReviewController::class, 'review'])->whereNumber('id')->name('review_progress');
-            Route::get('progress/{id}/photos/{photo}', [\App\Http\Controllers\User\ProgressReviewController::class, 'photo'])->whereNumber(['id', 'photo'])->name('progress_photo');
+            Route::get('progress/{id}/review', [\App\Http\Controllers\User\ProgressReviewController::class, 'show'])->where('id', '(?:pr_[A-Za-z0-9_-]+|[0-9]+)')->name('progress_review');
+            Route::post('progress/{id}/review', [\App\Http\Controllers\User\ProgressReviewController::class, 'review'])->where('id', '(?:pr_[A-Za-z0-9_-]+|[0-9]+)')->name('review_progress');
+            Route::get('progress/{id}/photos/{photo}', [\App\Http\Controllers\User\ProgressReviewController::class, 'photo'])->where(['id' => '(?:pr_[A-Za-z0-9_-]+|[0-9]+)', 'photo' => '(?:pr_[A-Za-z0-9_-]+|[0-9]+)'])->name('progress_photo');
 
             //Dashboard
 
@@ -288,11 +289,14 @@ Route::middleware(['common'])->group(function () {
             Route::match(['get','post'],'settings', [SettingsController::class, 'index'])->name('settings');
             Route::match(['get','post'],'email_config_settings', [SettingsController::class, 'email_config_settings'])->name('email_config_settings');
 
+            Route::get('files/{kind}/{reference}', [\App\Http\Controllers\User\PrivateFileController::class, 'show'])->name('private_file');
+
+            Route::post('account/delete', [\App\Http\Controllers\User\AccountDeletionController::class, 'destroy'])->middleware('throttle:password-change')->name('delete_account');
+
             //Profile
 
             Route::match(['get','post'],'profile', [ProfileController::class, 'index'])->name('profile');
             Route::match(['get','post'],'change_password', [ProfileController::class, 'change_password'])->middleware('throttle:password-change')->name('change_password');
-            Route::post('check_current_password', [ProfileController::class, 'check_current_password'])->middleware('throttle:password-check')->name('check_current_password');
 
             //Logout
 

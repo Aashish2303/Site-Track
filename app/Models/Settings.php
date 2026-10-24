@@ -12,5 +12,7 @@ class Settings extends Model
 
     public $timestamps = false;
 
+    protected $hidden = ['settings_pwd', 'settings_uname', 'settings_host', 'settings_port'];
+
     protected $fillable = ['settings_title','settings_company','settings_email','settings_phone','settings_address','settings_logo','settings_wlogo','settings_favicon','settings_mailer','settings_host','settings_port','settings_uname','settings_pwd','settings_encryption','settings_faddress','settings_fname','settings_added_on','settings_added_by','settings_updated_on','settings_updated_by','settings_status'];
 }

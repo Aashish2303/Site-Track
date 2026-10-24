@@ -111,7 +111,7 @@
       <div class="gap-2 d-flex align-items-center flex-wrap">
          <a href="{{ route('user.vendor_ledger') }}" class="btn btn-icon btn-white" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Refresh" data-bs-original-title="Refresh"><i class="ti ti-refresh"></i></a>
          @if(Helper::userHasPermission('user.vendor_ledger_download_excel'))
-         <a href="{{ route('user.vendor_ledger_download_excel') }}" id="excel_download" class="btn btn-success"><i class="ti ti-download me-1"></i>Download</a>
+         <a href="{{ route('user.vendor_ledger_download_excel', ['project' => request('project')]) }}" id="excel_download" class="btn btn-success"><i class="ti ti-download me-1"></i>Download</a>
          @endif
          @if(Helper::userHasPermission('user.add_vendor_ledger'))
          <a href="{{ route('user.add_vendor_ledger') }}" class="btn btn-primary"><i class="ti ti-square-rounded-plus me-1"></i>Add Vendor Ledger</a>
@@ -206,6 +206,7 @@ var dataTable = $('#vendor_ledger_table').DataTable({
 
                 var token = "{{ csrf_token() }}";
                 data._token = token;
+                data.project = new URLSearchParams(location.search).get('project') || '';
             }
     },
     columns: [

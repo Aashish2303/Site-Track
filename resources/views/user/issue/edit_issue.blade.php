@@ -132,7 +132,7 @@
                                  <div class="d-flex align-items-center justify-content-between gap-2">
                                     <label class="form-label">Image</label>
                                     @if(!empty($issue->issue_image))
-                                    <a href="{{ asset(config('constants.admin_path').'uploads/issue/'.$issue->issue_image) }}" target="_blank">Click Here to View Image</a>
+                                    <a href="{{ route('user.private_file', ['kind' => 'issue', 'reference' => app(\App\Services\PublicReference::class)->encode('issues', $issue->issue_id)]) }}" target="_blank">Click Here to View Image</a>
                                     @endif
                                  </div>
                                  <input type="file" name="issue_image" class="form-control" accept="image/*">

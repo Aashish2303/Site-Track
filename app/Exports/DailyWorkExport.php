@@ -14,7 +14,7 @@ use Auth;
 use DB;
 use App\Models\DailyWork;
 
-class DailyWorkExport implements FromView, ShouldAutoSize, WithEvents
+class DailyWorkExport extends PrivacyValueBinder implements FromView, ShouldAutoSize, WithEvents, \Maatwebsite\Excel\Concerns\WithCustomValueBinder
 {
     use Exportable;
 
