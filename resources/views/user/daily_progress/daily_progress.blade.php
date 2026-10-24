@@ -64,16 +64,16 @@
          <div class="row mb-4">
             <div class="col-md-2">
                <div class="mb-3">
-                  <input type="date" name="start_date" id="start_date" class="form-control" onchange="filter_options()">
+                  <input type="date" name="start_date" id="start_date" class="form-control" data-st-change="filter_options()">
                </div>
             </div>
             <div class="col-md-2">
                <div class="mb-3">
-                  <input type="date" name="end_date" id="end_date" class="form-control" onchange="filter_options()">
+                  <input type="date" name="end_date" id="end_date" class="form-control" data-st-change="filter_options()">
                </div>
             </div>
             <div class="col-md-2">
-               <select name="status" id="status" class="select" onchange="filter_options()">
+               <select name="status" id="status" class="select" data-st-change="filter_options()">
                   <option value="">Status</option>
                   <option value="1">Completed</option>
                   <option value="2">Partial</option>
@@ -121,7 +121,7 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 var dataTable = $('#daily_progress_table').DataTable({
     processing: true,
     serverSide: true,

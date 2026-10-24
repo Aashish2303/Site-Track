@@ -53,7 +53,7 @@ Route::middleware(['common'])->group(function () {
         Route::post('forgot_password', [LoginController::class, 'forgot_password'])->middleware('throttle:recovery')->name('forgot_password.submit');
         Route::get('reset-password', [LoginController::class, 'reset_password'])->name('reset_password');
         Route::get('reset-password/{token}', fn (string $token) => redirect()->to(route('user.reset_password').'#token='.rawurlencode($token)))->where('token', '[a-f0-9]{64}');
-        Route::post('reset-password', [LoginController::class, 'reset_password'])->middleware('throttle:recovery')->name('reset_password.submit');
+        Route::post('reset-password', [LoginController::class, 'reset_password'])->middleware('throttle:reset-token')->name('reset_password.submit');
 
     });
 

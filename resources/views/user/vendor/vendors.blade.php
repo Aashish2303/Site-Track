@@ -29,7 +29,7 @@
       <div class="card-body">
          <div class="row mb-4">
             <div class="col-md-2">
-               <select name="category" id="category" class="select" onchange="filter_options()">
+               <select name="category" id="category" class="select" data-st-change="filter_options()">
                   <option value="">Category</option>
                   @foreach($categories as $category)
                   <option value="{{ $category->mcategory_id }}">{{ $category->mcategory_name }}</option>
@@ -59,7 +59,7 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 var dataTable = $('#vendor_table').DataTable({
     processing: true,
     serverSide: true,

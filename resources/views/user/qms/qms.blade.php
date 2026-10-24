@@ -315,14 +315,14 @@
    <div class="qms-filter-bar">
       <div class="qms-filter-field">
          <label for="project">Select Project</label>
-         <select name="project" id="project" class="form-control select2" data-toggle="select2" onchange="select_filter()">
+         <select name="project" id="project" class="form-control select2" data-toggle="select2" data-st-change="select_filter()">
             @foreach($projects as $project)
             <option value="{{ $project->project_id }}" {{ ($selectedProject && $selectedProject->project_id == $project->project_id) ? 'selected':'' }}>{{ $project->project_name }}</option>
             @endforeach
          </select>
       </div>
       <div class="qms-filter-actions">
-         {{-- <a href="javascript:void(0)" class="btn btn-danger"><i class="ti ti-file-type-pdf me-1"></i>Print / PDF</a> --}}
+
          <a href="{{ route('user.qms_download_excel',['project'=>$selectedProject->project_id]) }}" class="btn btn-success"><i class="ti ti-download me-1"></i>Download</a>
       </div>
    </div>
@@ -484,7 +484,7 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 function select_filter() {
    var project = $('#project').val();
    window.location.href = "{{ route('user.qms') }}?project=" + project;

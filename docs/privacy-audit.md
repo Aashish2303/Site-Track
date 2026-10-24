@@ -16,7 +16,7 @@ flowchart LR
   A -->|Recipient email and reset-link message only| M[Configured SMTP provider]
   M --> U[Recipient mailbox]
   A -->|Role-authorised Excel/PDF or file download| X[User-controlled downloaded copies]
-  A -->|Structural event/class/UUID only| L[Redacted local application logs]
+  A -->|Structural event/class/UUID and relative source frames only| L[Redacted local application logs]
   B -->|IP, request path and browser headers| W[Hostinger web/access/security infrastructure]
   D -. Hosting backup policies, not controlled by this code .-> K[Backups]
   F -. Hosting backup policies, not controlled by this code .-> K
@@ -105,7 +105,7 @@ This is a bounded, implemented erasure flow, not a claim that arbitrary document
 | Store | Implemented retention | Verification / dependency |
 |---|---|---|
 | Reset tokens | 60-minute validity, single-use; expired rows removed by pruning | Token expiry/replay tested; scheduled physical pruning depends on cron. |
-| Login/recovery limiter cache | Short bounded TTL: per-minute limits; login up to 15 minutes; recovery account up to an hour | Limits tested including rotating usernames/IPs; HMAC keys reduce direct identifier exposure. |
+| Login/recovery limiter cache | Login 5/minute/IP, up to 15-minute account windows; recovery/reset 3/hour/IP in separate buckets | Limits tested including rotating usernames/IPs; HMAC keys reduce direct identifier exposure. |
 | Sessions / temporary old form values / reference map | Encrypted server files, default 120-minute idle lifetime; session invalidation and pruning | Cookie/encryption/deletion tested. Existing pre-audit sessions/reset/API tokens purged on upgrade. |
 | Excel/PHP upload temporary files | PHP/request cleanup; stale spreadsheet temp files older than 24 hours removed by pruning | Private 0700/0600 directory/file permissions; remote temp storage disabled. |
 | Application logs | Redacted diagnostics, seven days; pre-audit log contents removed on upgrade | Log processor and legacy cleanup tested. Rotation happens when logging; pruning provides independent cleanup if scheduled. |

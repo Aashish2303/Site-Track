@@ -253,9 +253,9 @@ class SiteWorkflowTest extends TestCase
         DB::table('site_workflow_installations')->where('version', 1)->delete();
         app()->forgetInstance(\App\Services\WorkflowSchema::class);
         $this->selected()->get('/user/projects')->assertOk();
-        $this->get('/user/reports')->assertStatus(503)->assertSee('awaiting activation');
-        $this->get('/user/site-materials')->assertStatus(503)->assertSee('awaiting activation');
-        $this->get('/user/labour-payments')->assertStatus(503)->assertSee('awaiting activation');
+        $this->get('/user/reports')->assertStatus(503)->assertSee('temporarily unavailable')->assertHeader('X-Correlation-ID');
+        $this->get('/user/site-materials')->assertStatus(503)->assertSee('temporarily unavailable')->assertHeader('X-Correlation-ID');
+        $this->get('/user/labour-payments')->assertStatus(503)->assertSee('temporarily unavailable')->assertHeader('X-Correlation-ID');
     }
 
     public function test_existing_quotation_actions_resolve_quotation_ids_and_respect_the_selected_site(): void

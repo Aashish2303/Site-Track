@@ -17,7 +17,7 @@
 <script src="{{ asset(config('constants.admin_path').'js/script.js') }}"></script>
 <script src="{{ asset(config('constants.admin_path').'js/theme-script.js') }}"></script>
 <script src="{{ asset(config('constants.admin_path').'js/sitetrack-ui.js') }}?v={{ filemtime(public_path(config('constants.admin_path').'js/sitetrack-ui.js')) }}"></script>
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 @if(Session::has('success'))
 Swal.fire({
     title: "Success!",
@@ -39,3 +39,5 @@ Swal.fire({
 });
 @endif
 </script>
+
+<script src="{{ asset(config('constants.admin_path').'js/sitetrack-events.js') }}?v={{ filemtime(public_path(config('constants.admin_path').'js/sitetrack-events.js')) }}"></script>

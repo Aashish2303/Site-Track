@@ -256,20 +256,20 @@
             <div class="card-body">
                <div class="overflow-auto">
                   @forelse($projects as $project)
-                  @php 
+                  @php
                   $boqs = App\Models\ProjectBoq::where('pboq_project',$project->project_id)->get();
                   $boq_total = array_sum(array_column($boqs->toArray(),'pboq_amount'));
                   $all_progress = App\Models\DailyProgress::join('project_boqs','project_boqs.pboq_id', 'daily_progress.dprogress_boq')->where('dprogress_project',$project->project_id)->get();
                   $progress_amount = array();
                   @endphp
                   @foreach($all_progress as $progress)
-                  @php 
+                  @php
                   $progress_qty[$progress->dprogress_boq][] = $progress->dprogress_qty;
                   $progress_amount[] = $progress->dprogress_qty * $progress->pboq_rate;
                   @endphp
                   @endforeach
-                  @php 
-                  $done_value = array_sum($progress_amount); 
+                  @php
+                  $done_value = array_sum($progress_amount);
                   $total_average = $boq_total > 0 ? ($done_value / $boq_total) * 100 : 0;
                   $total_average = round($total_average);
                   $total_average = max(0, min(100, $total_average));
@@ -279,7 +279,7 @@
                      <div class="dashboard-project-progress-head">
                         <div class="min-w-0">
                            <h6 class="fw-semibold fs-14 text-truncate mb-1">
-                              <a href="javascript:void(0)">{{ $project->project_name }}</a>
+                              <a href="#">{{ $project->project_name }}</a>
                            </h6>
                            <p class="fs-13 mb-0">{{ $project->project_location }} - {{ $project->client->client_name }}</p>
                         </div>
@@ -311,7 +311,7 @@
                      <div class="d-flex align-items-center">
                            <div class="ms-2">
                               <div>
-                                 <h6 class="fw-semibold fs-14 text-truncate mb-1"><a href="javascript:void(0)">{{ date('d M Y',strtotime($pending_indent->indent_date)) }}</a></h6>
+                                 <h6 class="fw-semibold fs-14 text-truncate mb-1"><a href="#">{{ date('d M Y',strtotime($pending_indent->indent_date)) }}</a></h6>
                                  <p class="fs-13 mb-0">{{ $pending_indent->project->project_name }}</p>
                               </div>
                            </div>

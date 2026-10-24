@@ -148,7 +148,7 @@ class ProjectController extends Controller
 
                         if(Helper::userHasPermission('user.project_status'))
                         {
-                            $btn .= '<a href="javascript:void(0)" class="btn btn-icon btn-sm btn-dark" onclick="project_status('.$row->project_id.')" title="Status"><i class="ti ti-check"></i></a> ';
+                            $btn .= '<a href="#" class="btn btn-icon btn-sm btn-dark" data-st-click="project_status('.$row->project_id.')" title="Status"><i class="ti ti-check"></i></a> ';
                         }
 
                         return $btn;

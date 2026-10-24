@@ -61,7 +61,7 @@
                         @if(Helper::userHasPermission('user.indent_item_status'))
                         <td>
                            <div class="d-flex align-items-center gap-2">
-                             <a href="javascript:void(0)" class="btn btn-icon btn-sm btn-dark" onclick="indent_item_status({{ $item->iitem_id }})" title="Status"><i class="ti ti-check"></i></a>
+                             <a href="#" class="btn btn-icon btn-sm btn-dark" data-st-click="indent_item_status({{ $item->iitem_id }})" title="Status"><i class="ti ti-check"></i></a>
                            </div>
                         </td>
                         @endif
@@ -88,7 +88,7 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 function indent_item_status(item_id)
 {
 	var csrf = "{{ csrf_token() }}";

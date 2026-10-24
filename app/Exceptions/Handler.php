@@ -2,7 +2,12 @@
 
 namespace App\Exceptions;
 
+use App\Security\RuntimeConfigurationException;
+use App\Security\SafeDiagnostics;
+use App\Security\SecurityPolicy;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Psr\Log\LogLevel;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -10,7 +15,7 @@ class Handler extends ExceptionHandler
     /**
      * A list of exception types with their corresponding custom log levels.
      *
-     * @var array<class-string<\Throwable>, \Psr\Log\LogLevel::*>
+     * @var array<class-string<Throwable>, LogLevel::*>
      */
     protected $levels = [
         //
@@ -19,7 +24,7 @@ class Handler extends ExceptionHandler
     /**
      * A list of the exception types that are not reported.
      *
-     * @var array<int, class-string<\Throwable>>
+     * @var array<int, class-string<Throwable>>
      */
     protected $dontReport = [
         //
@@ -47,25 +52,25 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e)
     {
         $response = parent::render($request, $e);
-        if ($response->getStatusCode() >= 500) {
-            return $request->expectsJson()
-                ? response()->json(['message' => 'Unable to complete this request. Please try again.'], $response->getStatusCode())
-                : response()->view('errors.500', [], $response->getStatusCode());
-        }
-        return $response;
+
+        return app(SecurityPolicy::class)->apply($request, $response);
     }
 
     public function report(Throwable $e)
     {
-        if ($this->shouldntReport($e)) { return; }
-        // No exception object, SQL, bindings, request, headers, user or stack arguments.
+        if ($this->shouldntReport($e)) {
+            return;
+        }
+        // Structural server diagnostics only: no SQL, bindings, arguments, request or personal data.
         logger()->error('app.error', [
             'event' => 'app.error', 'exception_class' => get_class($e),
-            'correlation_id' => (string) \Illuminate\Support\Str::uuid(),
+            'correlation_id' => app(SecurityPolicy::class)->correlationId(request()),
+            'diagnostics' => SafeDiagnostics::frames($e),
+            'configuration_fields' => $e instanceof RuntimeConfigurationException ? $e->fields : [],
         ]);
     }
 
-    protected function unauthenticated($request, \Illuminate\Auth\AuthenticationException $exception)
+    protected function unauthenticated($request, AuthenticationException $exception)
     {
         return $request->expectsJson()
             ? response()->json(['message' => 'Please sign in again.'], 401)

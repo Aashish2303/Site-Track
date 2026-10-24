@@ -109,7 +109,7 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
     $(function () {
         $('#select_all_permissions').on('change', function () {
             $('.permission_select').prop('checked', $(this).is(':checked'));

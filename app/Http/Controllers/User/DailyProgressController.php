@@ -153,7 +153,7 @@ class DailyProgressController extends Controller
 
                         if(Helper::userHasPermission('user.daily_progress_status'))
                         {
-                            $btn .= '<a href="javascript:void(0)" class="btn btn-icon btn-sm btn-dark" onclick="daily_progress_status('.$row->dprogress_id.')" title="Status"><i class="ti ti-check"></i></a> ';
+                            $btn .= '<a href="#" class="btn btn-icon btn-sm btn-dark" data-st-click="daily_progress_status('.$row->dprogress_id.')" title="Status"><i class="ti ti-check"></i></a> ';
                         }
 
                         return $btn;

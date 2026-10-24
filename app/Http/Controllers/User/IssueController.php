@@ -119,7 +119,7 @@ class IssueController extends Controller
 
                         if(Helper::userHasPermission('user.issue_status'))
                         {
-                            $btn .= '<a href="javascript:void(0)" class="btn btn-icon btn-sm btn-dark" onclick="issue_status('.$row->issue_id.')" title="Status"><i class="ti ti-check"></i></a> ';
+                            $btn .= '<a href="#" class="btn btn-icon btn-sm btn-dark" data-st-click="issue_status('.$row->issue_id.')" title="Status"><i class="ti ti-check"></i></a> ';
                         }
 
                         return $btn;

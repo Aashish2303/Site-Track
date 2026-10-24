@@ -161,8 +161,6 @@ return [
        */
         'cells'        => [
             'middleware' => [
-                //\Maatwebsite\Excel\Middleware\TrimCellValue::class,
-                //\Maatwebsite\Excel\Middleware\ConvertEmptyCellValuesToNull::class,
             ],
         ],
 

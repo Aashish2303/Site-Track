@@ -19,10 +19,9 @@ class SecurityCheck extends Command
         foreach ($errors as $name => $message) {
             $this->error($name.': '.$message);
         }
-        if ($errors) {
-            return self::FAILURE;
+        if (! $errors) {
+            $this->info('PASS: required application/database configuration is present. No secret values are printed.');
         }
-        $this->info('PASS: required application/database configuration is present. No secret values are printed.');
         if ($this->option('database')) {
             try {
                 $checks = app(DatabaseReadiness::class)->inspect();
@@ -41,6 +40,6 @@ class SecurityCheck extends Command
             $this->warn('Public-port authentication/firewall exposure must also be verified with hosting/network access.');
         }
 
-        return self::SUCCESS;
+        return $errors ? self::FAILURE : self::SUCCESS;
     }
 }

@@ -13,7 +13,7 @@
          </div>
       </div>
       <div class="gap-2 d-flex align-items-center flex-wrap">
-         <a href="{{ route('user.stocks') }}" class="btn btn-icon btn-white" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Refresh" data-bs-original-title="Refresh"><i class="ti ti-refresh"></i></a>         
+         <a href="{{ route('user.stocks') }}" class="btn btn-icon btn-white" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Refresh" data-bs-original-title="Refresh"><i class="ti ti-refresh"></i></a>
       </div>
    </div>
    <div class="card mb-0">
@@ -41,7 +41,7 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 var dataTable = $('#stocks_table').DataTable({
     processing: true,
     serverSide: true,

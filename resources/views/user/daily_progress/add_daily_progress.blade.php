@@ -42,7 +42,7 @@
                            <div class="col-xl-4 col-md-4">
                               <div class="mb-3">
                                  <label class="form-label">Project<span class="text-danger ms-1">*</span></label>
-                                 <select name="dprogress_project" id="dprogress_project" class="form-control select2" data-toggle="select2" onchange="select_boq()">
+                                 <select name="dprogress_project" id="dprogress_project" class="form-control select2" data-toggle="select2" data-st-change="select_boq()">
                                     <option value="">Select</option>
                                     @foreach($projects as $project)
                                     <option value="{{ $project->project_id }}">{{ $project->project_name }}</option>
@@ -87,7 +87,7 @@
                                  @if($errors->has('dprogress_boq'))
                                  <div>{{ $errors->first('dprogress_boq') }}</div>
                                  @endif
-                                 <div id="dprogress_boq_error"></div>   
+                                 <div id="dprogress_boq_error"></div>
                               </div>
                            </div>
                            <div class="col-xl-4 col-md-4">
@@ -169,7 +169,7 @@
                            <div class="col-xl-4 col-md-4">
                               <div class="mb-3">
                                  <label class="form-label">% Work Done: <span id="dprogress_sdone">0</span> <span class="text-danger ms-1">*</span></label>
-                                 <input type="range" class="form-range" name="dprogress_pdone" id="dprogress_pdone" value="0" min="0" max="100" onchange="select_work_done()">
+                                 <input type="range" class="form-range" name="dprogress_pdone" id="dprogress_pdone" value="0" min="0" max="100" data-st-change="select_work_done()">
                                  @if($errors->has('dprogress_pdone'))
                                  <div>{{ $errors->first('dprogress_pdone') }}</div>
                                  @endif
@@ -190,7 +190,7 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 function select_boq()
 {
 	var project_id = $("#dprogress_project").val();

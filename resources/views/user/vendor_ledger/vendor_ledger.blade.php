@@ -190,7 +190,7 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 var dataTable = $('#vendor_ledger_table').DataTable({
     processing: true,
     serverSide: true,

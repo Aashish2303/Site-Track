@@ -32,18 +32,18 @@ class CategoryController extends Controller
 
                     if(Helper::userHasPermission('user.edit_category')) 
                     {
-                        $btn .= '<a href="javascript:void(0)" class="btn btn-icon btn-sm btn-success" onclick="edit_category(' . $row->category_id . ')" title="Edit"><i class="ti ti-edit"></i></a> ';
+                        $btn .= '<a href="#" class="btn btn-icon btn-sm btn-success" data-st-click="edit_category(' . $row->category_id . ')" title="Edit"><i class="ti ti-edit"></i></a> ';
                     }
 
                     if(Helper::userHasPermission('user.category_status')) 
                     {
                         if($row->category_status == 1) 
                         {
-                            $btn .= '<a href="' . route('user.category_status', ['id' => $row->category_id, 'status' => $row->category_status]) . '" class="btn btn-icon btn-sm btn-danger" title="Click to disable" onclick="confirm_msg(event)"><i class="ti ti-ban"></i></a> ';
+                            $btn .= '<a href="' . route('user.category_status', ['id' => $row->category_id, 'status' => $row->category_status]) . '" class="btn btn-icon btn-sm btn-danger" title="Click to disable" data-st-click="confirm_msg(event)"><i class="ti ti-ban"></i></a> ';
                         } 
                         else 
                         {
-                            $btn .= '<a href="' . route('user.category_status', ['id' => $row->category_id, 'status' => $row->category_status]) . '" class="btn btn-icon btn-sm btn-warning" title="Click to enable" onclick="confirm_msg(event)"><i class="ti ti-check"></i></a> ';
+                            $btn .= '<a href="' . route('user.category_status', ['id' => $row->category_id, 'status' => $row->category_status]) . '" class="btn btn-icon btn-sm btn-warning" title="Click to enable" data-st-click="confirm_msg(event)"><i class="ti ti-check"></i></a> ';
                         }
                     }
 

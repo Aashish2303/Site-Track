@@ -47,7 +47,7 @@
 <script src="{{ asset(config('constants.admin_path').'js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset(config('constants.admin_path').'js/form_validations.js') }}"></script>
 <script src="{{ asset(config('constants.admin_path').'js/script.js') }}"></script>
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 @if(Session::has('success'))
 Swal.fire({
     title: "Success!",

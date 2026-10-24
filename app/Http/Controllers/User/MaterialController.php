@@ -53,11 +53,11 @@ class MaterialController extends Controller
                         {
                             if($row->material_status == 1)
                             {
-                                $btn .= '<a href="'.route('user.material_status',['id'=>$row->material_id,'status'=>$row->material_status]).'" class="btn btn-icon btn-sm btn-danger" title="Click to disable" onclick="confirm_msg(event)"><i class="ti ti-ban"></i></a> ';
+                                $btn .= '<a href="'.route('user.material_status',['id'=>$row->material_id,'status'=>$row->material_status]).'" class="btn btn-icon btn-sm btn-danger" title="Click to disable" data-st-click="confirm_msg(event)"><i class="ti ti-ban"></i></a> ';
                             }
                             else
                             {
-                                $btn .= '<a href="'.route('user.material_status',['id'=>$row->material_id,'status'=>$row->material_status]).'" class="btn btn-icon btn-sm btn-warning" title="Click to enable" onclick="confirm_msg(event)"><i class="ti ti-check"></i></a> ';
+                                $btn .= '<a href="'.route('user.material_status',['id'=>$row->material_id,'status'=>$row->material_status]).'" class="btn btn-icon btn-sm btn-warning" title="Click to enable" data-st-click="confirm_msg(event)"><i class="ti ti-check"></i></a> ';
                             }
                         }
 

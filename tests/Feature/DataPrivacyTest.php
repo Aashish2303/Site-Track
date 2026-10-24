@@ -35,11 +35,12 @@ class DataPrivacyTest extends TestCase
 
     private User $staff;
 
-    private string $password = 'Private-test-password-2026';
+    private string $password;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->password = 'Test-'.Str::random(32).'1';
         if (! in_array(DB::getDatabaseName(), ['sitetrack_test', 'sitetrack_ci'], true)) {
             throw new \RuntimeException('Privacy tests require an isolated database.');
         }

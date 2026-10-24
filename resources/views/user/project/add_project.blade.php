@@ -233,7 +233,7 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 document.addEventListener('DOMContentLoaded', function () {
    var uploadBox = document.getElementById('boqUploadBox');
    var fileInput = document.getElementById('boq_file');

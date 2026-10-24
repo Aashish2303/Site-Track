@@ -21,7 +21,7 @@ class LoginController extends Controller
             $data = $request->validate(['user_lname' => 'required|string|max:255', 'user_password' => 'required|string|max:1024']);
             $user = User::where('user_lname', $data['user_lname'])->first();
             // Always do a bcrypt check, including unknown accounts, to reduce timing disclosure.
-            $hash = $user?->user_password ?? '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi';
+            $hash = $user?->user_password ?? \Illuminate\Support\Facades\Cache::rememberForever('auth.dummy-hash', fn () => Hash::make(\Illuminate\Support\Str::random(64)));
             $valid = Hash::check($data['user_password'], $hash);
             if (! $valid || ! $user || (int) $user->user_status !== 1 || ! $user->role || (int) $user->role->role_status !== 1) {
                 return redirect()->route('user.login')->with('error', 'Unable to sign in with those details.')->withInput($request->only('user_lname'));

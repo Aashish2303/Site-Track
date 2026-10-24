@@ -36,11 +36,11 @@
    <div class="row">
       <div class="col-md-2">
          <div class="mb-3">
-            <input type="date" name="date" id="date" class="form-control" @if(Request()->has('date')) value="{{ Request()->date }}" @else value="{{ date('Y-m-d') }}" @endif onchange="select_filter()">
+            <input type="date" name="date" id="date" class="form-control" @if(Request()->has('date')) value="{{ Request()->date }}" @else value="{{ date('Y-m-d') }}" @endif data-st-change="select_filter()">
          </div>
       </div>
       <div class="col-md-2">
-         <select name="project" id="project" class="form-control select2" data-toggle="select2" onchange="select_filter()">
+         <select name="project" id="project" class="form-control select2" data-toggle="select2" data-st-change="select_filter()">
             <option value="">All Project</option>
             @foreach($projects as $project)
             <option value="{{ $project->project_id }}" {{ Request()->project == $project->project_id ? 'selected':'' }}>{{ $project->project_name }}</option>
@@ -163,7 +163,7 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 var dataTable = $('#labour_tracker_table').DataTable({
     processing: true,
     serverSide: true,

@@ -126,7 +126,7 @@ class PublicReference
         $callbacks = ['project_status' => 'projects', 'add_boq_item' => 'projects', 'edit_boq_item' => 'project_boqs', 'daily_work_status' => 'daily_works',
             'daily_progress_status' => 'daily_progress', 'order_pay_status' => 'orders', 'indent_item_status' => 'indent_items', 'issue_status' => 'issues',
             'edit_category' => 'category', 'edit_material_category' => 'material_category', 'edit_issue_category' => 'issue_category', 'edit_unit' => 'units'];
-        $html = preg_replace_callback('~onclick="([a-z_]+)\((\d+)\)"~', fn ($m) => isset($callbacks[$m[1]]) ? 'onclick="'.$m[1].'(\x27'.$this->encode($callbacks[$m[1]], $m[2]).'\x27)"' : $m[0], $html);
+        $html = preg_replace_callback('~data-st-click="([a-z_]+)\((\d+)\)"~', fn ($m) => isset($callbacks[$m[1]]) ? 'data-st-click="'.$m[1].'(\x27'.$this->encode($callbacks[$m[1]], $m[2]).'\x27)"' : $m[0], $html);
         $html = preg_replace_callback('~data-project="(\d+)"~', fn ($m) => 'data-project="'.$this->encode('projects', $m[1]).'"', $html);
 
         return str_replace('\\x27', "'", $html);

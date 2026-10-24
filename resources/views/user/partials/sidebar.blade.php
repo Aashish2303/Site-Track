@@ -52,7 +52,7 @@
         @if($canNavigate($route))<li><a href="{{ route($route) }}" @class(['active' => $navSet === $key])><i class="ti {{ $icon }}" aria-hidden="true"></i><span>{{ $label }}</span></a></li>@endif
         @endforeach
         <li class="submenu mt-3">
-            <a href="javascript:void(0)" @class(['active subdrop' => in_array($navSet, array_column($administration, 2))])><i class="ti ti-settings" aria-hidden="true"></i><span>Administration</span><span class="menu-arrow"></span></a>
+            <a href="#" @class(['active subdrop' => in_array($navSet, array_column($administration, 2))])><i class="ti ti-settings" aria-hidden="true"></i><span>Administration</span><span class="menu-arrow"></span></a>
             <ul @if(in_array($navSet, array_column($administration, 2))) style="display:block" @endif>
                 @foreach($administration as [$route, $label, $key])
                 @if(Helper::userHasPermission($route))<li><a href="{{ route($route) }}" @class(['active' => $navSet === $key])>{{ $label }}</a></li>@endif

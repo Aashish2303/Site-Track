@@ -149,7 +149,7 @@
                                           </select>
                                        </td>
                                        <td>
-                                          <a href="javascript:void(0)" class="btn btn-success" onclick="more_material()"><i class="ti ti-plus"></i></a>
+                                          <a href="#" class="btn btn-success" data-st-click="more_material()"><i class="ti ti-plus"></i></a>
                                        </td>
                                     </tr>
                                  </tbody>
@@ -169,12 +169,12 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 var i = 2;
 
 function more_material()
 {
-   $("#more_material").append('<tr id="material_div'+i+'"> <td> <select name="materials[NAME]['+i+']" class="form-control mnames select2" data-toggle="select2"> <option value="">Select</option> @foreach($materials as $material) <option value="{{ $material->material_id }}">{{ $material->material_name }}</option> @endforeach </select> </td> <td> <select name="materials[CATEGORY]['+i+']" class="form-control mcategory select2" data-toggle="select2"> <option value="">Select</option>@foreach($categories as $category)<option value="{{ $category->category_id }}">{{ $category->category_name }}</option>@endforeach</select></td><td><input type="text" name="materials[SIZE]['+i+']" class="form-control msizes" autocomplete="off"></td> <td> <input type="number" name="materials[QTY]['+i+']" class="form-control mqtys" autocomplete="off"> </td> <td> <select name="materials[UNIT]['+i+']" class="form-control munits select2" data-toggle="select2"> <option value="">Select</option> @foreach($units as $unit) <option value="{{ $unit->unit_id }}">{{ $unit->unit_name }}</option> @endforeach </select> </td> <td> <a href="javascript:void(0)" class="btn btn-danger" onclick="remove_material('+i+')"><i class="ti ti-minus"></i></a> </td> </tr>');
+   $("#more_material").append('<tr id="material_div'+i+'"> <td> <select name="materials[NAME]['+i+']" class="form-control mnames select2" data-toggle="select2"> <option value="">Select</option> @foreach($materials as $material) <option value="{{ $material->material_id }}">{{ $material->material_name }}</option> @endforeach </select> </td> <td> <select name="materials[CATEGORY]['+i+']" class="form-control mcategory select2" data-toggle="select2"> <option value="">Select</option>@foreach($categories as $category)<option value="{{ $category->category_id }}">{{ $category->category_name }}</option>@endforeach</select></td><td><input type="text" name="materials[SIZE]['+i+']" class="form-control msizes" autocomplete="off"></td> <td> <input type="number" name="materials[QTY]['+i+']" class="form-control mqtys" autocomplete="off"> </td> <td> <select name="materials[UNIT]['+i+']" class="form-control munits select2" data-toggle="select2"> <option value="">Select</option> @foreach($units as $unit) <option value="{{ $unit->unit_id }}">{{ $unit->unit_name }}</option> @endforeach </select> </td> <td> <a href="#" class="btn btn-danger" data-st-click="remove_material('+i+')"><i class="ti ti-minus"></i></a> </td> </tr>');
 
    $("#material_div"+i+" [data-toggle='select2']").select2({
       width: '100%'
@@ -194,16 +194,16 @@ $("#indent_form").submit(function (e) {
 	    $(this).rules('add', {
 	        required:true,
 	        messages: {
-	            required: '<small style="color:red">Please Select Material</small>'            
+	            required: '<small style="color:red">Please Select Material</small>'
 	        }
 	    });
 	});
-   
+
    $('.mcategory').each(function() {
 	    $(this).rules('add', {
 	        required:true,
 	        messages: {
-	            required: '<small style="color:red">Please Select Category</small>'            
+	            required: '<small style="color:red">Please Select Category</small>'
 	        }
 	    });
 	});
@@ -221,7 +221,7 @@ $("#indent_form").submit(function (e) {
 	    $(this).rules('add', {
 	        required:true,
 	        messages: {
-	            required: '<small style="color:red">Please Enter Quantity</small>'            
+	            required: '<small style="color:red">Please Enter Quantity</small>'
 	        }
 	    });
 	});
@@ -230,11 +230,11 @@ $("#indent_form").submit(function (e) {
 	    $(this).rules('add', {
 	        required:true,
 	        messages: {
-	            required: '<small style="color:red">Please Select Unit</small>'            
+	            required: '<small style="color:red">Please Select Unit</small>'
 	        }
 	    });
 	});
 
-});	
+});
 </script>
 @endsection

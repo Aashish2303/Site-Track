@@ -66,11 +66,38 @@ class RuntimeConfiguration
             }
         }
         if (($c['filesystems']['default'] ?? 'local') === 's3') {
-            foreach (['key' => 'AWS_ACCESS_KEY_ID', 'secret' => 'AWS_SECRET_ACCESS_KEY', 'bucket' => 'AWS_BUCKET'] as $field => $name) {
+            foreach (['key' => 'AWS_ACCESS_KEY_ID', 'secret' => 'AWS_SECRET_ACCESS_KEY', 'bucket' => 'AWS_BUCKET', 'region' => 'AWS_DEFAULT_REGION'] as $field => $name) {
                 if (empty($c['filesystems']['disks']['s3'][$field])) {
                     $errors[$name] = 'This value is required by the selected S3 disk.';
                 }
             }
+        }
+        $conditional = [];
+        $broadcast = $c['broadcasting']['default'] ?? 'null';
+        if ($broadcast === 'pusher') {
+            foreach (['key' => 'PUSHER_APP_KEY', 'secret' => 'PUSHER_APP_SECRET', 'app_id' => 'PUSHER_APP_ID'] as $field => $name) {
+                $conditional[$name] = $c['broadcasting']['connections']['pusher'][$field] ?? null;
+            }
+        } elseif ($broadcast === 'ably') {
+            $conditional['ABLY_KEY'] = $c['broadcasting']['connections']['ably']['key'] ?? null;
+        }
+        foreach (['queue' => 'sqs', 'cache' => 'dynamodb'] as $section => $driver) {
+            if (($c[$section]['default'] ?? '') === $driver) {
+                $selected = $c[$section][$section === 'queue' ? 'connections' : 'stores'][$driver] ?? [];
+                $conditional['AWS_ACCESS_KEY_ID'] = $selected['key'] ?? null;
+                $conditional['AWS_SECRET_ACCESS_KEY'] = $selected['secret'] ?? null;
+                if ($driver === 'sqs' && (empty($selected['prefix']) || str_contains($selected['prefix'], 'your-account-id'))) {
+                    $errors['SQS_PREFIX'] = 'Configure the queue account URL before selecting SQS.';
+                }
+            }
+        }
+        foreach ($conditional as $name => $value) {
+            if (! is_string($value) || trim($value) === '') {
+                $errors[$name] = 'This credential is required by the selected service.';
+            }
+        }
+        if ($production && in_array($c['cache']['default'] ?? 'file', ['array', 'null'], true)) {
+            $errors['CACHE_DRIVER'] = 'Production authentication limits require a persistent cache, such as file or Redis.';
         }
 
         return $errors;

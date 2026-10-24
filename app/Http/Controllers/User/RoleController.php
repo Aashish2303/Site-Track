@@ -43,11 +43,11 @@ class RoleController extends Controller
                         {
                             if($row->role_status == 1)
                             {
-                                $btn .= '<a href="'.route('user.role_status',['id'=>$row->role_id,'status'=>$row->role_status]).'" class="btn btn-icon btn-sm btn-danger" title="Click to disable" onclick="confirm_msg(event)"><i class="ti ti-ban"></i></a> ';
+                                $btn .= '<a href="'.route('user.role_status',['id'=>$row->role_id,'status'=>$row->role_status]).'" class="btn btn-icon btn-sm btn-danger" title="Click to disable" data-st-click="confirm_msg(event)"><i class="ti ti-ban"></i></a> ';
                             }
                             else
                             {
-                                $btn .= '<a href="'.route('user.role_status',['id'=>$row->role_id,'status'=>$row->role_status]).'" class="btn btn-icon btn-sm btn-warning" title="Click to enable" onclick="confirm_msg(event)"><i class="ti ti-check"></i></a> ';
+                                $btn .= '<a href="'.route('user.role_status',['id'=>$row->role_id,'status'=>$row->role_status]).'" class="btn btn-icon btn-sm btn-warning" title="Click to enable" data-st-click="confirm_msg(event)"><i class="ti ti-check"></i></a> ';
                             }
                         }
 

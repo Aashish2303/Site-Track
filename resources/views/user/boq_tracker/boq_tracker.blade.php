@@ -164,7 +164,7 @@
          </div>
       </div>
       <div class="gap-2 d-flex align-items-center flex-wrap boq-project-filter">
-         <select name="project" id="project" class="form-control select2" data-toggle="select2" onchange="select_project()">
+         <select name="project" id="project" class="form-control select2" data-toggle="select2" data-st-change="select_project()">
             <option value="">All Project</option>
             @foreach($all_projects as $all_project)
             <option value="{{ $all_project->project_id }}" {{ $all_project->project_id == Request()->project ? 'selected':'' }}>{{ $all_project->project_name }}</option>
@@ -173,26 +173,26 @@
       </div>
    </div>
    @foreach($projects as $project)
-   @php 
+   @php
    $boqs = App\Models\ProjectBoq::where('pboq_project',$project->project_id)->get();
    $boq_total = array_sum(array_column($boqs->toArray(),'pboq_amount'));
    $all_progress = App\Models\DailyProgress::join('project_boqs','project_boqs.pboq_id', 'daily_progress.dprogress_boq')->where('dprogress_project',$project->project_id)->get();
    $progress_amount = array();
    @endphp
    @foreach($all_progress as $progress)
-   @php 
+   @php
    $progress_qty[$progress->dprogress_boq][] = $progress->dprogress_qty;
    $progress_amount[] = $progress->dprogress_qty * $progress->pboq_rate;
    @endphp
    @endforeach
-   @php 
+   @php
    $done_value = array_sum($progress_amount);
-   @endphp 
+   @endphp
    @if($boq_total == 0)
    @php $total_average = 0; @endphp
    @else
-   @php 
-   $total_average = ($done_value / $boq_total) * 100;   
+   @php
+   $total_average = ($done_value / $boq_total) * 100;
    $total_average = round($total_average);
    @endphp
    @endif
@@ -202,7 +202,7 @@
             <h5 class="boq-project-title">{{ $project->project_name }}</h5>
             <div class="boq-project-meta">{{ $project->project_location }} - {{ $boqs->count() }} BOQ items</div>
             <div>
-               <a href="javascript:void(0)" class="btn btn-sm btn-primary mt-2" onclick="add_boq_item({{ $project->project_id }})">Add Extra Item</a>
+               <a href="#" class="btn btn-sm btn-primary mt-2" data-st-click="add_boq_item({{ $project->project_id }})">Add Extra Item</a>
             </div>
          </div>
          <div class="boq-total-wrap">
@@ -263,7 +263,7 @@
                         </div>
                      </td>
                      <td>
-                        <a href="javascript:void(0)" class="btn btn-icon btn-sm btn-success" onclick="edit_boq_item({{ $boq->pboq_id }})" title="Edit"><i class="ti ti-edit"></i></a>
+                        <a href="#" class="btn btn-icon btn-sm btn-success" data-st-click="edit_boq_item({{ $boq->pboq_id }})" title="Edit"><i class="ti ti-edit"></i></a>
                      </td>
                   </tr>
                   @endforeach
@@ -300,7 +300,7 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 function add_boq_item(project_id)
 {
     var csrf = "{{ csrf_token() }}";

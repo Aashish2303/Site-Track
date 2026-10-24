@@ -96,7 +96,7 @@
                                  <label class="form-label">Password<span class="text-danger ms-1">*</span></label>
                                  <div class="input-group">
                                     <input type="password" name="user_password" id="user_password" class="form-control" autocomplete="new-password">
-                                    <div class="input-group-text" onclick="show_password()">
+                                    <div class="input-group-text" data-st-click="show_password()">
                                        <i class="ti ti-eye"></i>
                                     </div>
                                  </div>
@@ -129,7 +129,7 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 function show_password() {
    var x = document.getElementById("user_password");
    if (x.type === "password") {

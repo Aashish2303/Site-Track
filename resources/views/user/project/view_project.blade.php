@@ -64,16 +64,7 @@
          <a href="{{ route('user.projects') }}" class="btn btn-secondary"><i class="ti ti-arrow-left me-1"></i>Back</a>
       </div>
    </div>
-   {{-- <ul class="nav nav-tabs nav-item-primary mb-3 border-bottom pb-4 mb-4 d-flex align-items-center gap-2">
-      <li class="nav-item">
-         <a href="{{ route('user.view_project',['id'=>$project->project_id]) }}" class="nav-link border rounded fw-semibold active">Details</a>
-      </li>
-      <li class="nav-item">
-         <a href="javascript:void(0)" class="nav-link border rounded fw-semibold">
-         Appointments
-         </a>
-      </li>
-   </ul> --}}
+
    <div class="row">
       <div class="col-xl-4">
          <div class="card mb-4 mb-xl-0">
@@ -113,7 +104,7 @@
                   @endphp
                @endforeach
                @php
-               $done_value = array_sum($progress_amount); 
+               $done_value = array_sum($progress_amount);
                @endphp
                @if($boq_total == 0)
                @php

@@ -57,7 +57,7 @@
                            <div class="col-xl-6 col-md-6">
                               <div class="mb-3">
                                  <label class="form-label">Category<span class="text-danger ms-1">*</span></label>
-                                 <select name="amaterial_category" id="amaterial_category" class="form-control select2" data-toggle="select2" onchange="select_materials()">
+                                 <select name="amaterial_category" id="amaterial_category" class="form-control select2" data-toggle="select2" data-st-change="select_materials()">
                                     <option value="">Select</option>
                                     @foreach($categories as $category)
                                     <option value="{{ $category->mcategory_id }}">{{ $category->mcategory_name }}</option>
@@ -72,7 +72,7 @@
                            <div class="col-xl-6 col-md-6">
                               <div class="mb-3">
                                  <label class="form-label">Material<span class="text-danger ms-1">*</span></label>
-                                 <select name="amaterial_material" id="amaterial_material" class="form-control select2" data-toggle="select2" onchange="select_material_unit()">
+                                 <select name="amaterial_material" id="amaterial_material" class="form-control select2" data-toggle="select2" data-st-change="select_material_unit()">
                                     <option value="">Select</option>
                                  </select>
                                  @if($errors->has('amaterial_material'))
@@ -123,8 +123,8 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
-function select_materials() 
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
+function select_materials()
 {
    var category_id = $('#amaterial_category').val();
 
@@ -135,7 +135,7 @@ function select_materials()
             _token: "{{ csrf_token() }}",
             category_id: category_id
       },
-      success: function(response) 
+      success: function(response)
       {
          $('#amaterial_material').html(response);
          select_material_unit();
@@ -143,7 +143,7 @@ function select_materials()
    });
 }
 
-function select_material_stock() 
+function select_material_stock()
 {
    var material_id = $('#amaterial_material').val();
 
@@ -154,14 +154,14 @@ function select_material_stock()
             _token: "{{ csrf_token() }}",
             material_id: material_id
       },
-      success: function(response) 
+      success: function(response)
       {
          $('#available_qty').val(response.available_qty);
       }
    });
 }
 
-function select_material_unit() 
+function select_material_unit()
 {
    var material_id = $('#amaterial_material').val();
 
@@ -172,7 +172,7 @@ function select_material_unit()
             _token: "{{ csrf_token() }}",
             material_id: material_id
       },
-      success: function(response) 
+      success: function(response)
       {
          $('#amaterial_unit_name').val(response.unit_name);
          $('#amaterial_unit').val(response.unit_id);

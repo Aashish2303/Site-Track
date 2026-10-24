@@ -83,7 +83,7 @@
                                  @if($errors->has('vledger_type'))
                                  <div>{{ $errors->first('vledger_type') }}</div>
                                  @endif
-                                 <div id="vledger_type_error"></div>   
+                                 <div id="vledger_type_error"></div>
                               </div>
                            </div>
                            <div class="col-xl-4 col-md-4">

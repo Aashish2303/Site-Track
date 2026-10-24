@@ -137,7 +137,7 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 settings_logo.onchange = evt => {
   const [file] = settings_logo.files
   if (file) {

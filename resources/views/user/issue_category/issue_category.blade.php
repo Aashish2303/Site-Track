@@ -15,7 +15,7 @@
       <div class="gap-2 d-flex align-items-center flex-wrap">
          <a href="{{ route('user.issue_category') }}" class="btn btn-icon btn-white" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Refresh" data-bs-original-title="Refresh"><i class="ti ti-refresh"></i></a>
          @if(Helper::userHasPermission('user.add_issue_category'))
-         <a href="javascript:void(0)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addIssueCategoryModal"><i class="ti ti-square-rounded-plus me-1"></i>Add Category</a>
+         <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addIssueCategoryModal"><i class="ti ti-square-rounded-plus me-1"></i>Add Category</a>
          @endif
       </div>
    </div>
@@ -83,7 +83,7 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 var dataTable = $('#issue_category_table').DataTable({
     processing: true,
     serverSide: true,

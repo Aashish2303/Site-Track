@@ -109,7 +109,7 @@
 <button class="btn btn-danger" type="submit">Permanently delete my account</button></form></div></div></div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 user_image.onchange = evt => {
   const [file] = user_image.files
   if (file) {

@@ -84,7 +84,7 @@
                                  @if($errors->has('sledger_type'))
                                  <div>{{ $errors->first('sledger_type') }}</div>
                                  @endif
-                                 <div id="sledger_type_error"></div>   
+                                 <div id="sledger_type_error"></div>
                               </div>
                            </div>
                            <div class="col-xl-4 col-md-4">

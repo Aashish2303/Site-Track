@@ -126,7 +126,7 @@
          <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
                <h5 class="mb-0">Quotations</h5>
                @if($indent->indent_status == 1 || $indent->indent_status == 2)
-               <a href="{{ route('user.reject_quotations',['id'=>$indent->indent_id]) }}" class="btn btn-sm btn-danger flex-shrink-0" onclick="confirm_reject_msg(event)">Reject All</a>
+               <a href="{{ route('user.reject_quotations',['id'=>$indent->indent_id]) }}" class="btn btn-sm btn-danger flex-shrink-0" data-st-click="confirm_reject_msg(event)">Reject All</a>
                @endif
          </div>
          <div class="card-body">
@@ -152,7 +152,7 @@
                      <tr @if(!is_null($lowestQuotationTotal) && (float) $quotation->iquote_total == (float) $lowestQuotationTotal) class="quotation-lowest-row" @endif>
                         <td>
                            <h6 class="fs-14 mb-0 fw-medium">
-                              <a href="javascript:void(0)">{{ $quotation->vendor->vendor_name }}</a>
+                              <a href="#">{{ $quotation->vendor->vendor_name }}</a>
                            </h6>
                         </td>
                         <td>{{ Helper::moneyFormat($quotation->iquote_rate) }}</td>
@@ -189,8 +189,8 @@
                         @if($indent->indent_status == 2)
                         <td>
                            <div class="d-flex align-items-center gap-2">
-                              {{-- <a href="{{ route('user.status_quotation',['id'=>$quotation->iquote_id,'status'=>3]) }}" class="btn btn-icon btn-light" onclick="confirm_msg(event)"><i class="ti ti-xbox-x"></i></a> --}}
-                              <a href="{{ route('user.status_quotation',['id'=>$quotation->iquote_id,'status'=>2]) }}" class="btn btn-success" onclick="confirm_msg(event)">Approve</a>
+
+                              <a href="{{ route('user.status_quotation',['id'=>$quotation->iquote_id,'status'=>2]) }}" class="btn btn-success" data-st-click="confirm_msg(event)">Approve</a>
                            </div>
                         </td>
                         @endif
@@ -206,7 +206,7 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
 function confirm_reject_msg(ev)
 {
     ev.preventDefault();

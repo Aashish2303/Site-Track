@@ -66,7 +66,7 @@
                            <div class="col-xl-4 col-md-4">
                               <div class="mb-3">
                                  <label class="form-label">Material<span class="text-danger ms-1">*</span></label>
-                                 <select name="order_material" id="order_material" class="form-control select2" data-toggle="select2" onchange="select_material_unit()">
+                                 <select name="order_material" id="order_material" class="form-control select2" data-toggle="select2" data-st-change="select_material_unit()">
                                     <option value="">Select</option>
                                     @foreach($materials as $material)
                                     <option value="{{ $material->material_id }}" {{ $order->order_material == $material->material_id ? 'selected':'' }}>{{ $material->material_name }}</option>
@@ -120,8 +120,8 @@
 </div>
 @endsection
 @section('custom_script')
-<script>
-function select_material_unit() 
+<script nonce="{{ app(\App\Security\SecurityPolicy::class)->nonce() }}">
+function select_material_unit()
 {
    var material_id = $('#order_material').val();
 
@@ -132,7 +132,7 @@ function select_material_unit()
             _token: "{{ csrf_token() }}",
             material_id: material_id
       },
-      success: function(response) 
+      success: function(response)
       {
          $('#order_unit_name').val(response.unit_name);
          $('#order_unit').val(response.unit_id);

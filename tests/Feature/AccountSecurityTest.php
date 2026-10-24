@@ -28,11 +28,12 @@ class AccountSecurityTest extends TestCase
 
     private User $staff;
 
-    private string $password = 'Test-only-account-2026';
+    private string $password;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->password = 'Test-'.Str::random(32).'1';
         if (! in_array(config('database.connections.mysql.database'), ['sitetrack_test', 'sitetrack_ci'], true)) {
             throw new \RuntimeException('Account security tests require an isolated database.');
         }
@@ -109,7 +110,7 @@ class AccountSecurityTest extends TestCase
 
     public function test_rotating_usernames_and_rotating_ip_addresses_do_not_bypass_login_limits(): void
     {
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->post('/', ['user_lname' => 'missing-'.$i, 'user_password' => 'incorrect'])->assertRedirect();
         }
         $this->post('/', ['user_lname' => 'another-missing', 'user_password' => 'incorrect'])->assertStatus(429)->assertSee('Please try again later');
@@ -182,7 +183,7 @@ class AccountSecurityTest extends TestCase
         $this->post('/', ['user_lname' => $this->staff->user_lname, 'user_password' => $this->password])->assertRedirect(route('user.projects'));
         $this->withHeader('Accept', 'text/html')->post('/user/change_password', ['current_password' => $this->password, 'new_password' => 'short', 'confirm_password' => 'different'])->assertSessionHasErrors(['new_password', 'confirm_password']);
         $this->assertArrayNotHasKey('new_password', session('_old_input', []));
-        $new = 'A-new-test-password-2026';
+        $new = 'New-'.Str::random(32).'1';
         $this->post('/user/change_password', ['current_password' => 'incorrect', 'new_password' => $new, 'confirm_password' => $new])->assertSessionHas('error');
         $this->assertTrue(Hash::check($this->password, $this->staff->fresh()->user_password));
         $this->post('/user/change_password', ['current_password' => $this->password, 'new_password' => $new, 'confirm_password' => $new])->assertSessionHas('success');
@@ -209,7 +210,7 @@ class AccountSecurityTest extends TestCase
         $this->assertStringNotContainsString($this->staff->user_email, $mail->resetUrl);
         $this->assertTrue(Password::tokenExists($this->staff, $token));
         $this->get('/reset-password')->assertOk()->assertHeader('Referrer-Policy', 'no-referrer');
-        $data = ['user_email' => $this->staff->user_email, 'token' => $token, 'password' => 'Reset-test-password-2026', 'password_confirmation' => 'Reset-test-password-2026'];
+        $data = ['user_email' => $this->staff->user_email, 'token' => $token, 'password' => ($resetPassword = 'Reset-'.Str::random(32).'1'), 'password_confirmation' => $resetPassword];
         $this->post('/reset-password', $data)->assertRedirect(route('user.login'))->assertSessionHas('success');
         $this->assertTrue(Hash::check($data['password'], $this->staff->fresh()->user_password));
         $this->post('/reset-password', $data)->assertSessionHas('error', 'Unable to reset the password. Request a new link.');
@@ -219,11 +220,11 @@ class AccountSecurityTest extends TestCase
     {
         $token = Password::createToken($this->staff);
         Carbon::setTestNow(now()->addMinutes(61));
-        $data = ['user_email' => $this->staff->user_email, 'token' => $token, 'password' => 'Reset-test-password-2026', 'password_confirmation' => 'Reset-test-password-2026'];
+        $data = ['user_email' => $this->staff->user_email, 'token' => $token, 'password' => ($resetPassword = 'Reset-'.Str::random(32).'1'), 'password_confirmation' => $resetPassword];
         $this->post('/reset-password', $data)->assertSessionHas('error', 'Unable to reset the password. Request a new link.');
         $this->post('/', ['user_lname' => $this->staff->user_lname, 'user_password' => $this->password])->assertRedirect(route('user.projects'));
         $this->get('/user/profile')->assertOk();
-        DB::table('users')->where('user_id', $this->staff->user_id)->update(['user_password' => Hash::make('Other-test-password-2026')]);
+        DB::table('users')->where('user_id', $this->staff->user_id)->update(['user_password' => Hash::make('Other-'.Str::random(32).'1')]);
         Auth::forgetGuards();
         $this->get('/user/profile')->assertRedirect(route('user.login'));
         $this->assertGuest();
