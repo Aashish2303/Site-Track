@@ -70,19 +70,19 @@ class IssueController extends Controller
 
                         if($row->issue_priority == 1)
                         {
-                            $priority = '<span class="badge bg-info">Low</span>';
+                            $priority = '<span class="badge badge-low">Low</span>';
                         }
                         elseif($row->issue_priority == 2)
                         {
-                            $priority = '<span class="badge bg-primary">Medium</span>';
+                            $priority = '<span class="badge badge-normal">Medium</span>';
                         }
                         elseif($row->issue_priority == 3)
                         {
-                            $priority = '<span class="badge bg-warning">High</span>';
+                            $priority = '<span class="badge badge-high">High</span>';
                         }
                         elseif($row->issue_priority == 4)
                         {
-                            $priority = '<span class="badge bg-danger">Critical</span>';
+                            $priority = '<span class="badge badge-critical">Critical</span>';
                         }
 
                         return $priority;

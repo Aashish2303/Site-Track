@@ -219,85 +219,29 @@
             @endif
          </div>
    </div>
+   @php
+      $metrics = [
+         ['sites', 'blue', 'Active sites', $active_projects, 'ti-building', 'user.projects', 'Across your portfolio'],
+         ['work', 'orange', "Today's work", $todays_work, 'ti-calendar', 'user.daily_works', 'Daily work entries'],
+         ['team', 'violet', "Today's team", $today_workers, 'ti-users-group', 'user.labour_trackers', 'People on site'],
+         ['approvals', 'amber', 'Pending approvals', $pending_approvals, 'ti-bell', 'user.indents', 'Ready for your review'],
+         ['issues', 'rose', 'Open issues', $open_issues, 'ti-alert-triangle', 'user.issues', 'Track and resolve'],
+         ['orders', 'teal', "Today's orders", $todays_order, 'ti-package', 'user.orders', 'Purchase activity'],
+      ];
+   @endphp
    <div class="row st-metrics">
-      <div class="col-xl-2 col-md-6 d-flex">
-         <a href="{{ route('user.projects') }}" class="card flex-fill labour-summary-card dashboard-summary-link">
+      @foreach($metrics as [$key, $tone, $label, $value, $icon, $route, $hint])
+      <div class="d-flex">
+         <a href="{{ route($route) }}" class="card flex-fill st-stat-card st-stat--{{ $tone }} dashboard-summary-link" data-stat="{{ $key }}">
             <div class="card-body">
-               <div class="d-flex align-items-center justify-content-between">
-                  <div>
-                     <p class="mb-1">Active sites</p>
-                     <h6 class="mb-0">{{ $active_projects }}</h6>
-                  </div>
-                  <span class="avatar rounded-circle badge-soft-primary"><i class="ti ti-building fs-24"></i></span>
-               </div>
+               <p class="st-stat-label">{{ $label }}</p>
+               <span class="st-stat-icon" aria-hidden="true"><i class="ti {{ $icon }}"></i></span>
+               <h2 @class(['st-stat-value', 'is-zero' => (float) $value === 0.0])>{{ $value }}</h2>
+               <span class="st-stat-hint">{{ $hint }}<i class="ti ti-arrow-up-right" aria-hidden="true"></i></span>
             </div>
          </a>
       </div>
-      <div class="col-xl-2 col-md-6 d-flex">
-         <a href="{{ route('user.daily_works') }}" class="card flex-fill labour-summary-card dashboard-summary-link">
-            <div class="card-body">
-               <div class="d-flex align-items-center justify-content-between">
-                  <div>
-                     <p class="mb-1">Today's work</p>
-                     <h6 class="mb-0">{{ $todays_work }}</h6>
-                  </div>
-                  <span class="avatar rounded-circle badge-soft-pink"><i class="ti ti-calendar fs-24"></i></span>
-               </div>
-            </div>
-         </a>
-      </div>
-      <div class="col-xl-2 col-md-6 d-flex">
-         <a href="{{ route('user.daily_progress') }}" class="card flex-fill labour-summary-card dashboard-summary-link">
-            <div class="card-body">
-               <div class="d-flex align-items-center justify-content-between">
-                  <div>
-                     <p class="mb-1">Today's team</p>
-                     <h6 class="mb-0">{{ $today_workers }}</h6>
-                  </div>
-                  <span class="avatar rounded-circle badge-soft-indigo"><i class="ti ti-users-group fs-24"></i></span>
-               </div>
-            </div>
-         </a>
-      </div>
-      <div class="col-xl-2 col-md-6 d-flex">
-         <a href="{{ route('user.indents') }}" class="card flex-fill labour-summary-card dashboard-summary-link">
-            <div class="card-body">
-               <div class="d-flex align-items-center justify-content-between">
-                  <div>
-                     <p class="mb-1">Pending approvals</p>
-                     <h6 class="mb-0">{{ $pending_approvals }}</h6>
-                  </div>
-                  <span class="avatar rounded-circle badge-soft-orange"><i class="ti ti-bell fs-24"></i></span>
-               </div>
-            </div>
-         </a>
-      </div>
-      <div class="col-xl-2 col-md-6 d-flex">
-         <a href="{{ route('user.issues') }}" class="card flex-fill labour-summary-card dashboard-summary-link">
-            <div class="card-body">
-               <div class="d-flex align-items-center justify-content-between">
-                  <div>
-                     <p class="mb-1">Open issues</p>
-                     <h6 class="mb-0">{{ $open_issues }}</h6>
-                  </div>
-                  <span class="avatar rounded-circle badge-soft-orange"><i class="ti ti-alert-triangle fs-24"></i></span>
-               </div>
-            </div>
-         </a>
-      </div>
-      <div class="col-xl-2 col-md-6 d-flex">
-         <a href="{{ route('user.orders') }}" class="card flex-fill labour-summary-card dashboard-summary-link">
-            <div class="card-body">
-               <div class="d-flex align-items-center justify-content-between">
-                  <div>
-                     <p class="mb-1">Today's orders</p>
-                     <h6 class="mb-0">{{ $todays_order }}</h6>
-                  </div>
-                  <span class="avatar rounded-circle badge-soft-orange"><i class="ti ti-package fs-24"></i></span>
-               </div>
-            </div>
-         </a>
-      </div>
+      @endforeach
    </div>
    <div class="row">
       <div class="col-xl-6 col-md-6 d-flex">
@@ -369,9 +313,9 @@
                      </div>
                      <div class="flex-shrink-0 ms-2">
                         @if($pending_indent->indent_status == 1)
-                        <span class="badge badge-soft-success">Pending Quotation</span>
+                        <span class="badge badge-pending-quotation">Pending Quotation</span>
                         @elseif($pending_indent->indent_status == 2)
-                        <span class="badge badge-soft-success">MD Review</span>
+                        <span class="badge badge-md-review">MD Review</span>
                         @endif
                      </div>
                   </div>

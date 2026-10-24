@@ -2,12 +2,6 @@
 @section('title', 'Daily Progress - ' . Request()->settings->settings_title)
 @section('custom_style')
 <style>
-#daily_progress_table tbody tr.daily-progress-carry-forward > * {
-    background-color: #fff3cd;
-}
-#daily_progress_table tbody tr.daily-progress-carry-forward > :first-child {
-    border-left: 4px solid #ff9f1a;
-}
 .boq-row-progress-wrap {
    display: inline-flex;
    align-items: center;

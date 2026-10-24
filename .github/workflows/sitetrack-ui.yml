@@ -92,6 +92,7 @@ jobs:
           npm run build
           node --check public/assets/admin/js/sitetrack-core.js
           node --check public/assets/admin/js/sitetrack-workspace.js
+          node --check public/assets/admin/js/sitetrack-ui.js
           bash -n scripts/package-ui.sh scripts/deploy-ui.sh
           bash scripts/package-ui.sh "$RUNNER_TEMP/sitetrack-ui-check"
           cd "$RUNNER_TEMP/sitetrack-ui-check"

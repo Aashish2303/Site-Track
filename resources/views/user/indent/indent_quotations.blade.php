@@ -2,14 +2,6 @@
 @section('title', 'Indent Quotations - ' . Request()->settings->settings_title)
 @section('custom_style')
 <style>
-.quotation-lowest-row > * {
-   background-color: #fff3cd;
-}
-
-.quotation-lowest-row > :first-child {
-   border-left: 4px solid #ff9f1a;
-}
-
 .quotation-lowest-badge {
    display: inline-flex;
    align-items: center;
@@ -180,7 +172,7 @@
                         </td>
                         <td>
                            @if($quotation->iquote_status == 1)
-                           <span class="badge badge-soft-info">Pending</span>
+                           <span class="badge badge-pending-quotation">Pending</span>
                            @elseif($quotation->iquote_status == 2)
                            <span class="badge badge-soft-success">Approved</span>
                            @elseif($quotation->iquote_status == 3)

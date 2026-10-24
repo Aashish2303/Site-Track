@@ -64,15 +64,15 @@ class IndentController extends Controller
 
                         if($row->indent_urgency == 1)
                         {
-                            $urgency = '<span class="badge bg-primary">Normal</span>';
+                            $urgency = '<span class="badge badge-normal">Normal</span>';
                         }
                         elseif($row->indent_urgency == 2)
                         {
-                            $urgency = '<span class="badge bg-warning">High</span>';
+                            $urgency = '<span class="badge badge-high">High</span>';
                         }
                         elseif($row->indent_urgency == 3)
                         {
-                            $urgency = '<span class="badge bg-danger">Critical</span>';
+                            $urgency = '<span class="badge badge-critical">Critical</span>';
                         }
 
                         return $urgency;
@@ -81,19 +81,19 @@ class IndentController extends Controller
 
                         if($row->indent_status == 1)
                         {
-                            $status = '<span class="badge bg-warning">Pending Quotation</span>';
+                            $status = '<span class="badge badge-pending-quotation">Pending Quotation</span>';
                         }
                         elseif($row->indent_status == 2)
                         {
-                            $status = '<span class="badge bg-primary">MD Review</span>';
+                            $status = '<span class="badge badge-md-review">MD Review</span>';
                         }
                         elseif($row->indent_status == 3)
                         {
-                            $status = '<span class="badge bg-success">Approved</span>';
+                            $status = '<span class="badge badge-approved">Approved</span>';
                         }
                         elseif($row->indent_status == 4)
                         {
-                            $status = '<span class="badge bg-danger">Rejected</span>';
+                            $status = '<span class="badge badge-rejected">Rejected</span>';
                         }
 
                         return $status;

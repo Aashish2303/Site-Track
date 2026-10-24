@@ -16,6 +16,7 @@
 <script src="{{ asset(config('constants.admin_path').'js/form_validations.js') }}"></script>
 <script src="{{ asset(config('constants.admin_path').'js/script.js') }}"></script>
 <script src="{{ asset(config('constants.admin_path').'js/theme-script.js') }}"></script>
+<script src="{{ asset(config('constants.admin_path').'js/sitetrack-ui.js') }}?v={{ filemtime(public_path(config('constants.admin_path').'js/sitetrack-ui.js')) }}"></script>
 <script>
 @if(Session::has('success'))
 Swal.fire({

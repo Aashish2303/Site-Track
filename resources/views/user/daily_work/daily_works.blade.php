@@ -2,12 +2,6 @@
 @section('title', 'Daily Works - ' . Request()->settings->settings_title)
 @section('custom_style')
 <style>
-#daily_work_table tbody tr.daily-work-carry-forward > * {
-    background-color: #fff3cd;
-}
-#daily_work_table tbody tr.daily-work-carry-forward > :first-child {
-    border-left: 4px solid #ff9f1a;
-}
 </style>
 @endsection
 @section('contents')
