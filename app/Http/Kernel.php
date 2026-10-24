@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'checkuser' => \App\Http\Middleware\CheckUser::class,
         'checkuserlogin' => \App\Http\Middleware\CheckUserLogin::class,
         'checkpermission' => \App\Http\Middleware\CheckPermission::class,
+        'validateinput' => \App\Http\Middleware\ValidateUserInput::class,
         'selectedproject' => \App\Http\Middleware\SelectedProject::class,
     ];
 }

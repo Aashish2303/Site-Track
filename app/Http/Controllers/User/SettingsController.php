@@ -31,7 +31,7 @@ class SettingsController extends Controller
 
             if($validator->fails())
             {
-                return redirect()->back()->withErrors($validator->errors())->withInput();
+                return redirect()->back()->withErrors($validator->errors())->withInput($request->except(['settings_pwd']));
             }
             else
             {
@@ -106,7 +106,7 @@ class SettingsController extends Controller
 
             if($validator->fails())
             {
-                return redirect()->back()->withErrors($validator->errors())->withInput();
+                return redirect()->back()->withErrors($validator->errors())->withInput($request->except(['settings_pwd']));
             }
             else
             {

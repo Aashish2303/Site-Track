@@ -16,48 +16,23 @@ class Helper
 {
 	public static function mailConfig()
 	{
-        $config = array(
-            'driver'     => Request()->settings->settings_mailer,
-            'host'       => Request()->settings->settings_host,
-            'port'       => Request()->settings->settings_port,
-            'from'       => array('address' => Request()->settings->settings_faddress, 'name' => Request()->settings->settings_fname),
-            'encryption' => Request()->settings->settings_encryption,
-            'username'   => Request()->settings->settings_uname,
-            'password'   => Request()->settings->settings_pwd
-        );
-
-        Config::set('mail', $config);
+        $settings = request()->settings;
+        if ($settings && $settings->settings_host && $settings->settings_uname) {
+            Config::set('mail.default', 'smtp');
+            Config::set('mail.mailers.smtp', [
+                'transport' => 'smtp', 'host' => $settings->settings_host,
+                'port' => $settings->settings_port, 'encryption' => $settings->settings_encryption,
+                'username' => $settings->settings_uname, 'password' => $settings->settings_pwd,
+                'timeout' => 10,
+            ]);
+            Config::set('mail.from', ['address' => $settings->settings_faddress, 'name' => $settings->settings_fname]);
+        }
 	}
 
     public static function userHasPermission($name)
-	{
-		$return = true;
-
-		$assigned_permissions = array();
-
-        //if(Auth::user()->user_role != 1)
-        {
-            $where_group['rpermission_role'] = Auth::user()->user_role;
-            $role_permissions = RolePermission::where($where_group)->get();
-
-            if($role_permissions->count() > 0)
-            {
-                $assigned_permissions = array_column($role_permissions->toArray(),'rpermission_permission');
-            }
-
-            $module_permission = ModulePermission::where('mpermission_slug',$name)->first();
-
-            if(isset($module_permission))
-            {
-                if(!in_array($module_permission->mpermission_id,$assigned_permissions))
-                {
-                    $return = false;
-                }
-            }
-        }
-
-		return $return;
-	}
+    {
+        return app(\App\Services\RoleAccess::class)->allows($name);
+    }
 
     public static function moneyFormat($num)
     {

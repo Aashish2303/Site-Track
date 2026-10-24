@@ -207,11 +207,18 @@ class ProjectController extends Controller
                 $ins['project_status']     = 1;
                 $ins['project_trash']      = 1;
 
-                $add = Project::create($ins);
+                try {
+                $add = \Illuminate\Support\Facades\DB::transaction(function () use ($ins, $request) {
+                    $project = Project::create($ins);
+                    Excel::import(new BoqImport($project->project_id), $request->boq_file);
+                    return $project;
+                });
+                } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+                    throw \Illuminate\Validation\ValidationException::withMessages(['boq_file' => 'The BOQ has invalid rows. Check item names, units, positive quantities and non-negative rates.']);
+                }
 
                 if($add)
                 {
-                    Excel::import(new BoqImport($add->project_id),$request->boq_file);
 
                     return redirect()->back()->with('success','Project Added Successfully');
                 }

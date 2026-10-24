@@ -230,7 +230,7 @@ function confirm_msg(ev)
 
         if(t.value)
         {
-            window.location.href = urlToRedirect;
+            window.stSubmitStatus(urlToRedirect);
         }
     });
 }

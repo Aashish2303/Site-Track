@@ -34,11 +34,23 @@ class Handler extends ExceptionHandler
         'current_password',
         'password',
         'password_confirmation',
+        'user_password',
+        'new_password',
+        'confirm_password',
+        'settings_pwd',
+        'token',
     ];
 
     /**
      * Register the exception handling callbacks for the application.
      */
+    protected function unauthenticated($request, \Illuminate\Auth\AuthenticationException $exception)
+    {
+        return $request->expectsJson()
+            ? response()->json(['message' => 'Please sign in again.'], 401)
+            : redirect()->guest(route('user.login'));
+    }
+
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {

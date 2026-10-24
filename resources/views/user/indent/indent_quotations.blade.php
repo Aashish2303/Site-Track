@@ -229,7 +229,7 @@ function confirm_reject_msg(ev)
 
         if(t.value)
         {
-            window.location.href = urlToRedirect;
+            window.stSubmitStatus(urlToRedirect);
         }
     });
 }
@@ -256,7 +256,7 @@ function confirm_msg(ev)
 
         if(t.value)
         {
-            window.location.href = urlToRedirect;
+            window.stSubmitStatus(urlToRedirect);
         }
     });
 }

@@ -116,7 +116,7 @@ $(document).ready(function () {
             },
             new_password: {
                 required: true,
-                minlength: 6
+                minlength: 12
             },
             confirm_password: {
                 required: true,
@@ -130,7 +130,7 @@ $(document).ready(function () {
             },
             new_password : {
                 required : '<small style="color:red">Please Enter New Password</small>',
-                minlength : '<small style="color:red">Please Enter At Least 6 Characters</small>'
+                minlength : '<small style="color:red">Please Enter At Least 12 Characters</small>'
             },
             confirm_password : {
                 required : '<small style="color:red">Please Enter Confirm Password</small>',
@@ -1473,7 +1473,7 @@ $(document).ready(function () {
                 required: true
             },
             user_password: {
-                required: true
+                required: function () { return !document.getElementById('user_form').dataset.editUser; }
             }
         },
         messages :{

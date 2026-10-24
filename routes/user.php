@@ -47,12 +47,16 @@ Route::middleware(['common'])->group(function () {
 
     Route::middleware(['checkuserlogin'])->group(function () {
 
-        Route::match(['get','post'],'/', [LoginController::class, 'index'])->name('login');
-        Route::match(['get','post'],'forgot_password', [LoginController::class, 'forgot_password'])->name('forgot_password');
+        Route::get('/', [LoginController::class, 'index'])->name('login');
+        Route::post('/', [LoginController::class, 'index'])->middleware('throttle:login')->name('login.submit');
+        Route::get('forgot_password', [LoginController::class, 'forgot_password'])->name('forgot_password');
+        Route::post('forgot_password', [LoginController::class, 'forgot_password'])->middleware('throttle:recovery')->name('forgot_password.submit');
+        Route::get('reset-password/{token}', [LoginController::class, 'reset_password'])->name('reset_password');
+        Route::post('reset-password', [LoginController::class, 'reset_password'])->middleware('throttle:recovery')->name('reset_password.submit');
 
     });
 
-    Route::middleware(['checkuser','checkpermission','selectedproject'])->group(function () {
+    Route::middleware(['checkuser','auth.session','checkpermission','selectedproject','validateinput'])->group(function () {
 
         Route::prefix('user')->group(function () {
 
@@ -88,7 +92,7 @@ Route::middleware(['common'])->group(function () {
             Route::post('get_clients', [ClientController::class, 'get_clients'])->name('get_clients');
             Route::match(['get','post'],'add_client', [ClientController::class, 'add_client'])->name('add_client');
             Route::match(['get','post'],'edit_client/{id}', [ClientController::class, 'edit_client'])->name('edit_client');
-            Route::get('client_status/{id}/{status}', [ClientController::class, 'client_status'])->name('client_status');
+            Route::post('client_status/{id}/{status}', [ClientController::class, 'client_status'])->name('client_status');
             
             //Daily Work
 
@@ -156,7 +160,7 @@ Route::middleware(['common'])->group(function () {
             Route::post('get_materials', [MaterialController::class, 'get_materials'])->name('get_materials');
             Route::match(['get','post'],'add_material', [MaterialController::class, 'add_material'])->name('add_material');
             Route::match(['get','post'],'edit_material/{id}', [MaterialController::class, 'edit_material'])->name('edit_material');
-            Route::get('material_status/{id}/{status}', [MaterialController::class, 'material_status'])->name('material_status');
+            Route::post('material_status/{id}/{status}', [MaterialController::class, 'material_status'])->name('material_status');
 
             //Material Category
 
@@ -165,7 +169,7 @@ Route::middleware(['common'])->group(function () {
             Route::post('add_material_category', [MaterialCategoryController::class, 'add_material_category'])->name('add_material_category');
             Route::post('edit_material_category', [MaterialCategoryController::class, 'edit_material_category'])->name('edit_material_category');
             Route::post('get_material_category_details', [MaterialCategoryController::class, 'get_material_category_details'])->name('get_material_category_details');
-            Route::get('material_category_status/{id}/{status}', [MaterialCategoryController::class, 'material_category_status'])->name('material_category_status');
+            Route::post('material_category_status/{id}/{status}', [MaterialCategoryController::class, 'material_category_status'])->name('material_category_status');
 
             //Indent
 
@@ -179,8 +183,8 @@ Route::middleware(['common'])->group(function () {
             Route::post('add_indent_item_status/{id}', [IndentController::class, 'add_indent_item_status'])->name('add_indent_item_status');
             Route::get('indent_quotations/{id}', [IndentController::class, 'indent_quotations'])->name('indent_quotations');
             Route::post('add_quotation/{id}', [IndentController::class, 'add_quotation'])->name('add_quotation');
-            Route::get('reject_quotations/{id}', [IndentController::class, 'reject_quotations'])->name('reject_quotations');
-            Route::get('status_quotation/{id}/{status}', [IndentController::class, 'status_quotation'])->name('status_quotation');
+            Route::post('reject_quotations/{id}', [IndentController::class, 'reject_quotations'])->name('reject_quotations');
+            Route::post('status_quotation/{id}/{status}', [IndentController::class, 'status_quotation'])->name('status_quotation');
 
             //Labour Tracker
 
@@ -207,7 +211,7 @@ Route::middleware(['common'])->group(function () {
             Route::post('add_issue_category', [IssueCategoryController::class, 'add_issue_category'])->name('add_issue_category');
             Route::post('edit_issue_category', [IssueCategoryController::class, 'edit_issue_category'])->name('edit_issue_category');
             Route::post('get_issue_category_details', [IssueCategoryController::class, 'get_issue_category_details'])->name('get_issue_category_details');
-            Route::get('issue_category_status/{id}/{status}', [IssueCategoryController::class, 'issue_category_status'])->name('issue_category_status');
+            Route::post('issue_category_status/{id}/{status}', [IssueCategoryController::class, 'issue_category_status'])->name('issue_category_status');
 
             //Subcontractor Ledger
 
@@ -229,7 +233,7 @@ Route::middleware(['common'])->group(function () {
             Route::post('get_vendors', [VendorController::class, 'get_vendors'])->name('get_vendors');
             Route::match(['get','post'],'add_vendor', [VendorController::class, 'add_vendor'])->name('add_vendor');
             Route::match(['get','post'],'edit_vendor/{id}', [VendorController::class, 'edit_vendor'])->name('edit_vendor');
-            Route::get('vendor_status/{id}/{status}', [VendorController::class, 'vendor_status'])->name('vendor_status');
+            Route::post('vendor_status/{id}/{status}', [VendorController::class, 'vendor_status'])->name('vendor_status');
             Route::get('vendors_download_excel', [VendorController::class, 'vendors_download_excel'])->name('vendors_download_excel');
 
             //Subcontractor
@@ -238,7 +242,7 @@ Route::middleware(['common'])->group(function () {
             Route::post('get_subcontractors', [SubcontractorController::class, 'get_subcontractors'])->name('get_subcontractors');
             Route::match(['get','post'],'add_subcontractor', [SubcontractorController::class, 'add_subcontractor'])->name('add_subcontractor');
             Route::match(['get','post'],'edit_subcontractor/{id}', [SubcontractorController::class, 'edit_subcontractor'])->name('edit_subcontractor');
-            Route::get('subcontractor_status/{id}/{status}', [SubcontractorController::class, 'subcontractor_status'])->name('subcontractor_status');
+            Route::post('subcontractor_status/{id}/{status}', [SubcontractorController::class, 'subcontractor_status'])->name('subcontractor_status');
 
             //Category
 
@@ -247,7 +251,7 @@ Route::middleware(['common'])->group(function () {
             Route::post('add_category', [CategoryController::class, 'add_category'])->name('add_category');
             Route::post('edit_category', [CategoryController::class, 'edit_category'])->name('edit_category');
             Route::post('get_category_details', [CategoryController::class, 'get_category_details'])->name('get_category_details');
-            Route::get('category_status/{id}/{status}', [CategoryController::class, 'category_status'])->name('category_status');
+            Route::post('category_status/{id}/{status}', [CategoryController::class, 'category_status'])->name('category_status');
 
             //Unit
 
@@ -256,7 +260,7 @@ Route::middleware(['common'])->group(function () {
             Route::post('add_unit', [UnitController::class, 'add_unit'])->name('add_unit');
             Route::post('edit_unit', [UnitController::class, 'edit_unit'])->name('edit_unit');
             Route::post('get_unit_details', [UnitController::class, 'get_unit_details'])->name('get_unit_details');
-            Route::get('unit_status/{id}/{status}', [UnitController::class, 'unit_status'])->name('unit_status');
+            Route::post('unit_status/{id}/{status}', [UnitController::class, 'unit_status'])->name('unit_status');
             
             //QMS
 
@@ -269,7 +273,7 @@ Route::middleware(['common'])->group(function () {
             Route::post('get_users', [UserController::class, 'get_users'])->name('get_users');
             Route::match(['get','post'],'add_user', [UserController::class, 'add_user'])->name('add_user');
             Route::match(['get','post'],'edit_user/{id}', [UserController::class, 'edit_user'])->name('edit_user');
-            Route::get('user_status/{id}/{status}', [UserController::class, 'user_status'])->name('user_status');
+            Route::post('user_status/{id}/{status}', [UserController::class, 'user_status'])->name('user_status');
 
             //Role
 
@@ -277,7 +281,7 @@ Route::middleware(['common'])->group(function () {
             Route::post('get_roles', [RoleController::class, 'get_roles'])->name('get_roles');
             Route::match(['get','post'],'add_role', [RoleController::class, 'add_role'])->name('add_role');
             Route::match(['get','post'],'edit_role/{id}', [RoleController::class, 'edit_role'])->name('edit_role');
-            Route::get('role_status/{id}/{status}', [RoleController::class, 'role_status'])->name('role_status');
+            Route::post('role_status/{id}/{status}', [RoleController::class, 'role_status'])->name('role_status');
 
             //Settings
 
@@ -287,8 +291,8 @@ Route::middleware(['common'])->group(function () {
             //Profile
 
             Route::match(['get','post'],'profile', [ProfileController::class, 'index'])->name('profile');
-            Route::match(['get','post'],'change_password', [ProfileController::class, 'change_password'])->name('change_password');
-            Route::post('check_current_password', [ProfileController::class, 'check_current_password'])->name('check_current_password');
+            Route::match(['get','post'],'change_password', [ProfileController::class, 'change_password'])->middleware('throttle:password-change')->name('change_password');
+            Route::post('check_current_password', [ProfileController::class, 'check_current_password'])->middleware('throttle:password-check')->name('check_current_password');
 
             //Logout
 

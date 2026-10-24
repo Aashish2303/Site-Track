@@ -5,10 +5,12 @@ on:
     branches: [main]
     paths:
       - 'resources/views/user/**'
+      - 'resources/views/errors/**'
       - 'app/**'
       - 'routes/**'
       - 'config/**'
       - 'database/migrations/workflows/**'
+      - 'database.sql'
       - 'tests/**'
       - 'composer.*'
       - 'public/assets/admin/css/**'
@@ -20,10 +22,12 @@ on:
   pull_request:
     paths:
       - 'resources/views/user/**'
+      - 'resources/views/errors/**'
       - 'app/**'
       - 'routes/**'
       - 'config/**'
       - 'database/migrations/workflows/**'
+      - 'database.sql'
       - 'tests/**'
       - 'composer.*'
       - 'public/assets/admin/css/**'

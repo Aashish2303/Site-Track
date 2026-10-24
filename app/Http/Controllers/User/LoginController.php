@@ -3,106 +3,88 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Auth;
-use Mail;
-use Helper;
-use Validator;
+use App\Mail\ResetAccountPassword;
 use App\Models\User;
+use App\Rules\AccountPassword;
+use App\Services\PasswordVault;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
 
 class LoginController extends Controller
 {
     public function index(Request $request)
     {
-        if($request->has('submit'))
-        {
-            $rules = ['user_lname' => 'required',
-                      'user_password' => 'required'];
-
-            $messages = ['user_lname.required' => 'Please Enter Username',
-                         'user_password.required' => 'Please Enter Password'];
-
-            $validator = Validator::make($request->all(),$rules,$messages);
-
-            if($validator->fails())
-            {
-                return redirect()->back()->withErrors($validator->errors())->withInput();
+        if ($request->isMethod('post')) {
+            $data = $request->validate(['user_lname' => 'required|string|max:255', 'user_password' => 'required|string|max:1024']);
+            $user = User::where('user_lname', $data['user_lname'])->first();
+            // Always do a bcrypt check, including unknown accounts, to reduce timing disclosure.
+            $hash = $user?->user_password ?? '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi';
+            $valid = Hash::check($data['user_password'], $hash);
+            if (! $valid || ! $user || (int) $user->user_status !== 1 || ! $user->role || (int) $user->role->role_status !== 1) {
+                return redirect()->route('user.login')->with('error', 'Unable to sign in with those details.')->withInput($request->only('user_lname'));
             }
-            else
-            {
-                $where['user_lname'] = $request->user_lname;
-                $where['password'] = $request->user_password;
+            Auth::login($user);
+            $request->session()->regenerate();
+            $request->session()->forget('workspace_project_id');
+            $request->session()->put('password_hash_web', $user->getAuthPassword());
 
-                if(Auth::attempt($where))
-                {
-                    if(Auth::user()->user_status == 1)
-                    {
-                        $request->session()->regenerate();
-                        $request->session()->forget('workspace_project_id');
-                        return redirect()->intended('user/projects');
-                    }
-                    else
-                    {
-                        Auth::logout();
-
-                        return redirect()->route('user.login')->with('error','Invalid Username or Password!')->withInput();
-                    }
-                }
-                else
-                {
-                    return redirect()->route('user.login')->with('error','Invalid Username or Password!')->withInput();
-                }
-            }
+            return redirect()->intended(route('user.projects'));
         }
 
-        $data['set'] = 'login';
-        return view('user.login.login',$data);
+        return view('user.login.login', ['set' => 'login']);
     }
 
     public function forgot_password(Request $request)
     {
-        if($request->has('submit'))
-        {
-            $rules = ['user_email' => 'required|email'];
-
-            $messages = ['user_email.required' => 'Please Enter Email Address',
-                         'user_email.email' => 'Please Enter Valid Email Address'];
-
-            $validator = Validator::make($request->all(),$rules,$messages);
-
-            if($validator->fails())
-            {
-                return redirect()->back()->withErrors($validator->errors())->withInput();
+        if ($request->isMethod('post')) {
+            $data = $request->validate(['user_email' => 'required|string|email|max:255']);
+            try {
+                Password::sendResetLink(['user_email' => $data['user_email'], 'user_status' => 1], function (User $user, string $token) {
+                    \Helper::mailConfig();
+                    $path = route('user.reset_password', ['token' => $token, 'email' => $user->user_email], false);
+                    Mail::to($user->user_email)->send(new ResetAccountPassword(rtrim(config('app.url'), '/').$path));
+                });
+            } catch (\Throwable $e) {
+                // Do not log reset tokens, SMTP credentials or account identifiers.
+                logger()->warning('Password reset delivery failed. Check the mail configuration.');
             }
-            else
-            {
-                $where_user['user_email']  = $request->user_email;
-                $where_user['user_status'] = 1;
-                $user = User::where($where_user)->first();
 
-                if(isset($user))
-                {
-                    Helper::mailConfig();
-                    
-                    $mail  = $request->user_email;
-
-                    $uname = $data['name'] = $user->user_name;
-                    $data['password'] = base64_decode($user->user_vpassword);
-
-                    $send = Mail::send('user.mail.forgot_password', $data, function($message) use ($mail, $uname){
-                         $message->to($mail, $uname)->subject(config('constants.site_title').' - Forgot Password');
-                         $message->from(config('constants.mail_from'),config('constants.site_title'));
-                      });
-
-                    return redirect()->route('user.login')->with('success','Please Check Your Email');
-                }
-                else
-                {
-                    return redirect()->route('user.forgot_password')->with('error','Invalid Email Address')->withInput();
-                }
-            }
+            return redirect()->route('user.login')->with('success', 'If the account is eligible, a password reset link will be sent.');
         }
 
         return view('user.login.forgot_password');
+    }
+
+    public function reset_password(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $data = $request->validate([
+                'user_email' => 'required|string|email|max:255', 'token' => 'required|string|size:64',
+                'password' => ['required', 'string', 'confirmed', new AccountPassword],
+                'password_confirmation' => 'required|string',
+            ]);
+            $status = Password::reset([
+                'user_email' => $data['user_email'], 'user_status' => 1, 'token' => $data['token'],
+                'password' => $data['password'], 'password_confirmation' => $data['password_confirmation'],
+            ], function (User $user, string $password) {
+                $user->user_password = Hash::make($password);
+                $user->user_vpassword = app(PasswordVault::class)->encrypt($password);
+                $user->user_updated_on = now();
+                $user->save();
+                event(new PasswordReset($user));
+            });
+            if ($status === Password::PASSWORD_RESET) {
+                return redirect()->route('user.login')->with('success', 'Password updated. Please sign in.');
+            }
+
+            return back()->with('error', 'Unable to reset the password. Request a new link.');
+        }
+
+        return response()->view('user.login.reset_password', ['token' => $request->route('token'), 'email' => $request->query('email')])
+            ->header('Cache-Control', 'no-store, private')->header('Referrer-Policy', 'no-referrer');
     }
 }

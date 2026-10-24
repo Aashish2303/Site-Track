@@ -231,6 +231,7 @@
    @endphp
    <div class="row st-metrics">
       @foreach($metrics as [$key, $tone, $label, $value, $icon, $route, $hint])
+      @if(Helper::userHasPermission($route))
       <div class="d-flex">
          <a href="{{ route($route) }}" class="card flex-fill st-stat-card st-stat--{{ $tone }} dashboard-summary-link" data-stat="{{ $key }}">
             <div class="card-body">
@@ -241,9 +242,11 @@
             </div>
          </a>
       </div>
+      @endif
       @endforeach
    </div>
    <div class="row">
+      @if(Helper::userHasPermission('user.projects') && Helper::userHasPermission('user.view_project'))
       <div class="col-xl-6 col-md-6 d-flex">
          <div class="card shadow flex-fill w-100">
             <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
@@ -293,6 +296,8 @@
             </div>
          </div>
       </div>
+      @endif
+      @if(Helper::userHasPermission('user.indents'))
       <div class="col-xl-6 col-md-6 d-flex">
          <div class="card shadow flex-fill w-100">
             <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
@@ -326,6 +331,7 @@
             </div>
          </div>
       </div>
+      @endif
    </div>
 </div>
 @endsection

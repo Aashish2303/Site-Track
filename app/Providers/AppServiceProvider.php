@@ -11,6 +11,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->scoped(\App\Services\RoleAccess::class);
         $this->app->scoped(\App\Services\ProjectContext::class);
         $this->app->scoped(\App\Services\WorkflowSchema::class);
     }
@@ -20,6 +21,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if ($this->app->environment('production')) {
+            config(['app.debug' => false]);
+        }
         // Existing hosts may still have an older cached filesystem configuration during rollout.
         if (!config('filesystems.disks.evidence')) {
             config(['filesystems.disks.evidence' => [

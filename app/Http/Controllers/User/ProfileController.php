@@ -29,7 +29,7 @@ class ProfileController extends Controller
 
             if($validator->fails())
             {
-                return redirect()->back()->withErrors($validator->errors())->withInput();
+                return redirect()->back()->withErrors($validator->errors())->withInput($request->except(['current_password', 'new_password', 'confirm_password']));
             }
             else
             {
@@ -38,7 +38,7 @@ class ProfileController extends Controller
 
                 if($check_name > 0)
                 {
-                    return redirect()->back()->with('error','Username Already Exists')->withInput();
+                    return redirect()->back()->with('error','Username Already Exists')->withInput($request->except(['current_password', 'new_password', 'confirm_password']));
                 }
 
                 $where_email['user_email'] = $request->user_email;
@@ -46,7 +46,7 @@ class ProfileController extends Controller
 
                 if($check_email > 0)
                 {
-                    return redirect()->back()->with('error','Email Address Already Exists')->withInput();
+                    return redirect()->back()->with('error','Email Address Already Exists')->withInput($request->except(['current_password', 'new_password', 'confirm_password']));
                 }
 
                 $upd['user_name']       = $request->user_name;
@@ -91,23 +91,23 @@ class ProfileController extends Controller
 
             if($validator->fails())
             {
-                return redirect()->back()->withErrors($validator->errors())->withInput();
+                return redirect()->back()->withErrors($validator->errors())->withInput($request->except(['current_password', 'new_password', 'confirm_password']));
             }
             else
             {
-                $where['user_id'] = Auth::user()->user_id;
-                $where['user_vpassword'] = base64_encode($request->current_password);
-
-                $check = User::where($where)->count();
+                $check = \Illuminate\Support\Facades\Hash::check($request->current_password, Auth::user()->getAuthPassword());
 
                 if($check > 0)
                 {
                     $upd['user_password']   = bcrypt($request->confirm_password);
-                    $upd['user_vpassword']  = base64_encode($request->confirm_password);
+                    $upd['user_vpassword']  = app(\App\Services\PasswordVault::class)->encrypt($request->confirm_password);
                     $upd['user_updated_on'] = date('Y-m-d H:i:s');
                     $upd['user_updated_by'] = Auth::user()->user_id;
 
                     $update = User::where('user_id',Auth::user()->user_id)->update($upd);
+                    Auth::user()->forceFill($upd);
+                    $request->session()->put('password_hash_web', $upd['user_password']);
+                    $request->session()->regenerate();
 
                     return redirect()->route('user.change_password')->with('success','Password Changed Successfully');
                 }
@@ -124,18 +124,7 @@ class ProfileController extends Controller
 
     public function check_current_password(Request $request)
     {
-        $where['user_id'] = Auth::user()->user_id;
-        $where['user_vpassword'] = base64_encode($request->current_password);
-
-        $check = User::where($where)->count();
-
-        if($check > 0)
-        {
-            echo "true";
-        }
-        else
-        {
-            echo "false";
-        }
+        $request->validate(['current_password' => 'required|string|max:1024']);
+        return response()->json(\Illuminate\Support\Facades\Hash::check($request->current_password, Auth::user()->getAuthPassword()));
     }
 }

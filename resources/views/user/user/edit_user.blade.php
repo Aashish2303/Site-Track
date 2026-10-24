@@ -22,7 +22,7 @@
       <div class="col-xl-12 col-lg-12">
          <div class="patient-form-wizard flex-fill">
             <div class="form-wizard-content active">
-               <form id="user_form" action="{{ route('user.edit_user', ['id' => $user->user_id]) }}" method="POST" enctype="multipart/form-data">
+               <form id="user_form" data-edit-user="true" action="{{ route('user.edit_user', ['id' => $user->user_id]) }}" method="POST" enctype="multipart/form-data">
                   @csrf
                   <div class="card">
                      <div class="card-header">
@@ -99,12 +99,12 @@
                               <div class="mb-3">
                                  <label class="form-label">Password<span class="text-danger ms-1">*</span></label>
                                  <div class="input-group">
-                                    <input type="password" name="user_password" id="user_password" class="form-control" value="{{ base64_decode($user->user_vpassword) }}" autocomplete="off">
+                                    <input type="password" name="user_password" id="user_password" class="form-control" value="{{ $user->adminPassword() }}" autocomplete="new-password">
                                     <div class="input-group-text" onclick="show_password()">
                                        <i class="ti ti-eye"></i>
                                     </div>
                                  </div>
-                                 <div id="user_password_error"></div>
+                                 <div id="user_password_error"></div><small class="text-muted">Leave blank to keep the current password. New passwords need at least 12 characters, including a letter and a number.</small>
                                  @if($errors->has('user_password'))
                                  <div>{{ $errors->first('user_password') }}</div>
                                  @endif

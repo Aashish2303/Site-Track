@@ -240,7 +240,8 @@ class SiteWorkflowTest extends TestCase
 
     public function test_new_financial_and_approval_capabilities_deny_roles_without_the_specific_permission(): void
     {
-        $this->supervisor->user_role = 999999; $this->supervisor->save();
+        $role = \App\Models\Role::firstOrFail()->replicate(); $role->role_name = 'No workflow access'; $role->role_status = 1; $role->save();
+        $this->supervisor->user_role = $role->role_id; $this->supervisor->save();
         $this->selected()->get('/user/reports')->assertForbidden();
         $this->post('/user/labour-payments', [])->assertForbidden();
         $this->post('/user/site-materials/usage', [])->assertForbidden();
@@ -268,9 +269,9 @@ class SiteWorkflowTest extends TestCase
             $ownQuote = $quote->replicate(); $ownQuote->iquote_indent = $own->indent_id; $ownQuote->iquote_status = 1; $ownQuote->save();
         }
         $otherQuote = $quote->replicate(); $otherQuote->iquote_indent = $foreign->indent_id; $otherQuote->iquote_status = 1; $otherQuote->save();
-        $this->selected()->get('/user/status_quotation/'.$ownQuote->iquote_id.'/2')->assertRedirect();
+        $this->selected()->post('/user/status_quotation/'.$ownQuote->iquote_id.'/2')->assertRedirect();
         $this->assertDatabaseHas('indent_quotations', ['iquote_id' => $ownQuote->iquote_id, 'iquote_status' => 2]);
-        $this->get('/user/status_quotation/'.$otherQuote->iquote_id.'/2')->assertNotFound();
+        $this->post('/user/status_quotation/'.$otherQuote->iquote_id.'/2')->assertNotFound();
         $this->assertDatabaseHas('indent_quotations', ['iquote_id' => $otherQuote->iquote_id, 'iquote_status' => 1]);
     }
 }

@@ -75,3 +75,28 @@
     mobile.setAttribute('aria-expanded', String(wrapper.classList.contains('slide-nav')));
   }).observe(wrapper, { attributes: true, attributeFilter: ['class'] });
 })();
+
+// State changes use POST with Laravel's CSRF token, including legacy status links.
+window.stSubmitStatus = function (destination) {
+  const url = new URL(destination, window.location.origin);
+  if (url.origin !== window.location.origin) return;
+  const token = document.querySelector('meta[name="csrf-token"]')?.content;
+  if (!token) return;
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = url.href;
+  const csrf = document.createElement('input');
+  csrf.type = 'hidden'; csrf.name = '_token'; csrf.value = token;
+  form.appendChild(csrf);
+  document.body.appendChild(form);
+  form.submit();
+};
+document.addEventListener('click', function (event) {
+  if (event.defaultPrevented) return;
+  const link = event.target.closest('a[href]');
+  if (!link) return;
+  const url = new URL(link.href, window.location.origin);
+  if (url.origin !== window.location.origin || !/\/user\/(?:client_status|material_status|material_category_status|issue_category_status|vendor_status|subcontractor_status|category_status|unit_status|user_status|role_status|status_quotation|reject_quotations)\//.test(url.pathname)) return;
+  event.preventDefault();
+  if (window.confirm('Confirm this status change?')) window.stSubmitStatus(url.href);
+});

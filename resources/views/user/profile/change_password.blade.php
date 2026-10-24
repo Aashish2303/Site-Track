@@ -45,7 +45,7 @@
                   <div class="col-xl-4 col-md-6">
                      <div class="mb-3 mb-lg-0">
                         <label class="form-label">New Password</label>
-                        <input type="password" name="new_password" id="new_password" class="form-control" autocomplete="off">
+                        <input type="password" name="new_password" id="new_password" class="form-control" autocomplete="new-password" minlength="12">
                         @if($errors->has('new_password'))
                         <div>{{ $errors->first('new_password') }}</div>
                         @endif
@@ -69,14 +69,4 @@
       </div>
    </form>
 </div>
-@endsection
-@section('custom_script')
-<script>
-user_image.onchange = evt => {
-  const [file] = user_image.files
-  if (file) {
-    user_image_src.src = URL.createObjectURL(file)
-  }
-}
-</script>
 @endsection

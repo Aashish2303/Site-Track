@@ -95,12 +95,12 @@
                               <div class="mb-3">
                                  <label class="form-label">Password<span class="text-danger ms-1">*</span></label>
                                  <div class="input-group">
-                                    <input type="password" name="user_password" id="user_password" class="form-control" value="{{ old('user_password') }}" autocomplete="off">
+                                    <input type="password" name="user_password" id="user_password" class="form-control" autocomplete="new-password">
                                     <div class="input-group-text" onclick="show_password()">
                                        <i class="ti ti-eye"></i>
                                     </div>
                                  </div>
-                                 <div id="user_password_error"></div>
+                                 <div id="user_password_error"></div><small class="text-muted">Use at least 12 characters, including a letter and a number.</small>
                                  @if($errors->has('user_password'))
                                  <div>{{ $errors->first('user_password') }}</div>
                                  @endif

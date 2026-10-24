@@ -43,7 +43,7 @@ class UserController extends Controller
                            <img src="'.$user_image.'" alt="" class="rounded">
                            </a>
                            <div>
-                              <h6 class="fs-14 mb-0 fw-medium"><a href="javascript:void(0);">'.$row->user_name.'</a></h6>
+                              <h6 class="fs-14 mb-0 fw-medium"><a href="javascript:void(0);">'.e($row->user_name).'</a></h6>
                            </div>
                         </div>';
 
@@ -107,7 +107,7 @@ class UserController extends Controller
 
             if($validator->fails())
             {
-                return redirect()->back()->withErrors($validator->errors())->withInput();
+                return redirect()->back()->withErrors($validator->errors())->withInput($request->except(['user_password']));
             }
             else
             {
@@ -131,7 +131,7 @@ class UserController extends Controller
                 $ins['user_email']      = $request->user_email;
                 $ins['user_phone']      = $request->user_phone;
                 $ins['user_password']   = bcrypt($request->user_password);
-                $ins['user_vpassword']  = base64_encode($request->user_password);
+                $ins['user_vpassword']  = app(\App\Services\PasswordVault::class)->encrypt($request->user_password);
                 $ins['user_added_on']   = date('Y-m-d H:i:s');
                 $ins['user_added_by']   = Auth::user()->user_id;
                 $ins['user_updated_on'] = date('Y-m-d H:i:s');
@@ -171,7 +171,7 @@ class UserController extends Controller
                       'user_lname' => 'required',
                       'user_email' => 'required|email',
                       'user_phone' => 'required',
-                      'user_password' => 'required'];
+                      'user_password' => 'nullable|string'];
 
             $messages = ['user_role.required' => 'Please Select Role',
                          'user_name.required' => 'Please Enter Name',
@@ -185,7 +185,7 @@ class UserController extends Controller
 
             if($validator->fails())
             {
-                return redirect()->back()->withErrors($validator->errors())->withInput();
+                return redirect()->back()->withErrors($validator->errors())->withInput($request->except(['user_password']));
             }
             else
             {
@@ -208,8 +208,10 @@ class UserController extends Controller
                 $upd['user_lname']      = $request->user_lname;
                 $upd['user_email']      = $request->user_email;
                 $upd['user_phone']      = $request->user_phone;
-                $upd['user_password']   = bcrypt($request->user_password);
-                $upd['user_vpassword']  = base64_encode($request->user_password);
+                if ($request->filled('user_password')) {
+                    $upd['user_password'] = bcrypt($request->user_password);
+                    $upd['user_vpassword'] = app(\App\Services\PasswordVault::class)->encrypt($request->user_password);
+                }
                 $upd['user_updated_on'] = date('Y-m-d H:i:s');
                 $upd['user_updated_by'] = Auth::user()->user_id;
 
@@ -223,6 +225,13 @@ class UserController extends Controller
                 }
 
                 User::where('user_id',$request->segment(3))->update($upd);
+                if ((int) $request->segment(3) === (int) Auth::id()) {
+                    Auth::user()->forceFill($upd);
+                    if (isset($upd['user_password'])) {
+                        $request->session()->put('password_hash_web', $upd['user_password']);
+                        $request->session()->regenerate();
+                    }
+                }
 
                 return redirect()->back()->with('success','User Updated Successfully');
             }

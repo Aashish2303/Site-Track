@@ -20,13 +20,13 @@
             @csrf
             <span class="st-eyebrow">Let's get you back</span>
             <h2>Account help.</h2>
-            <p class="st-auth-form-intro">Enter your registered email address to receive your account password.</p>
+            <p class="st-auth-form-intro">Enter your registered email address to receive a password reset link.</p>
             <div class="st-auth-field">
                 <label class="form-label" for="user_email">Email address</label>
                 <input id="user_email" type="email" name="user_email" value="{{ old('user_email') }}" class="form-control" autocomplete="email" placeholder="you@company.com" aria-describedby="user_email_error" required>
                 <div id="user_email_error" aria-live="polite">@error('user_email')<span class="st-field-error">{{ $message }}</span>@enderror</div>
             </div>
-            <button type="submit" name="submit" value="submit" class="btn btn-primary">Send account password <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+            <button type="submit" name="submit" value="submit" class="btn btn-primary">Send reset link <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
             <a href="{{ route('user.login') }}" class="st-auth-back"><i class="ti ti-arrow-left" aria-hidden="true"></i>Back to sign in</a>
         </form>
     </main>

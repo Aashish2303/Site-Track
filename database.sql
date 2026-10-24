@@ -1911,20 +1911,20 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `user_role`, `user_name`, `user_lname`, `user_email`, `user_phone`, `user_password`, `user_vpassword`, `user_image`, `user_added_on`, `user_added_by`, `user_updated_on`, `user_updated_by`, `user_status`) VALUES
-(1, 1, 'Admin', 'admin', 'codetrickz22@gmail.com', '9876543210', '$2y$10$IoKjHq5F1GXbpbYhh0DO0.UzVXT8j0ND/7krWBCFQv53reTqKzp2O', 'MTIzNDU2', 'k5tfKVjWQbdHhsS4lUKHEJvcOYzl4251XI9vlsbp.jpg', '2026-06-30 18:11:06', 1, '2026-07-26 21:01:41', 1, 1),
-(2, 2, 'Rajesh Kumar', 'rajesh', 'rajesh@gmail.com', '8565451520', '$2y$10$ZM2oQk/BzKukOgoHhz1FGuJI1bhBZzLZwVRM9v5mYL5xobtiH.8Ni', 'MTIzNDU2', 'bvg1RsuX1TfpUoHMXDYnkxXnXSQnD09zbBhdcGCB.jpg', '2026-06-30 21:47:44', 1, '2026-07-26 20:52:11', 1, 1),
-(3, 3, 'Ravi Kumar', 'ravi', 'ravi@gmail.com', '7545152350', '$2y$10$2F5zJ5qyzpnzbGXtgj2eTeERBKO7ynRGUfChNwRmeMTTNSmpF5l1G', 'MTIzNDU2', 'dtELYhJMVycUk7xAhhZvpujV4u0MYAc0ET6mnyH1.jpg', '2026-07-07 18:38:26', 1, '2026-07-26 20:51:55', 1, 1),
-(4, 4, 'Mohan Reddy', 'mohan', 'mohan@gmail.com', '8565154520', '$2y$10$dHW2ZydlE0Q6jGd1gWzMf.vVHi5V3cZuQpHZDcZVJxy1SXRviSryu', 'MTIzNDU2', 'gZ03C1bVtbSt2bBIBZ3S1NtUKQ2JHlCHetNgyPKn.jpg', '2026-07-07 18:39:04', 1, '2026-07-26 20:51:44', 1, 1),
-(5, 5, 'Priya Mehta', 'priya', 'priyamehta@gmail.com', '9601203256', '$2y$10$zF0ryATXf9U0pnFi99A4Ku/SIKGWR7A/5RyGo4i6Xbm8XmAKmdeWS', 'MTIzNDU2', '2GxDYSaV9028OPoq09JMA7NS4svKiF675tXEva2Z.jpg', '2026-07-07 18:39:56', 1, '2026-07-26 20:51:33', 1, 1),
-(6, 6, 'John', 'john', 'john@gmail.com', '7563001569', '$2y$10$65Yt1o6NdQA9rV64vx5sTu40sZ6kSANNI/MzvY3FUarvmKQSQYB8.', 'MTIzNDU2', '65QnqGsyxhQgrtKWfxU7QA4EiZ1aWylQAsAQeXoB.jpg', '2026-07-07 18:40:46', 1, '2026-07-26 20:51:17', 1, 1),
-(7, 7, 'Thilak', 'thilak', 'thilak@gmail.com', '9655001563', '$2y$10$52juhwGKpwzkkLY6hJeQ2uli2c6k4YW8GtZeAfs4kJm1MVKfan/v2', 'MTIzNDU2', 'lvjdqqFZLDCDX26DmNDlUWvsyQBMhNxk6Rkh1xVH.jpg', '2026-07-07 18:41:39', 1, '2026-07-26 20:51:08', 1, 1),
-(8, 7, 'Shiva', 'shiva', 'shiva@gmail.com', '9645102352', '$2y$10$.2PelEMt/qRyjKETdE4gzecwWwtCKyEmkNhtaC793KzKNjurPAHIe', 'MTIzNDU2', 'itmUPH4CGDwMtJq4bqOEVInk1hjhf0cs68yb31HO.jpg', '2026-07-07 18:42:14', 1, '2026-07-26 20:50:57', 1, 1),
-(9, 3, 'Anil Sharma', 'anil', 'anil@gmail.com', '9601452315', '$2y$10$s9N98S.y5vDQSCj6lJBDPegPaK0AUh56qfm/zE5KRd0mAQDcDuvIm', 'MTIzNDU2', 'p2rFYcCiEUrrC9z0UlLorqrdssam8tRIdH1VoH8O.png', '2026-07-07 18:43:06', 1, '2026-07-26 20:50:48', 1, 1),
-(10, 3, 'Yash', 'yash.1234', 'yash@gmail.com', '9645001536', '$2y$10$4Sw1wavxXLDsLAS.06LQ4.TvMvbo5cNqp8va45X/lyLlVdkLbPs7e', 'MTIzNDU2', NULL, '2026-07-26 20:48:00', 1, '2026-07-26 20:53:13', 1, 1),
-(11, 4, 'Bhavani', 'bhavani', 'Bhavani@gmail.com', '0000000000', '$2y$10$DeHQw0HdopE7lUUPLMY51efQ1NTLCqYdxVixyS8HhjvNEy/9vjUIu', 'YmhhdmFuaUAyMDI2', NULL, '2026-08-05 10:32:26', 1, '2026-08-05 10:32:26', 1, 1),
-(12, 7, 'Raju', 'Raju', 'Raju@gmail.com', '0000000000', '$2y$10$6DaEbtpY1pLDdRcni.5w2O/x3t7pA0VKv25TYnnDLuYsF0kqMWTTy', 'cmFqdUAyMDI2', NULL, '2026-08-05 10:32:49', 1, '2026-08-05 10:32:49', 1, 1),
-(13, 5, 'Amrutha', 'Amrutha', 'Amrutha@gmail.com', '00000000000', '$2y$10$VU4hBY1YF2rOQ9sGKPg.jeP.4Mc5pa6Wx9CF1XIxbr6yixZvGXZJy', 'YW1ydXRoYUAyMDI2', NULL, '2026-08-05 10:33:36', 1, '2026-08-05 10:33:36', 1, 1),
-(14, 7, 'Surendra', 'surendra', 'Surendra@gmail.com', '0000000000', '$2y$10$Rt2.ZOUbgK00MlfrqZD5UO.c/KfMKD7qHsWUlaRvGk/v1s/vHxq2a', 'c3VyZW5kcmFAMjAyNg==', NULL, '2026-08-05 10:34:09', 1, '2026-08-05 10:37:34', 1, 1);
+(1, 1, 'Admin', 'admin', 'codetrickz22@gmail.com', '9876543210', '$2y$10$IoKjHq5F1GXbpbYhh0DO0.UzVXT8j0ND/7krWBCFQv53reTqKzp2O', '', 'k5tfKVjWQbdHhsS4lUKHEJvcOYzl4251XI9vlsbp.jpg', '2026-06-30 18:11:06', 1, '2026-07-26 21:01:41', 1, 1),
+(2, 2, 'Rajesh Kumar', 'rajesh', 'rajesh@gmail.com', '8565451520', '$2y$10$ZM2oQk/BzKukOgoHhz1FGuJI1bhBZzLZwVRM9v5mYL5xobtiH.8Ni', '', 'bvg1RsuX1TfpUoHMXDYnkxXnXSQnD09zbBhdcGCB.jpg', '2026-06-30 21:47:44', 1, '2026-07-26 20:52:11', 1, 1),
+(3, 3, 'Ravi Kumar', 'ravi', 'ravi@gmail.com', '7545152350', '$2y$10$2F5zJ5qyzpnzbGXtgj2eTeERBKO7ynRGUfChNwRmeMTTNSmpF5l1G', '', 'dtELYhJMVycUk7xAhhZvpujV4u0MYAc0ET6mnyH1.jpg', '2026-07-07 18:38:26', 1, '2026-07-26 20:51:55', 1, 1),
+(4, 4, 'Mohan Reddy', 'mohan', 'mohan@gmail.com', '8565154520', '$2y$10$dHW2ZydlE0Q6jGd1gWzMf.vVHi5V3cZuQpHZDcZVJxy1SXRviSryu', '', 'gZ03C1bVtbSt2bBIBZ3S1NtUKQ2JHlCHetNgyPKn.jpg', '2026-07-07 18:39:04', 1, '2026-07-26 20:51:44', 1, 1),
+(5, 5, 'Priya Mehta', 'priya', 'priyamehta@gmail.com', '9601203256', '$2y$10$zF0ryATXf9U0pnFi99A4Ku/SIKGWR7A/5RyGo4i6Xbm8XmAKmdeWS', '', '2GxDYSaV9028OPoq09JMA7NS4svKiF675tXEva2Z.jpg', '2026-07-07 18:39:56', 1, '2026-07-26 20:51:33', 1, 1),
+(6, 6, 'John', 'john', 'john@gmail.com', '7563001569', '$2y$10$65Yt1o6NdQA9rV64vx5sTu40sZ6kSANNI/MzvY3FUarvmKQSQYB8.', '', '65QnqGsyxhQgrtKWfxU7QA4EiZ1aWylQAsAQeXoB.jpg', '2026-07-07 18:40:46', 1, '2026-07-26 20:51:17', 1, 1),
+(7, 7, 'Thilak', 'thilak', 'thilak@gmail.com', '9655001563', '$2y$10$52juhwGKpwzkkLY6hJeQ2uli2c6k4YW8GtZeAfs4kJm1MVKfan/v2', '', 'lvjdqqFZLDCDX26DmNDlUWvsyQBMhNxk6Rkh1xVH.jpg', '2026-07-07 18:41:39', 1, '2026-07-26 20:51:08', 1, 1),
+(8, 7, 'Shiva', 'shiva', 'shiva@gmail.com', '9645102352', '$2y$10$.2PelEMt/qRyjKETdE4gzecwWwtCKyEmkNhtaC793KzKNjurPAHIe', '', 'itmUPH4CGDwMtJq4bqOEVInk1hjhf0cs68yb31HO.jpg', '2026-07-07 18:42:14', 1, '2026-07-26 20:50:57', 1, 1),
+(9, 3, 'Anil Sharma', 'anil', 'anil@gmail.com', '9601452315', '$2y$10$s9N98S.y5vDQSCj6lJBDPegPaK0AUh56qfm/zE5KRd0mAQDcDuvIm', '', 'p2rFYcCiEUrrC9z0UlLorqrdssam8tRIdH1VoH8O.png', '2026-07-07 18:43:06', 1, '2026-07-26 20:50:48', 1, 1),
+(10, 3, 'Yash', 'yash.1234', 'yash@gmail.com', '9645001536', '$2y$10$4Sw1wavxXLDsLAS.06LQ4.TvMvbo5cNqp8va45X/lyLlVdkLbPs7e', '', NULL, '2026-07-26 20:48:00', 1, '2026-07-26 20:53:13', 1, 1),
+(11, 4, 'Bhavani', 'bhavani', 'Bhavani@gmail.com', '0000000000', '$2y$10$DeHQw0HdopE7lUUPLMY51efQ1NTLCqYdxVixyS8HhjvNEy/9vjUIu', '', NULL, '2026-08-05 10:32:26', 1, '2026-08-05 10:32:26', 1, 1),
+(12, 7, 'Raju', 'Raju', 'Raju@gmail.com', '0000000000', '$2y$10$6DaEbtpY1pLDdRcni.5w2O/x3t7pA0VKv25TYnnDLuYsF0kqMWTTy', '', NULL, '2026-08-05 10:32:49', 1, '2026-08-05 10:32:49', 1, 1),
+(13, 5, 'Amrutha', 'Amrutha', 'Amrutha@gmail.com', '00000000000', '$2y$10$VU4hBY1YF2rOQ9sGKPg.jeP.4Mc5pa6Wx9CF1XIxbr6yixZvGXZJy', '', NULL, '2026-08-05 10:33:36', 1, '2026-08-05 10:33:36', 1, 1),
+(14, 7, 'Surendra', 'surendra', 'Surendra@gmail.com', '0000000000', '$2y$10$Rt2.ZOUbgK00MlfrqZD5UO.c/KfMKD7qHsWUlaRvGk/v1s/vHxq2a', '', NULL, '2026-08-05 10:34:09', 1, '2026-08-05 10:37:34', 1, 1);
 
 -- --------------------------------------------------------
 
