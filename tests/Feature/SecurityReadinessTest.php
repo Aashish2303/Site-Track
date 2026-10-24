@@ -18,6 +18,7 @@ class SecurityReadinessTest extends TestCase
         $c['cache']['default'] = 'file';
         $c['database']['connections']['mysql'] = array_replace($c['database']['connections']['mysql'], [
             'url' => null, 'username' => 'application_service', 'password' => Str::random(40), 'database' => 'app', 'host' => 'db.example.invalid',
+            'unix_socket' => '', 'options' => [\PDO::MYSQL_ATTR_SSL_CA => '/etc/ssl/certs/ca-certificates.crt', \PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => true],
         ]);
 
         return $c;

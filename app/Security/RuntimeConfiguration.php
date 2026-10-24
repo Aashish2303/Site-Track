@@ -39,6 +39,9 @@ class RuntimeConfiguration
             $errors['DATABASE_URL'] = 'The database URL is invalid. Use a valid URL or the documented DB_* variables.';
         }
         if ($driver === 'mysql') {
+            if ($production) {
+                $errors += TlsMySqlConnector::configurationProblems($db, $db['options'] ?? []);
+            }
             foreach (['database' => 'DB_DATABASE / DATABASE_URL', 'username' => 'DB_USERNAME / DATABASE_URL'] as $field => $name) {
                 if (! is_string($db[$field] ?? null) || trim($db[$field]) === '') {
                     $errors[$name] = 'Set the database connection field explicitly.';
