@@ -2,7 +2,7 @@
     <div class="page-container topbar-menu">
         <div class="st-topbar-left">
             <button type="button" id="mobile_btn" class="mobile-btn" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false"><i class="ti ti-menu-2" aria-hidden="true"></i></button>
-            <div class="st-breadcrumb"><span>Workspace</span><i class="ti ti-chevron-right" aria-hidden="true"></i><strong>{{ \Illuminate\Support\Str::before(trim($__env->yieldContent('title')), ' - ') }}</strong></div>
+            <div class="st-breadcrumb"><span>{{ ($inProjectWorkspace ?? false) ? 'Project workspace' : 'Global overview' }}</span><i class="ti ti-chevron-right" aria-hidden="true"></i><strong>{{ \Illuminate\Support\Str::before(trim($__env->yieldContent('title')), ' - ') }}</strong></div>
         </div>
         <div class="st-topbar-right">
             <button type="button" class="btn st-search-trigger" id="st-command-toggle" aria-label="Search workspace navigation" aria-haspopup="dialog" aria-controls="st-command-menu"><i class="ti ti-search" aria-hidden="true"></i><span>Find a page...</span><kbd>⌘ K</kbd></button>

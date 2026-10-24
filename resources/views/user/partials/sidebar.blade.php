@@ -41,21 +41,16 @@
 @endphp
 <div class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-        <a href="{{ route('user.projects') }}" class="st-brand">@include('user.partials.brand')</a>
+        <a href="{{ route(($inProjectWorkspace ?? false) ? 'user.project_workspace' : 'user.projects') }}" class="st-brand">@include('user.partials.brand')</a>
         <button type="button" class="sidenav-toggle-btn btn border-0 p-0 active" id="toggle_btn" aria-label="Collapse navigation"><i class="ti ti-arrow-bar-to-left"></i></button>
         <button type="button" class="sidebar-close" aria-label="Close navigation"><i class="ti ti-x align-middle"></i></button>
     </div>
-    <div class="sidebar-inner" data-simplebar><div id="sidebar-menu" class="sidebar-menu"><ul role="menu" aria-label="Main navigation menu">
+    <div class="sidebar-inner" data-simplebar><div id="sidebar-menu" class="sidebar-menu"><ul role="menu" aria-label="{{ ($inProjectWorkspace ?? false) ? 'Project navigation menu' : 'Global navigation menu' }}">
+        @if(!($inProjectWorkspace ?? false))
         <li class="menu-title"><span>GLOBAL OVERVIEW</span></li>
         @foreach($globalLinks as [$route, $icon, $label, $key])
         @if($canNavigate($route))<li><a href="{{ route($route) }}" @class(['active' => $navSet === $key])><i class="ti {{ $icon }}" aria-hidden="true"></i><span>{{ $label }}</span></a></li>@endif
         @endforeach
-        @if($workspaceProject ?? null)
-        <li class="menu-title st-site-menu-title"><span>{{ $workspaceProject->project_name }}</span></li>
-        @foreach($siteLinks as [$route, $icon, $label, $key])
-        @if($canNavigate($route))<li><a href="{{ route($route) }}" @class(['active' => $navSet === $key])><i class="ti {{ $icon }}" aria-hidden="true"></i><span>{{ $label }}</span></a></li>@endif
-        @endforeach
-        @endif
         <li class="submenu mt-3">
             <a href="javascript:void(0)" @class(['active subdrop' => in_array($navSet, array_column($administration, 2))])><i class="ti ti-settings" aria-hidden="true"></i><span>Administration</span><span class="menu-arrow"></span></a>
             <ul @if(in_array($navSet, array_column($administration, 2))) style="display:block" @endif>
@@ -64,6 +59,13 @@
                 @endforeach
             </ul>
         </li>
+        @else
+        <li class="st-back-global"><a href="{{ route('user.projects') }}"><i class="ti ti-arrow-left" aria-hidden="true"></i><span>Back to global overview</span></a></li>
+        <li class="menu-title st-workspace-title"><span>{{ $workspaceProject->project_name }}</span></li>
+        @foreach($siteLinks as [$route, $icon, $label, $key])
+        @if($canNavigate($route))<li><a href="{{ route($route) }}" @class(['active' => $navSet === $key])><i class="ti {{ $icon }}" aria-hidden="true"></i><span>{{ $label }}</span></a></li>@endif
+        @endforeach
+        @endif
     </ul></div></div>
     <div class="st-sidebar-account"><a href="{{ route('user.profile') }}"><span class="st-account-initials">{{ \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr(Auth::user()->user_name, 0, 2)) }}</span><span class="st-account-copy"><strong>{{ Auth::user()->user_name }}</strong><small>{{ Request()->role?->role_name }}</small></span></a><a href="{{ route('user.logout') }}" aria-label="Sign out"><i class="ti ti-logout" aria-hidden="true"></i></a></div>
 </div>

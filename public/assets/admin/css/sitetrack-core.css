@@ -405,6 +405,10 @@ body.st-app.mini-sidebar .navbar-header { left: 70px; width: calc(100% - 70px); 
 .st-app .sidebar-inner { height: auto; }
 .st-app .sidebar-menu .st-site-menu-title { margin-top: 18px; border-top: 1px solid var(--st-line); padding-top: 22px; }
 .st-app .sidebar-menu .st-site-menu-title span { color: var(--st-accent-ink); overflow-wrap: anywhere; }
+.st-app .sidebar-menu .st-workspace-title { padding-top: 20px; padding-bottom: 14px; }
+.st-app .sidebar-menu .st-workspace-title span { display: block; color: var(--st-accent-ink); overflow-wrap: anywhere; white-space: normal; }
+.st-app .sidebar .sidebar-menu .st-back-global > a { color: var(--st-muted) !important; font-size: 12px; border-bottom: 1px solid var(--st-line); border-radius: 0; padding-bottom: 18px; margin-bottom: 8px; }
+.st-app .sidebar .sidebar-menu .st-back-global > a > span { font-size: 12px; }
 .st-sidebar-account { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex: 0 0 auto; border-top: 1px solid var(--st-line); padding: 15px; }
 .st-sidebar-account a { display: flex; align-items: center; gap: 10px; color: var(--st-text); min-width: 0; }
 .st-account-initials { display: inline-grid; flex: 0 0 34px; place-items: center; width: 34px; height: 34px; border: 1px solid var(--st-line-strong); border-radius: 50%; color: var(--st-accent-ink); font-size: 12px; }

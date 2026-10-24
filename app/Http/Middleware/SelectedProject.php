@@ -15,6 +15,7 @@ class SelectedProject
         $context = app(ProjectContext::class);
         $context->project = null;
         $context->scoped = false;
+        $context->workspace = false;
         $id = $request->session()->get('workspace_project_id');
         if ($id) {
             $context->project = Project::withoutGlobalScope('workspace_project')
@@ -35,7 +36,11 @@ class SelectedProject
             'MaterialController', 'MaterialCategoryController', 'OrderController', 'StockController',
         ], true) || $request->route()->getName() === 'user.project_workspace';
 
+        // Remembering a site must not append its menu to company-wide pages.
+        $context->workspace = $context->scoped || $request->route()->getName() === 'user.project_workspace';
+
         View::share('workspaceProject', $context->project);
+        View::share('inProjectWorkspace', $context->workspace);
         if ($requiresProject && !$context->project) {
             if ($request->expectsJson()) {
                 return response()->json(['message' => 'Choose a project before opening site work.',

@@ -8,6 +8,7 @@ class ProjectContext
 {
     public ?Project $project = null;
     public bool $scoped = false;
+    public bool $workspace = false;
 
     public function id(): ?int
     {

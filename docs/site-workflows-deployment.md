@@ -30,6 +30,8 @@ The migration adds these permissions and initially grants them only to administr
 
 Existing project/module permissions still apply. The selected project is stored in the login session; project-specific queries, exports and writes remain restricted to that site. Switching sites uses a CSRF-protected POST. Global reports and global contractor/vendor ledgers keep their all-project view without changing the selected site. Shared material catalogue, central purchase orders and central stores remain company-wide reference data, accessed after selecting a project.
 
+Global pages show only the six overview links and Administration. Opening a project routes to its workspace and replaces that menu with the site's operational links. The selected-project banner appears only inside site pages. **Back to global overview** returns to the project directory while remembering the selected site; **Switch project** clears the selection so another site can be chosen. Global Reports defaults to all projects unless an explicit project filter is supplied.
+
 ## Data meanings
 
 - Material assignments are **receipts into the site**, not consumption. Record actual usage in **Site materials**. Opening stock includes all earlier receipts minus returns and usage; closing stock is opening + received − returned − used. Separate units are never combined. Cost uses the rate supplied on the usage entry; missing rates are shown as not fully priced. Backdated usage and returns cannot make a later recorded site balance negative.

@@ -10,7 +10,7 @@
 @yield('custom_style')
 @include('user.partials.core-style')
 </head>
-<body class="st-app">
+<body class="st-app" data-navigation="{{ ($inProjectWorkspace ?? false) ? 'project' : 'global' }}">
 <div class="main-wrapper">
    @include('user.partials.header')
    @include('user.partials.sidebar')

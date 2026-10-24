@@ -88,6 +88,49 @@ class SiteWorkflowTest extends TestCase
         $this->assertEquals($this->site->project_id, session('workspace_project_id'), 'Global reports must not change the selected project.');
     }
 
+    public function test_global_pages_and_project_pages_have_separate_navigation_even_when_a_site_is_remembered(): void
+    {
+        $global = ['Dashboard', 'Projects Directory', 'Subcon Ledger', 'Vendor Ledger', 'Reports', 'Vendor Directory', 'Administration'];
+        foreach (['/user/projects', '/user/dashboard', '/user/reports'] as $path) {
+            $response = $this->selected()->get($path)->assertOk()->assertSee('data-navigation="global"', false);
+            $this->assertSame($global, $this->navigationLabels($response->getContent()));
+            $response->assertDontSee('class="st-project-context"', false);
+        }
+        foreach (['/user/workspace', '/user/daily_works', '/user/daily_progress', '/user/site-materials', '/user/labour_trackers'] as $path) {
+            $response = $this->get($path)->assertOk()->assertSee('data-navigation="project"', false);
+            $labels = $this->navigationLabels($response->getContent());
+            $this->assertContains('Back to global overview', $labels);
+            $this->assertContains('Project overview', $labels);
+            $this->assertContains('DWR · Daily work', $labels);
+            $this->assertNotContains('Dashboard', $labels);
+            $this->assertNotContains('Reports', $labels);
+            $this->assertNotContains('Administration', $labels);
+            $response->assertSee('Workflow site A')->assertSee('class="st-project-context"', false);
+        }
+        $this->get('/user/projects')->assertOk()->assertSee('data-navigation="global"', false);
+        $this->assertEquals($this->site->project_id, session('workspace_project_id'));
+        $this->post('/user/workspace/select', ['project_id' => $this->otherSite->project_id])->assertRedirect(route('user.project_workspace'));
+        $this->get('/user/workspace')->assertOk()->assertSee('Workflow site B');
+        $this->post('/user/workspace/leave')->assertRedirect(route('user.projects'));
+        $this->assertNull(session('workspace_project_id'));
+        $this->get('/user/daily_works')->assertRedirect(route('user.projects'));
+    }
+
+    private function navigationLabels(string $html): array
+    {
+        $previous = libxml_use_internal_errors(true);
+        try {
+            $dom = new \DOMDocument(); $dom->loadHTML('<?xml encoding="utf-8" ?>'.$html, LIBXML_NONET);
+            $xpath = new \DOMXPath($dom);
+            $nodes = $xpath->query('//*[@id="sidebar-menu"]/ul/li/a/span[not(contains(@class,"menu-arrow"))]');
+            $labels = [];
+            foreach ($nodes as $node) { $labels[] = trim($node->textContent); }
+            return $labels;
+        } finally {
+            libxml_clear_errors(); libxml_use_internal_errors($previous);
+        }
+    }
+
     public function test_quantities_require_independent_approval_and_corrections_preserve_the_previous_decision(): void
     {
         Storage::fake('evidence');

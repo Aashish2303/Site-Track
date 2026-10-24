@@ -40,8 +40,8 @@ class ReportsController extends Controller
             default => [$date->startOfWeek(), $date->endOfWeek()],
         };
         $projects = Project::where('project_trash', 1)->orderBy('project_name')->get();
-        // Explicit "all" is represented by a blank project; the initial visit uses the selected site.
-        $projectId = $request->has('project') ? ($filters['project'] ?? null) : $context->id();
+        // Company-wide reports start with all projects. Project links carry an explicit filter.
+        $projectId = $filters['project'] ?? null;
         if ($projectId) { abort_unless($projects->contains('project_id', $projectId), 404); }
         $ids = $projectId ? [(int) $projectId] : $projects->pluck('project_id')->all();
         $category = $filters['category'] ?? 'materials';
