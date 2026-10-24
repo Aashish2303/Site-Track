@@ -207,7 +207,7 @@
          </div>
          <div class="boq-total-wrap">
             <div class="boq-total-text">
-               <span class="boq-total-label">Done / Total</span>
+               <span class="boq-total-label">Reported / Total</span>
                ₹{{ Helper::moneyFormat($done_value) }} / ₹{{ Helper::moneyFormat($boq_total) }}
             </div>
             <div class="boq-total-progress" style="--boq-progress: {{ $total_average }}%;" aria-label="{{ $total_average }}% complete">
@@ -224,10 +224,10 @@
                      <th>Work Item</th>
                      <th>Unit</th>
                      <th>BOQ Qty</th>
-                     <th>Completed Qty</th>
+                     <th>Reported Qty</th>
                      <th>Balance Qty</th>
                      <th>Rate (₹)</th>
-                     <th>Done Value (₹)</th>
+                     <th>Reported Value (₹)</th>
                      <th>Progress</th>
                      <th>Edit</th>
                   </tr>
@@ -250,7 +250,7 @@
                      @php $total_value = $completed_boq * $boq->pboq_rate; @endphp
                      <td>{{ Helper::moneyFormat($total_value) }}</td>
                      @php
-                     $boq_percentage = ($completed_boq / $boq->pboq_qty) * 100;
+                     $boq_percentage = ((float) $boq->pboq_qty > 0 ? ($completed_boq / $boq->pboq_qty) * 100 : 0);
                      $boq_percentage = round($boq_percentage);
                      $rowProgressColor = $boq_percentage >= 100 ? '#00b884' : ($boq_percentage >= 60 ? '#ffc221' : '#ff4d57');
                      @endphp

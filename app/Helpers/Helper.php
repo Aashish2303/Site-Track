@@ -75,6 +75,12 @@ class Helper
 
     public static function doneBoq($project_id)
     {
+        if (app(\App\Services\WorkflowSchema::class)->ready()) {
+            return DB::table('daily_progress as p')->join('progress_reviews as r', 'r.progress_id', '=', 'p.dprogress_id')
+                ->where('p.dprogress_project', $project_id)->where('p.dprogress_trash', 1)->where('r.state', 'approved')
+                ->selectRaw('p.dprogress_boq, SUM(r.approved_qty) as total')->groupBy('p.dprogress_boq')
+                ->pluck('total', 'dprogress_boq')->all();
+        }
         $where['dprogress_project'] = $project_id;
         $done_boqs = DailyProgress::select('dprogress_boq', DB::raw('sum(dprogress_qty) as total'))->where($where)->groupBy('dprogress_boq')->get();
         

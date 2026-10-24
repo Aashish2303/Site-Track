@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class DailyWork extends Model
 {
+    use \App\Models\Concerns\HasProjectContext;
+
     protected $table = 'daily_works';
 
     protected $primaryKey = 'dwork_id';

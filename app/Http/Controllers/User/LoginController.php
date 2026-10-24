@@ -38,7 +38,8 @@ class LoginController extends Controller
                     if(Auth::user()->user_status == 1)
                     {
                         $request->session()->regenerate();
-                        return redirect()->intended('user/dashboard');
+                        $request->session()->forget('workspace_project_id');
+                        return redirect()->intended('user/projects');
                     }
                     else
                     {

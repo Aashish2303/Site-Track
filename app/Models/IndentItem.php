@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class IndentItem extends Model
 {
+    use \App\Models\Concerns\HasProjectParent;
     protected $table = 'indent_items';
 
     protected $primaryKey = 'iitem_id';

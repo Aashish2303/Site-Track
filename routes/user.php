@@ -52,9 +52,21 @@ Route::middleware(['common'])->group(function () {
 
     });
 
-    Route::middleware(['checkuser','checkpermission'])->group(function () {
+    Route::middleware(['checkuser','checkpermission','selectedproject'])->group(function () {
 
         Route::prefix('user')->group(function () {
+
+            Route::post('workspace/select', [\App\Http\Controllers\User\WorkspaceController::class, 'select'])->name('select_project');
+            Route::post('workspace/leave', [\App\Http\Controllers\User\WorkspaceController::class, 'leave'])->name('leave_project');
+            Route::get('workspace', [\App\Http\Controllers\User\WorkspaceController::class, 'show'])->name('project_workspace');
+            Route::get('reports', [\App\Http\Controllers\User\ReportsController::class, 'index'])->name('reports');
+            Route::get('site-materials', [\App\Http\Controllers\User\SiteMaterialController::class, 'index'])->name('site_materials');
+            Route::post('site-materials/usage', [\App\Http\Controllers\User\SiteMaterialController::class, 'store'])->name('record_material_usage');
+            Route::get('labour-payments', [\App\Http\Controllers\User\LabourPaymentController::class, 'index'])->name('labour_payments');
+            Route::post('labour-payments', [\App\Http\Controllers\User\LabourPaymentController::class, 'store'])->name('record_labour_payment');
+            Route::get('progress/{id}/review', [\App\Http\Controllers\User\ProgressReviewController::class, 'show'])->whereNumber('id')->name('progress_review');
+            Route::post('progress/{id}/review', [\App\Http\Controllers\User\ProgressReviewController::class, 'review'])->whereNumber('id')->name('review_progress');
+            Route::get('progress/{id}/photos/{photo}', [\App\Http\Controllers\User\ProgressReviewController::class, 'photo'])->whereNumber(['id', 'photo'])->name('progress_photo');
 
             //Dashboard
 

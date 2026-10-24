@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class DailyProgress extends Model
 {
+    use \App\Models\Concerns\HasProjectContext;
+
     protected $table = 'daily_progress';
 
     protected $primaryKey = 'dprogress_id';

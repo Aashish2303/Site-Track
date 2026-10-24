@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ReturnMaterial extends Model
 {
+    use \App\Models\Concerns\HasProjectContext;
+
     protected $table = 'return_materials';
 
     protected $primaryKey = 'rmaterial_id';

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class LabourTracker extends Model
 {
+    use \App\Models\Concerns\HasProjectContext;
+
     protected $table = 'labour_trackers';
 
     protected $primaryKey = 'ltracker_id';

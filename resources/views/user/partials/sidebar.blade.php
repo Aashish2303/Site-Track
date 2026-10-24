@@ -1,185 +1,69 @@
+@php
+    $navSet = $set ?? '';
+    $globalLinks = [
+        ['user.dashboard', 'ti-layout-board', 'Dashboard', 'dashboard'],
+        ['user.projects', 'ti-building', 'Projects Directory', 'projects'],
+        ['user.subcontractor_ledger', 'ti-notebook', 'Subcon Ledger', 'subcontractor_ledger'],
+        ['user.vendor_ledger', 'ti-receipt', 'Vendor Ledger', 'vendor_ledger'],
+        ['user.reports', 'ti-report-analytics', 'Reports', 'reports'],
+        ['user.vendors', 'ti-briefcase', 'Vendor Directory', 'vendors'],
+    ];
+    $siteLinks = [
+        ['user.project_workspace', 'ti-building', 'Project overview', 'project_workspace'],
+        ['user.daily_works', 'ti-calendar', 'DWR · Daily work', 'daily_works'],
+        ['user.daily_progress', 'ti-chart-bar', 'DPR · Daily progress', 'daily_progress'],
+        ['user.boq_tracker', 'ti-list-check', 'BOQ tracker', 'boq_tracker'],
+        ['user.site_materials', 'ti-package', 'Site materials', 'site_materials'],
+        ['user.assign_materials', 'ti-truck-delivery', 'Receive from stores', 'assign_materials'],
+        ['user.return_materials', 'ti-arrow-back', 'Return to stores', 'return_materials'],
+        ['user.indents', 'ti-clipboard', 'Material requests', 'indents'],
+        ['user.labour_trackers', 'ti-users-group', 'Labour attendance', 'labour_trackers'],
+        ['user.labour_payments', 'ti-wallet', 'Labour payments', 'labour_payments'],
+        ['user.issues', 'ti-alert-triangle', 'Site issues', 'issues'],
+    ];
+    $administration = [
+        ['user.clients', 'Clients', 'clients'], ['user.subcontractors', 'Subcontractors', 'subcontractors'],
+        ['user.materials', 'Material catalogue', 'materials'], ['user.orders', 'Central purchase orders', 'orders'],
+        ['user.stocks', 'Central stores', 'stocks'], ['user.material_category', 'Material categories', 'material_category'],
+        ['user.category', 'Work categories', 'category'], ['user.units', 'Units', 'units'],
+        ['user.issue_category', 'Issue categories', 'issue_category'], ['user.qms', 'QMS reports', 'qms'],
+        ['user.users', 'Users', 'users'], ['user.roles', 'Roles & permissions', 'roles'],
+        ['user.settings', 'Settings', 'settings'], ['user.email_config_settings', 'Email settings', 'email_config_settings'],
+    ];
+    $canNavigate = function ($route) {
+        return match ($route) {
+            'user.reports', 'user.labour_payments' => \App\Services\WorkflowAccess::can($route),
+            'user.site_materials' => Helper::userHasPermission('user.assign_materials'),
+            'user.project_workspace' => Helper::userHasPermission('user.view_project'),
+            default => Helper::userHasPermission($route),
+        };
+    };
+@endphp
 <div class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-        <a href="{{ route('user.dashboard') }}" class="st-brand">@include('user.partials.brand')</a>
-        <button type="button" class="sidenav-toggle-btn btn border-0 p-0 active" id="toggle_btn" aria-label="Collapse navigation">
-        <i class="ti ti-arrow-bar-to-left"></i>
-        </button>
-        <button type="button" class="sidebar-close" aria-label="Close navigation">
-        <i class="ti ti-x align-middle"></i>
-        </button>
+        <a href="{{ route('user.projects') }}" class="st-brand">@include('user.partials.brand')</a>
+        <button type="button" class="sidenav-toggle-btn btn border-0 p-0 active" id="toggle_btn" aria-label="Collapse navigation"><i class="ti ti-arrow-bar-to-left"></i></button>
+        <button type="button" class="sidebar-close" aria-label="Close navigation"><i class="ti ti-x align-middle"></i></button>
     </div>
-    <div class="sidebar-inner" data-simplebar>
-        <div id="sidebar-menu" class="sidebar-menu">
-            <ul role="menu" aria-label="Main navigation menu">
-                <li class="menu-title" aria-disabled="true"><span>WORKSPACE</span></li>
-                <li>
-                    <a href="{{ route('user.dashboard') }}" @if(isset($set) && $set == 'dashboard')class="active"@endif>
-                    <i class="ti ti-layout-board"></i><span>Dashboard</span>
-                    </a>
-                </li>
-                @if(Helper::userHasPermission('user.projects') || Helper::userHasPermission('user.clients'))
-                <li class="submenu">
-                    <a href="javascript:void(0)" @if(isset($set) && $set == 'projects' || $set == 'clients') class="active subdrop"@endif>
-                        <i class="ti ti-building"></i><span>Projects</span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <ul @if(isset($set) && $set == 'projects' || $set == 'clients') style="display: block;" @endif>
-                        @if(Helper::userHasPermission('user.projects'))
-                        <li><a href="{{ route('user.projects') }}" @if(isset($set) && $set == 'projects') class="active" @endif>Projects</a></li>
-                        @endif
-                        @if(Helper::userHasPermission('user.clients'))
-                        <li><a href="{{ route('user.clients') }}" @if(isset($set) && $set == 'clients') class="active" @endif>Clients</a></li>
-                        @endif
-                    </ul>
-                </li>
-                @endif
-                @if(Helper::userHasPermission('user.daily_works'))
-                <li>
-                    <a href="{{ route('user.daily_works') }}" @if(isset($set) && $set == 'daily_works')class="active"@endif>
-                    <i class="ti ti-calendar"></i><span>Daily Works</span>
-                    </a>
-                </li>
-                @endif
-                @if(Helper::userHasPermission('user.daily_progress'))
-                <li>
-                    <a href="{{ route('user.daily_progress') }}" @if(isset($set) && $set == 'daily_progress')class="active"@endif>
-                    <i class="ti ti-whirl"></i><span>Daily Progress</span>
-                    </a>
-                </li>
-                @endif
-                @if(Helper::userHasPermission('user.boq_tracker'))
-                <li>
-                    <a href="{{ route('user.boq_tracker') }}" @if(isset($set) && $set == 'boq_tracker')class="active"@endif>
-                    <i class="ti ti-layout-kanban"></i><span>BOQ Tracker</span>
-                    </a>
-                </li>
-                @endif
-                @if(Helper::userHasPermission('user.assign_materials') || Helper::userHasPermission('user.return_materials') || Helper::userHasPermission('user.materials') || Helper::userHasPermission('user.orders') || Helper::userHasPermission('user.stocks') || Helper::userHasPermission('user.material_category'))
-                <li class="submenu">
-                    <a href="javascript:void(0)" @if(isset($set) && $set == 'materials' || $set == 'assign_materials' || $set == 'return_materials' || $set == 'orders' || $set == 'stocks' || $set == 'material_category') class="active subdrop"@endif>
-                        <i class="ti ti-package"></i><span>Materials</span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <ul @if(isset($set) && $set == 'materials' || $set == 'assign_materials' || $set == 'return_materials' || $set == 'orders' || $set == 'stocks' || $set == 'material_category') style="display: block;" @endif>
-                        @if(Helper::userHasPermission('user.assign_materials'))
-                        <li><a href="{{ route('user.assign_materials') }}" @if(isset($set) && $set == 'assign_materials') class="active" @endif>Assign Materials</a></li>
-                        @endif
-                        @if(Helper::userHasPermission('user.return_materials'))
-                        <li><a href="{{ route('user.return_materials') }}" @if(isset($set) && $set == 'return_materials') class="active" @endif>Return Materials</a></li>
-                        @endif
-                        @if(Helper::userHasPermission('user.orders'))
-                        <li><a href="{{ route('user.orders') }}" @if(isset($set) && $set == 'orders') class="active" @endif>Orders</a></li>
-                        @endif
-                        @if(Helper::userHasPermission('user.stocks'))
-                        <li><a href="{{ route('user.stocks') }}" @if(isset($set) && $set == 'stocks') class="active" @endif>Stocks</a></li>
-                        @endif
-                        @if(Helper::userHasPermission('user.materials'))
-                        <li><a href="{{ route('user.materials') }}" @if(isset($set) && $set == 'materials') class="active" @endif>Materials</a></li>
-                        @endif
-                        @if(Helper::userHasPermission('user.material_category'))
-                        <li><a href="{{ route('user.material_category') }}" @if(isset($set) && $set == 'material_category') class="active" @endif>Category</a></li>
-                        @endif
-                    </ul>
-                </li>
-                @endif
-                @if(Helper::userHasPermission('user.indents'))
-                <li>
-                    <a href="{{ route('user.indents') }}" @if(isset($set) && $set == 'indents')class="active"@endif>
-                    <i class="ti ti-clipboard"></i><span>Indents</span>
-                    </a>
-                </li>
-                @endif
-                @if(Helper::userHasPermission('user.labour_trackers'))
-                <li>
-                    <a href="{{ route('user.labour_trackers') }}" @if(isset($set) && $set == 'labour_trackers')class="active"@endif>
-                    <i class="ti ti-users-group"></i><span>Labour Tracker</span>
-                    </a>
-                </li>
-                @endif
-                @if(Helper::userHasPermission('user.issues') || Helper::userHasPermission('user.issue_category'))
-                <li class="submenu">
-                    <a href="javascript:void(0)" @if(isset($set) && $set == 'issues' || $set == 'issue_category') class="active subdrop"@endif>
-                        <i class="ti ti-alert-triangle"></i><span>Issues</span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <ul @if(isset($set) && $set == 'issues' || $set == 'issue_category') style="display: block;" @endif>
-                        @if(Helper::userHasPermission('user.issues'))
-                        <li><a href="{{ route('user.issues') }}" @if(isset($set) && $set == 'issues') class="active" @endif>Issues</a></li>
-                        @endif
-                        @if(Helper::userHasPermission('user.issue_category'))
-                        <li><a href="{{ route('user.issue_category') }}" @if(isset($set) && $set == 'issue_category') class="active" @endif>Category</a></li>
-                        @endif
-                    </ul>
-                </li>
-                @endif
-                @if(Helper::userHasPermission('user.subcontractor_ledger') || Helper::userHasPermission('user.vendor_ledger'))
-                <li class="submenu">
-                    <a href="javascript:void(0)" @if(isset($set) && $set == 'subcontractor_ledger' || $set == 'vendor_ledger') class="active subdrop"@endif>
-                        <i class="ti ti-book"></i><span>Ledger</span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <ul @if(isset($set) && $set == 'subcontractor_ledger' || $set == 'vendor_ledger') style="display: block;" @endif>
-                        @if(Helper::userHasPermission('user.subcontractor_ledger'))
-                        <li><a href="{{ route('user.subcontractor_ledger') }}" @if(isset($set) && $set == 'subcontractor_ledger') class="active" @endif>Subcontractor</a></li>
-                        @endif
-                        @if(Helper::userHasPermission('user.vendor_ledger'))
-                        <li><a href="{{ route('user.vendor_ledger') }}" @if(isset($set) && $set == 'vendor_ledger') class="active" @endif>Vendor</a></li>
-                        @endif
-                    </ul>
-                </li>
-                @endif
-                @if(Helper::userHasPermission('user.vendors'))
-                <li>
-                    <a href="{{ route('user.vendors') }}" @if(isset($set) && $set == 'vendors')class="active"@endif>
-                    <i class="ti ti-user"></i><span>Vendors</span>
-                    </a>
-                </li>
-                @endif
-                @if(Helper::userHasPermission('user.subcontractors'))
-                <li>
-                    <a href="{{ route('user.subcontractors') }}" @if(isset($set) && $set == 'subcontractors')class="active"@endif>
-                    <i class="ti ti-briefcase"></i><span>Subcontractors</span>
-                    </a>
-                </li>
-                @endif
-                @if(Helper::userHasPermission('user.category'))
-                <li>
-                    <a href="{{ route('user.category') }}" @if(isset($set) && $set == 'category')class="active"@endif>
-                    <i class="ti ti-layout-grid"></i><span>Work Category</span>
-                    </a>
-                </li>
-                @endif
-                @if(Helper::userHasPermission('user.units'))
-                <li>
-                    <a href="{{ route('user.units') }}" @if(isset($set) && $set == 'units')class="active"@endif>
-                    <i class="ti ti-ruler"></i><span>Units</span>
-                    </a>
-                </li>
-                @endif
-                @if(Helper::userHasPermission('user.qms'))
-                <li>
-                    <a href="{{ route('user.qms') }}" @if(isset($set) && $set == 'qms')class="active"@endif>
-                    <i class="ti ti-files"></i><span>QMS Reports</span>
-                    </a>
-                </li>
-                @endif
-                @if(Helper::userHasPermission('user.users') || Helper::userHasPermission('user.roles'))
-                <li class="submenu">
-                    <a href="javascript:void(0)" @if(isset($set) && $set == 'users' || $set == 'roles') class="active subdrop"@endif>
-                        <i class="ti ti-lock"></i><span>Roles & Permissions</span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <ul @if(isset($set) && $set == 'users' || $set == 'roles') style="display: block;" @endif>
-                        @if(Helper::userHasPermission('user.users'))
-                        <li><a href="{{ route('user.users') }}" @if(isset($set) && $set == 'users') class="active" @endif>Users</a></li>
-                        @endif
-                        @if(Helper::userHasPermission('user.roles'))
-                        <li><a href="{{ route('user.roles') }}" @if(isset($set) && $set == 'roles') class="active" @endif>Roles</a></li>
-                        @endif
-                    </ul>
-                </li>
-                @endif
+    <div class="sidebar-inner" data-simplebar><div id="sidebar-menu" class="sidebar-menu"><ul role="menu" aria-label="Main navigation menu">
+        <li class="menu-title"><span>GLOBAL OVERVIEW</span></li>
+        @foreach($globalLinks as [$route, $icon, $label, $key])
+        @if($canNavigate($route))<li><a href="{{ route($route) }}" @class(['active' => $navSet === $key])><i class="ti {{ $icon }}" aria-hidden="true"></i><span>{{ $label }}</span></a></li>@endif
+        @endforeach
+        @if($workspaceProject ?? null)
+        <li class="menu-title st-site-menu-title"><span>{{ $workspaceProject->project_name }}</span></li>
+        @foreach($siteLinks as [$route, $icon, $label, $key])
+        @if($canNavigate($route))<li><a href="{{ route($route) }}" @class(['active' => $navSet === $key])><i class="ti {{ $icon }}" aria-hidden="true"></i><span>{{ $label }}</span></a></li>@endif
+        @endforeach
+        @endif
+        <li class="submenu mt-3">
+            <a href="javascript:void(0)" @class(['active subdrop' => in_array($navSet, array_column($administration, 2))])><i class="ti ti-settings" aria-hidden="true"></i><span>Administration</span><span class="menu-arrow"></span></a>
+            <ul @if(in_array($navSet, array_column($administration, 2))) style="display:block" @endif>
+                @foreach($administration as [$route, $label, $key])
+                @if(Helper::userHasPermission($route))<li><a href="{{ route($route) }}" @class(['active' => $navSet === $key])>{{ $label }}</a></li>@endif
+                @endforeach
             </ul>
-        </div>
-    </div>
+        </li>
+    </ul></div></div>
+    <div class="st-sidebar-account"><a href="{{ route('user.profile') }}"><span class="st-account-initials">{{ \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr(Auth::user()->user_name, 0, 2)) }}</span><span class="st-account-copy"><strong>{{ Auth::user()->user_name }}</strong><small>{{ Request()->role?->role_name }}</small></span></a><a href="{{ route('user.logout') }}" aria-label="Sign out"><i class="ti ti-logout" aria-hidden="true"></i></a></div>
 </div>

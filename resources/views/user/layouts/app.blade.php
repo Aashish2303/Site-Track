@@ -15,6 +15,7 @@
    @include('user.partials.header')
    @include('user.partials.sidebar')
    <div class="page-wrapper">
+      @include('user.workspace.context')
       @yield('contents')
       @include('user.partials.footer')
    </div>
@@ -22,5 +23,6 @@
 @include('user.partials.script')
 @yield('custom_script')
 <script src="{{ asset(config('constants.admin_path').'js/sitetrack-core.js') }}?v={{ filemtime(public_path(config('constants.admin_path').'js/sitetrack-core.js')) }}"></script>
+<script src="{{ asset(config('constants.admin_path').'js/sitetrack-workspace.js') }}?v={{ filemtime(public_path(config('constants.admin_path').'js/sitetrack-workspace.js')) }}" data-project="{{ app(\App\Services\ProjectContext::class)->scoped ? ($workspaceProject->project_id ?? '') : '' }}"></script>
 </body>
 </html>

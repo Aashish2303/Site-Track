@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProjectBoq extends Model
 {
+    use \App\Models\Concerns\HasProjectContext;
+
     protected $table = 'project_boqs';
 
     protected $primaryKey = 'pboq_id';

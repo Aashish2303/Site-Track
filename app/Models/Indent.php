@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Indent extends Model
 {
+    use \App\Models\Concerns\HasProjectContext;
+
     protected $table = 'indents';
 
     protected $primaryKey = 'indent_id';

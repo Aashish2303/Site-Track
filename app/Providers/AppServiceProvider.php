@@ -11,7 +11,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->scoped(\App\Services\ProjectContext::class);
+        $this->app->scoped(\App\Services\WorkflowSchema::class);
     }
 
     /**
@@ -19,6 +20,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Existing hosts may still have an older cached filesystem configuration during rollout.
+        if (!config('filesystems.disks.evidence')) {
+            config(['filesystems.disks.evidence' => [
+                'driver' => 'local', 'root' => storage_path('app/private'), 'throw' => true,
+            ]]);
+        }
     }
 }

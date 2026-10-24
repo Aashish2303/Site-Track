@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class IndentQuotation extends Model
 {
+    use \App\Models\Concerns\HasProjectParent;
     protected $table = 'indent_quotations';
 
     protected $primaryKey = 'iquote_id';

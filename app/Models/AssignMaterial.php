@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class AssignMaterial extends Model
 {
+    use \App\Models\Concerns\HasProjectContext;
+
     protected $table = 'assign_materials';
 
     protected $primaryKey = 'amaterial_id';

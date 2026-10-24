@@ -1,0 +1,19 @@
+@extends('user.layouts.app')
+@section('title', 'Reports - '.Request()->settings->settings_title)
+@section('contents')
+<div class="content"><div class="st-page-intro"><span class="st-eyebrow">GLOBAL OVERVIEW</span><h1>Reports</h1><p>Review a project or all sites, then export the same figures to Excel or PDF.</p></div>
+<div class="card mb-4"><div class="card-body"><form method="GET" action="{{ route('user.reports') }}" class="row g-3" data-report-filters>
+    <div class="col-md-4"><label for="report-project" class="form-label">Project</label><select id="report-project" name="project" class="form-select"><option value="">All projects</option>@foreach($projects as $p)<option value="{{ $p->project_id }}" @selected($projectId == $p->project_id)>{{ $p->project_name }}</option>@endforeach</select></div>
+    <div class="col-md-4"><label for="report-period" class="form-label">Duration</label><select id="report-period" name="period" class="form-select"><option value="day" @selected($period === 'day')>Day</option><option value="week" @selected($period === 'week')>Week (Monday–Sunday)</option><option value="month" @selected($period === 'month')>Month</option><option value="custom" @selected($period === 'custom')>Custom dates</option></select></div>
+    <div class="col-md-4"><label for="report-date" class="form-label">Date within the period</label><input id="report-date" type="date" name="date" value="{{ $date->format('Y-m-d') }}" class="form-control"></div>
+    <div class="col-md-4" data-report-custom><label class="form-label" for="report-start">Start</label><input id="report-start" type="date" name="start" value="{{ $start->format('Y-m-d') }}" class="form-control"></div>
+    <div class="col-md-4" data-report-custom><label class="form-label" for="report-end">End</label><input id="report-end" type="date" name="end" value="{{ $end->format('Y-m-d') }}" class="form-control"></div>
+    <div class="col-md-4"><label for="report-category" class="form-label">Category</label><select id="report-category" name="category" class="form-select"><option value="materials" @selected($category === 'materials')>Materials</option><option value="labour" @selected($category === 'labour')>Labour</option></select></div>
+    <div class="col-md-4" data-report-material><label for="report-material" class="form-label">Material</label><select id="report-material" name="material" class="form-select"><option value="">All materials</option>@foreach($materials as $m)<option value="{{ $m->material_id }}" @selected($materialId == $m->material_id)>{{ $m->material_name }}</option>@endforeach</select></div>
+    <div class="col-md-4" data-report-labour><label for="report-trade" class="form-label">Work category</label><select id="report-trade" name="trade" class="form-select"><option value="">All work categories</option>@foreach($trades as $t)<option value="{{ $t->category_id }}" @selected($tradeId == $t->category_id)>{{ $t->category_name }}</option>@endforeach</select></div>
+    <div class="col-12 d-flex flex-wrap gap-2"><button class="btn btn-primary" type="submit">Generate report</button>
+    @if(\App\Services\WorkflowAccess::can('user.reports_export'))<button class="btn btn-white" type="submit" name="format" value="xlsx">Export Excel</button><button class="btn btn-white" type="submit" name="format" value="pdf">Export PDF</button>@endif</div>
+</form></div></div>
+<div class="card"><div class="card-header"><h5 class="mb-1">{{ $category === 'materials' ? 'Material Usage Report' : 'Labour and Payment Report' }}</h5><p class="mb-0 text-muted">{{ $projectLabel }} · {{ $start->format('d M Y') }} – {{ $end->format('d M Y') }}</p></div><div class="card-body"><div class="table-responsive">@include('user.reports.table')</div><div class="st-report-notes">@include('user.reports.notes')</div></div></div>
+</div>
+@endsection

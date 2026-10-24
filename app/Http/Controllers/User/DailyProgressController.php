@@ -27,6 +27,7 @@ class DailyProgressController extends Controller
 
     public function get_daily_progress(Request $request)
     {
+        $request->validate(['start_date' => 'nullable|date_format:Y-m-d', 'end_date' => 'nullable|date_format:Y-m-d', 'status' => 'nullable|integer|between:1,5']);
         if($request->ajax())
         {
             $where = 'dprogress_trash = 1';
@@ -50,6 +51,15 @@ class DailyProgressController extends Controller
 
             return DataTables::of($data)
                     ->addIndexColumn()
+                    ->addColumn('approved_quantity', function ($row) {
+                        if (!app(\App\Services\WorkflowSchema::class)->ready()) { return 'Not verified'; }
+                        return \Illuminate\Support\Facades\DB::table('progress_reviews')->where('progress_id', $row->dprogress_id)->value('approved_qty') ?? 0;
+                    })
+                    ->addColumn('verification', function ($row) {
+                        if (!app(\App\Services\WorkflowSchema::class)->ready()) { return 'Awaiting activation'; }
+                        $state = \Illuminate\Support\Facades\DB::table('progress_reviews')->where('progress_id', $row->dprogress_id)->value('state');
+                        return $state === 'legacy' ? 'Unverified historic entry' : ucfirst($state ?? 'pending');
+                    })
                     ->addColumn('work_date', function($row){
 
                         $work_date = date('d M Y',strtotime($row->dprogress_date));
@@ -132,6 +142,9 @@ class DailyProgressController extends Controller
                     ->addColumn('action', function($row){
 
                         $btn = '';
+                        if (app(\App\Services\WorkflowSchema::class)->ready()) {
+                            $btn .= '<a class="btn btn-icon btn-sm btn-white" title="Evidence and approval history" href="'.route('user.progress_review', $row->dprogress_id).'"><i class="ti ti-clipboard-check"></i></a> ';
+                        }
                         
                         if(Helper::userHasPermission('user.edit_daily_progress'))
                         {
@@ -159,6 +172,10 @@ class DailyProgressController extends Controller
 
     public function add_daily_progress(Request $request)
     {
+        if ($request->has('submit') && app(\App\Services\WorkflowSchema::class)->ready()) {
+            $entry = app(\App\Services\ProgressWorkflow::class)->save($request);
+            return redirect()->route('user.progress_review', $entry->dprogress_id)->with('success', 'Progress submitted for independent review.');
+        }
         if($request->has('submit'))
         {
             $rules = ['dprogress_date' => 'required',
@@ -244,6 +261,10 @@ class DailyProgressController extends Controller
 
     public function edit_daily_progress(Request $request)
     {
+        if ($request->has('submit') && app(\App\Services\WorkflowSchema::class)->ready()) {
+            $entry = app(\App\Services\ProgressWorkflow::class)->save($request, (int) $request->segment(3));
+            return redirect()->route('user.progress_review', $entry->dprogress_id)->with('success', 'Correction recorded. The new revision needs approval.');
+        }
         if($request->has('submit'))
         {
             $rules = ['dprogress_date' => 'required',
@@ -332,6 +353,11 @@ class DailyProgressController extends Controller
 
     public function add_daily_progress_status(Request $request)
     {
+        if ($request->has('submit') && app(\App\Services\WorkflowSchema::class)->ready()) {
+            abort_unless(Helper::userHasPermission('user.daily_progress_status'), 403);
+            app(\App\Services\ProgressWorkflow::class)->changeWorkStatus($request);
+            return redirect()->back()->with('success', 'Work status recorded. This revision needs verification.');
+        }
         if($request->has('submit'))
         {
             $rules = ['status' => 'required'];

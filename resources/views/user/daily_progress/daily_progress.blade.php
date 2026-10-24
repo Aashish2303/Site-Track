@@ -99,8 +99,8 @@
                      <th>Category</th>
                      <th>Description</th>
                      <th>BOQ</th>
-                     <th>Quantity</th>
-                     <th>% Done</th>
+                     <th>Reported quantity</th><th>Approved quantity</th><th>Verification</th>
+                     <th>Reported %</th>
                      <th>Carry Forward</th>
                      <th>Status</th>
                      <th>Action</th>
@@ -160,6 +160,8 @@ var dataTable = $('#daily_progress_table').DataTable({
         {data: 'dprogress_description'},
         {data: 'boq_name'},
         {data: 'dprogress_qty'},
+        {data: 'approved_quantity'},
+        {data: 'verification'},
         {data: 'progress'},
         {data: 'carry_forward'},
         {data: 'status'},

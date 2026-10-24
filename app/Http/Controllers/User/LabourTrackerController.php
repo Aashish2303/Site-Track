@@ -197,6 +197,10 @@ class LabourTrackerController extends Controller
 
     public function add_labour_tracker(Request $request)
     {
+        if ($request->has('submit') && app(\App\Services\WorkflowSchema::class)->ready()) {
+            app(\App\Services\LabourAttendanceService::class)->save($request);
+            return redirect()->route('user.labour_trackers')->with('success', 'Attendance, wages and overtime recorded.');
+        }
         if($request->has('submit'))
         {
             $rules = ['ltracker_date' => 'required',
@@ -290,6 +294,10 @@ class LabourTrackerController extends Controller
 
     public function edit_labour_tracker(Request $request)
     {
+        if ($request->has('submit') && app(\App\Services\WorkflowSchema::class)->ready()) {
+            app(\App\Services\LabourAttendanceService::class)->save($request, (int) $request->segment(3));
+            return redirect()->route('user.labour_trackers')->with('success', 'Attendance corrected. The payment balance has been recalculated.');
+        }
         if($request->has('submit'))
         {
             $rules = ['ltracker_date' => 'required',

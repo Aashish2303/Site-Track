@@ -100,7 +100,7 @@
                            <div class="col-xl-4 col-md-4">
                               <div class="mb-3">
                                  <label class="form-label">Quantity Done Today<span class="text-danger ms-1">*</span></label>
-                                 <input type="number" name="dprogress_qty" class="form-control" value="{{ $daily_progress->dprogress_qty }}" autocomplete="off">
+                                 <input type="number" step="0.0001" min="0" name="dprogress_qty" class="form-control" value="{{ $daily_progress->dprogress_qty }}" autocomplete="off">
                                  @if($errors->has('dprogress_qty'))
                                  <div>{{ $errors->first('dprogress_qty') }}</div>
                                  @endif
@@ -185,6 +185,7 @@
                         </div>
                      </div>
                   </div>
+                  @include('user.progress.evidence-fields')
                   <div class="d-flex justify-content-end flex-wrap align-items-center gap-2">
                      <button type="submit" name="submit" class="btn btn-primary" id="save-basic-info" value="submit">Submit</button>
                   </div>

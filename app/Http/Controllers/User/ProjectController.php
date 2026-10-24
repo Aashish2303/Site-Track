@@ -18,8 +18,24 @@ use App\Models\DailyProgress;
 
 class ProjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $request->validate(['search' => 'nullable|string|max:100']);
+        $query = Project::with(['client', 'engineer'])->where('project_trash', 1);
+        if ($request->filled('search')) {
+            $query->where('project_name', 'like', '%'.$request->search.'%');
+        }
+        $data['projects'] = $query->orderBy('project_name')->paginate(12)->withQueryString();
+        $data['boqStats'] = \Illuminate\Support\Facades\DB::table('project_boqs')
+            ->selectRaw('pboq_project, COUNT(*) as items, SUM(pboq_amount) as budget')->groupBy('pboq_project')->get()->keyBy('pboq_project');
+        $data['reportedValue'] = \Illuminate\Support\Facades\DB::table('daily_progress as p')
+            ->join('project_boqs as b', 'b.pboq_id', '=', 'p.dprogress_boq')->where('p.dprogress_trash', 1)
+            ->selectRaw('p.dprogress_project, SUM(p.dprogress_qty * b.pboq_rate) as value')->groupBy('p.dprogress_project')->pluck('value', 'dprogress_project');
+        $data['approvedValue'] = app(\App\Services\WorkflowSchema::class)->ready()
+            ? \Illuminate\Support\Facades\DB::table('progress_reviews as r')->join('daily_progress as p', 'p.dprogress_id', '=', 'r.progress_id')
+                ->join('project_boqs as b', 'b.pboq_id', '=', 'p.dprogress_boq')->where('p.dprogress_trash', 1)->where('r.state', 'approved')
+                ->selectRaw('p.dprogress_project, SUM(r.approved_qty * b.pboq_rate) as value')->groupBy('p.dprogress_project')->pluck('value', 'dprogress_project')
+            : collect();
         $data['set'] = 'projects';
         return view('user.project.projects',$data);
     }
@@ -282,17 +298,9 @@ class ProjectController extends Controller
 
     public function view_project(Request $request)
     {
-        $data['project'] = Project::where('project_id',$request->segment(3))->first();
-
-        if(!isset($data['project']))
-        {
-            return redirect()->route('user.projects');
-        }
-        
-        $data['boqs'] = ProjectBoq::where('pboq_project',$request->segment(3))->get();
-
-        $data['set'] = 'projects';
-        return view('user.project.view_project',$data);
+        $project = Project::where('project_trash', 1)->findOrFail($request->segment(3));
+        $request->session()->put('workspace_project_id', $project->project_id);
+        return redirect()->route('user.project_workspace');
     }
 
     public function project_status(Request $request)

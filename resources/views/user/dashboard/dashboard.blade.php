@@ -303,7 +303,7 @@
       <div class="col-xl-6 col-md-6 d-flex">
          <div class="card shadow flex-fill w-100">
             <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
-               <h5 class="mb-0">Project progress</h5>
+               <h5 class="mb-0">Reported project progress</h5>
                <a href="{{ route('user.projects') }}" class="btn btn-sm btn-white flex-shrink-0">View All</a>
             </div>
             <div class="card-body">

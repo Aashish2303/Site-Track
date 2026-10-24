@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class LabourWorker extends Model
 {
+    use \App\Models\Concerns\HasProjectParent;
     protected $table = 'labour_workers';
 
     protected $primaryKey = 'lworker_id';
 
     public $timestamps = false;
 
-    protected $fillable = ['lworker_tracker','lworker_category','lworker_skill','lworker_male','lworker_female','lworker_wage','lworker_total','lworker_added_on','lworker_added_by','lworker_updated_on','lworker_updated_by','lworker_status'];
+    protected $fillable = ['lworker_tracker','lworker_category','lworker_skill','lworker_male','lworker_female','lworker_wage','lworker_total','lworker_overtime_hours','lworker_overtime_rate','lworker_added_on','lworker_added_by','lworker_updated_on','lworker_updated_by','lworker_status'];
 
     public function category()
     {

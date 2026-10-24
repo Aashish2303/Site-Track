@@ -67,6 +67,10 @@ class AssignMaterialController extends Controller
 
     public function add_assign_material(Request $request)
     {
+        if ($request->has('submit') && app(\App\Services\WorkflowSchema::class)->ready()) {
+            app(\App\Services\MaterialMovementService::class)->save($request, false);
+            return redirect()->back()->with('success', 'Materials received into the selected site.');
+        }
         if($request->has('submit'))
         {
             $rules = ['amaterial_date' => 'required',

@@ -66,6 +66,10 @@ class ReturnMaterialController extends Controller
 
     public function add_return_material(Request $request)
     {
+        if ($request->has('submit') && app(\App\Services\WorkflowSchema::class)->ready()) {
+            app(\App\Services\MaterialMovementService::class)->save($request, true);
+            return redirect()->back()->with('success', 'Materials returned to central stores.');
+        }
         if($request->has('submit'))
         {
             $rules = ['rmaterial_date' => 'required',

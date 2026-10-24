@@ -37,6 +37,11 @@ class CheckPermission
             {
                 if(!in_array($module_permission->mpermission_id,$assigned_permissions))
                 {
+                    if ($request->expectsJson() || in_array($request->route()->getName(), [
+                        'user.reports', 'user.review_progress', 'user.labour_payments', 'user.record_labour_payment',
+                    ], true)) {
+                        abort(403, 'Your role does not have permission for this action.');
+                    }
                     return redirect()->route('user.dashboard')->with('error',"You dont have this module access.");
                 }
             }

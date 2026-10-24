@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
+    use \App\Models\Concerns\HasProjectContext;
+
     protected $table = 'projects';
 
     protected $primaryKey = 'project_id';
