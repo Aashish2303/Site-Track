@@ -6,6 +6,7 @@ use App\Logging\PrivacyLogManager;
 use App\Logging\RedactLogs;
 use App\Security\RuntimeConfiguration;
 use App\Security\SecurityPolicy;
+use App\Security\TlsMySqlConnector;
 use App\Services\ProjectContext;
 use App\Services\RoleAccess;
 use App\Services\WorkflowSchema;
@@ -20,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->bind('db.connector.mysql', fn () => new TlsMySqlConnector);
         $this->app->singleton('log', fn ($app) => new PrivacyLogManager($app));
         Facade::clearResolvedInstance('log');
         $this->app->booted(function () {
