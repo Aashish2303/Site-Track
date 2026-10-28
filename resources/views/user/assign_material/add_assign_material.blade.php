@@ -127,6 +127,9 @@
 function select_materials()
 {
    var category_id = $('#amaterial_category').val();
+   $('#amaterial_material').html('<option value="">Select material</option>').trigger('change.select2');
+   select_material_unit();
+   if (!category_id) return;
 
    $.ajax({
       url: "{{ route('user.select_materials') }}",
@@ -137,7 +140,8 @@ function select_materials()
       },
       success: function(response)
       {
-         $('#amaterial_material').html(response);
+         if ($('#amaterial_category').val() !== category_id) return;
+         $('#amaterial_material').html(response).trigger('change.select2');
          select_material_unit();
       }
    });
@@ -156,6 +160,7 @@ function select_material_stock()
       },
       success: function(response)
       {
+         if ($('#amaterial_material').val() !== material_id) return;
          $('#available_qty').val(response.available_qty);
       }
    });
@@ -164,6 +169,9 @@ function select_material_stock()
 function select_material_unit()
 {
    var material_id = $('#amaterial_material').val();
+   $('#amaterial_unit_name, #amaterial_unit').val('');
+   $('#available_qty').val(0);
+   if (!material_id) return;
 
    $.ajax({
       url: "{{ route('user.select_material_unit') }}",
@@ -174,6 +182,7 @@ function select_material_unit()
       },
       success: function(response)
       {
+         if ($('#amaterial_material').val() !== material_id) return;
          $('#amaterial_unit_name').val(response.unit_name);
          $('#amaterial_unit').val(response.unit_id);
 

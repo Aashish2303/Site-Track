@@ -118,6 +118,9 @@
 function select_materials()
 {
    var category_id = $('#rmaterial_category').val();
+   $('#rmaterial_material').html('<option value="">Select material</option>').trigger('change.select2');
+   select_material_unit();
+   if (!category_id) return;
 
    $.ajax({
       url: "{{ route('user.select_materials') }}",
@@ -128,7 +131,8 @@ function select_materials()
       },
       success: function(response)
       {
-         $('#rmaterial_material').html(response);
+         if ($('#rmaterial_category').val() !== category_id) return;
+         $('#rmaterial_material').html(response).trigger('change.select2');
          select_material_unit();
       }
    });
@@ -137,6 +141,8 @@ function select_materials()
 function select_material_unit()
 {
    var material_id = $('#rmaterial_material').val();
+   $('#rmaterial_unit_name, #rmaterial_unit').val('');
+   if (!material_id) return;
 
    $.ajax({
       url: "{{ route('user.select_material_unit') }}",
@@ -147,6 +153,7 @@ function select_material_unit()
       },
       success: function(response)
       {
+         if ($('#rmaterial_material').val() !== material_id) return;
          $('#rmaterial_unit_name').val(response.unit_name);
          $('#rmaterial_unit').val(response.unit_id);
       }
